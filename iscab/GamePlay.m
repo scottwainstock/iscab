@@ -65,9 +65,9 @@ AppDelegate *app;
 
         [self updateBackground];
 
-        //if (![app.allScabs count]) {
+        if (![app.allScabs count]) {
             [self generateScabs];
-        //}
+        }
                 
         /*
         [self displayBoard];
@@ -215,11 +215,34 @@ AppDelegate *app;
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    cpMouseRelease(mouse);
+    CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    
+    cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);
+    if (shape) {
+        ScabChunk *sprite = (ScabChunk *) shape->data;
+
+        //280 and 40 correspond to the location of the jar
+        float xDif = sprite.position.x - 280;
+        float yDif = sprite.position.y - 40;
+        float distance = sqrt(xDif * xDif + yDif * yDif);
+    
+        if (distance < 20) {
+            [[SimpleAudioEngine sharedEngine] playEffect:@"scabinjar.wav"];
+            [self removeScab:sprite];
+        } else if (sprite.free) {  
+            [self removeScab:sprite];
+        }
+        
+        cpMouseRelease(mouse);
+    }
 }
 
 - (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
-    cpMouseRelease(mouse);    
+    [self ccTouchEnded:touch withEvent:event]; 
+}
+
+- (void)removeScab:(ScabChunk *)chunk {    
+   // [app removeScab:chunk initing:NO];
 }
 
 - (void)dealloc {
