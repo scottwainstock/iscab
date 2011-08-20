@@ -19,7 +19,6 @@
     id action;
 }
 
-- (void)removeScab;
 - (void)ripOffScab;
 - (void)createWound;
 
