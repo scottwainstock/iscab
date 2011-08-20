@@ -20,6 +20,6 @@
 
 - (id)initWithSpace:(cpSpace *)theSpace location:(CGPoint)location filename:(NSString *)filename;
 - (void)update;
-- (void)createBodyAtLocation:(CGPoint)location;
+- (void)createBodyAtLocation:(CGPoint)location filename:(NSString *)filename;
 
 @end

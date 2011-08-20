@@ -28,6 +28,8 @@ AppDelegate *app;
     
     [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
     
+    return;
+    
     CCParticleMyBlood *particles = [[CCParticleMyBlood alloc]init];
     particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
     particles.position = ccp(25,25);
@@ -38,6 +40,8 @@ AppDelegate *app;
 }
 
 - (void)createWound {
+    return;
+    
     app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     Wound *wound = [Wound spriteWithTexture:[self texture]];
@@ -59,8 +63,8 @@ AppDelegate *app;
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
-    self = [[ScabChunk alloc] initWithTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]]]];
-
+    self = [[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]];
+    
     if (self != nil) {
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
         self.health = [coder decodeIntForKey:@"health"];

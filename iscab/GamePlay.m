@@ -17,7 +17,7 @@
 
 AppDelegate *app;
 
-- (void)createSpace {
+- (void)createSpace {    
     space = cpSpaceNew();
     space->gravity = ccp(0, -750);
     cpSpaceResizeStaticHash(space, 400, 200);
@@ -26,10 +26,10 @@ AppDelegate *app;
 
 - (void)update:(ccTime)dt {
     cpSpaceStep(space, dt);
-    
-    for (ScabChunk *chunk in app.allScabs) {
-        [chunk update];
-    }
+        
+    for (IScabSprite *sprite in batchNode.children) {
+        [sprite update];
+    }    
 }
 
 + (id)scene {
@@ -42,12 +42,7 @@ AppDelegate *app;
 
 - (void)draw {
     drawSpaceOptions options = {
-        0, // drawHash
-        0, // drawBBs,
-        1, // drawShapes
-        4.0, // collisionPointSize
-        4.0, // bodyPointSize,
-        2.0 // lineThickness
+        0, 0, 1, 4.0, 4.0, 2.0
     };
     
     drawSpace(space, &options);
@@ -59,11 +54,13 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         
         [self createSpace]; 
-        [self scheduleUpdate];
         
         mouse = cpMouseNew(space);
 
         [self updateBackground];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
+        batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
+        [self addChild:batchNode];
 
         if (![app.allScabs count]) {
             [self generateScabs];
@@ -72,6 +69,8 @@ AppDelegate *app;
         /*
         [self displayBoard];
          */
+                        
+        [self scheduleUpdate];
     }
             
     return self;
@@ -110,14 +109,20 @@ AppDelegate *app;
         [wound removeFromParentAndCleanup:YES];
     }
     
-    for (int x = 0; x < 1; x++) { 
+    for (int x = 0; x < 2; x++) { 
+        NSLog(@"MAKING ONE");
         int scabIndex = arc4random() % 4;
         
         float startX = arc4random() % 300;
         float startY = (arc4random() % 300) + 100;
-        
-        [self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:1];
+
+        [batchNode addChild:[self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:1]];        
     }
+    
+    NSLog(@"NUM SCABS APP %d", [app.allScabs count]);
+    NSLog(@"NUM SCABS BATCH %d", [batchNode.children count]);
+
+    
     /*
      for (int x = 0; x < 10; x++) {
      float startX = arc4random() % 300;
@@ -142,16 +147,19 @@ AppDelegate *app;
     //[[[(GamePlay *)[CCDirector sharedDirector] runningScene] getChildByTag:1] displayBoard];    
 }
 
-- (void)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
-    ScabChunk *scab = [[[ScabChunk alloc] initWithSpace:space location:ccp(coordinates.x, coordinates.y) filename:[NSString stringWithFormat:@"scab%d.png", scabIndex]] autorelease];    
+- (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
+    ScabChunk *scab = [[[ScabChunk alloc] initWithSpace:space location:ccp(coordinates.x, coordinates.y) filename:[NSString stringWithFormat:@"scab%d.png", scabIndex]] autorelease]; 
+
     cpBodySetAngle(scab.body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     
     [scab setScabNo:scabIndex];
     [scab setPriority:priority];
     [scab setHealth:priority * 2];
     
-    [self clearLowerScabs:scab];    
+   // [self clearLowerScabs:scab];    
     [app.allScabs addObject:scab];
+
+    return scab;
 }
 
 - (void)clearLowerScabs:(ScabChunk *)newScab {
@@ -178,10 +186,10 @@ AppDelegate *app;
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     
-    cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);
+    cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);    
     if (shape) {
-        ScabChunk *sprite = (ScabChunk *) shape->data;
-        
+        ScabChunk *sprite = (ScabChunk *)shape->data;
+
         if ([sprite health] > 0) {
             sprite.health -= 1;
         }
@@ -190,6 +198,7 @@ AppDelegate *app;
     }
     
     cpMouseGrab(mouse, touchLocation, false);
+
     return YES;
 }
 
