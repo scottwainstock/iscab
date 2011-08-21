@@ -12,10 +12,22 @@
 #import "Wound.h"
 #import "drawSpace.h"
 #import "SimpleAudioEngine.h"
+#import "MainMenu.h"
 
 @implementation GamePlay
 
-AppDelegate *app;
+@synthesize batchNode;
+
+static AppDelegate *app;
+
+- (CCSpriteBatchNode *)batchNode { 
+    @synchronized(batchNode) {
+        if (batchNode == nil)
+            batchNode = [[CCSpriteBatchNode alloc] init];
+        return batchNode;
+    }
+    return nil;
+}
 
 - (void)createSpace {    
     space = cpSpaceNew();
@@ -29,6 +41,10 @@ AppDelegate *app;
         
     for (IScabSprite *sprite in batchNode.children) {
         [sprite update];
+        
+        if ([sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
+            [self removeScab:(ScabChunk *)sprite];
+        }
     }    
 }
 
@@ -62,6 +78,7 @@ AppDelegate *app;
         batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
         [self addChild:batchNode];
 
+        NSLog(@"SCAB COUNT %d", [app.allScabs count]);
         if (![app.allScabs count]) {
             [self generateScabs];
         }
@@ -91,6 +108,16 @@ AppDelegate *app;
     jarIcon.tag = 778;
     jarIcon.position = ccp(280, 40);
     [self addChild:jarIcon z:1];
+    
+    /*
+    CCMenuItem *homeButton = [CCMenuItemImage itemFromNormalImage:@"home-icon.png" selectedImage:@"home-icon.png" target:self selector:@selector(homeTapped:)];
+    homeButton.position = ccp(40, 40);
+    [self addChild:homeButton z:2];*/
+}
+
+- (void)homeTapped:(CCMenuItem  *)menuItem {  
+    NSLog(@"HOME TAPPED");
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
 
 - (void)displayBoard {
@@ -104,13 +131,7 @@ AppDelegate *app;
 }
 
 - (void)generateScabs {
-    for (Wound *wound in [app allWounds]) {
-        [app.allWounds removeObject:wound];
-        [wound removeFromParentAndCleanup:YES];
-    }
-    
     for (int x = 0; x < 2; x++) { 
-        NSLog(@"MAKING ONE");
         int scabIndex = arc4random() % 4;
         
         float startX = arc4random() % 300;
@@ -118,11 +139,7 @@ AppDelegate *app;
 
         [batchNode addChild:[self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:1]];        
     }
-    
-    NSLog(@"NUM SCABS APP %d", [app.allScabs count]);
-    NSLog(@"NUM SCABS BATCH %d", [batchNode.children count]);
-
-    
+        
     /*
      for (int x = 0; x < 10; x++) {
      float startX = arc4random() % 300;
@@ -143,8 +160,6 @@ AppDelegate *app;
      [self createScab:CGPointMake(startX, startY) usingScabImage:@"scab0.png" havingPriority:2];
      }
      */
-    
-    //[[[(GamePlay *)[CCDirector sharedDirector] runningScene] getChildByTag:1] displayBoard];    
 }
 
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
@@ -159,6 +174,8 @@ AppDelegate *app;
    // [self clearLowerScabs:scab];    
     [app.allScabs addObject:scab];
 
+    NSLog(@"ALL SCABS %d", [app.allScabs count]);
+    
     return scab;
 }
 
@@ -188,6 +205,9 @@ AppDelegate *app;
     
     cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);    
     if (shape) {
+        if (![(IScabSprite *)shape->data respondsToSelector:@selector(health)])
+            return YES;
+        
         ScabChunk *sprite = (ScabChunk *)shape->data;
 
         if ([sprite health] > 0) {
@@ -206,7 +226,10 @@ AppDelegate *app;
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
     
     cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);
-    if (shape) {
+    if (shape) {                
+        if (![(IScabSprite *)shape->data respondsToSelector:@selector(health)])
+            return;
+        
         ScabChunk *sprite = (ScabChunk *) shape->data;
         if ([sprite health] > 0) {
             return;
@@ -228,6 +251,9 @@ AppDelegate *app;
     
     cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);
     if (shape) {
+        if (![(IScabSprite *)shape->data respondsToSelector:@selector(health)])
+            return;
+        
         ScabChunk *sprite = (ScabChunk *) shape->data;
 
         //280 and 40 correspond to the location of the jar
@@ -237,8 +263,6 @@ AppDelegate *app;
     
         if (distance < 20) {
             [[SimpleAudioEngine sharedEngine] playEffect:@"scabinjar.wav"];
-            [self removeScab:sprite];
-        } else if (sprite.free) {  
             [self removeScab:sprite];
         }
         
@@ -250,8 +274,20 @@ AppDelegate *app;
     [self ccTouchEnded:touch withEvent:event]; 
 }
 
-- (void)removeScab:(ScabChunk *)chunk {    
-   // [app removeScab:chunk initing:NO];
+- (void)removeScab:(ScabChunk *)chunk {
+    NSLog(@"REMOVE");
+    [app removeScab:chunk initing:NO];
+}
+
+- (void)createWound:(ScabChunk *)scab {
+    app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    Wound *wound = [[[Wound alloc] initWithSpace:space location:ccp(scab.position.x, scab.position.y) filename:@"wound0.png"] autorelease];     
+    cpBodySetAngle(wound.body, self.rotation);
+    wound.scabNo = scab.scabNo;
+    
+    [app.allWounds addObject:wound];
+    [batchNode addChild:wound];        
 }
 
 - (void)dealloc {

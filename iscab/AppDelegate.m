@@ -114,7 +114,6 @@
 	// You can change anytime.
 	[CCTexture2D setDefaultAlphaPixelFormat:kCCTexture2DPixelFormat_RGBA8888];
 
-	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
@@ -171,6 +170,7 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    NSLog(@"TERMINATING");
     [self saveState];
     
 	CCDirector *director = [CCDirector sharedDirector];
@@ -186,6 +186,7 @@
 }
 
 - (void)saveState {    
+    NSLog(@"SAVING");
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];     
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.allScabs] forKey:@"allScabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:self.allWounds] forKey:@"allWounds"];
@@ -210,10 +211,10 @@
     }
     return nil;
 }
-
+ 
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing {
     [self.allScabs removeObject:scab];
-    [scab removeFromParentAndCleanup:YES];
+    [scab destroy];
     
     if ([self.allScabs count] == 0 && !initing) {
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
@@ -222,14 +223,21 @@
         title.position =  ccp(-100, 380);
         [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         
-        [[[CCDirector sharedDirector] runningScene] addChild:title];    
+        [[[CCDirector sharedDirector] runningScene] addChild:title];
+        
+        NSLog(@"WOUND COUNT %d", [self.allWounds count]);
+        for (Wound *wound in [self allWounds]) {
+            NSLog(@"REMOVING A WOUND");
+            [wound destroy];
+        }
+        
+        allWounds = [[NSMutableArray alloc] init];
     }
 }
 
 - (void)resetBoard {
     [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] updateBackground];
     [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] generateScabs];
-    [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] displayBoard];
 }
 
 - (void)dealloc {

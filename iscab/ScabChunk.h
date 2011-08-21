@@ -20,9 +20,7 @@
 }
 
 - (void)ripOffScab;
-- (void)createWound;
 
-@property (nonatomic, readonly) CGRect rect;
 @property (nonatomic, assign) int scabNo;
 @property (assign) int priority;
 @property (assign) int health;

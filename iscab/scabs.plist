@@ -60,7 +60,7 @@
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{2, 138}, {75, 46}}</string>
+			<string>{{2, 193}, {75, 46}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -80,7 +80,7 @@
 			<key>spriteTrimmed</key>
 			<true/>
 			<key>textureRect</key>
-			<string>{{155, 124}, {87, 53}}</string>
+			<string>{{2, 138}, {87, 53}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -101,6 +101,26 @@
 			<true/>
 			<key>textureRect</key>
 			<string>{{2, 2}, {151, 134}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		
+		<key>wound0.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{2, 6}, {98, 97}}</string>
+			<key>spriteOffset</key>
+			<string>{1, -1}</string>
+			<key>spriteSize</key>
+			<string>{98, 97}</string>
+			<key>spriteSourceSize</key>
+			<string>{100, 107}</string>
+			<key>spriteTrimmed</key>
+			<true/>
+			<key>textureRect</key>
+			<string>{{155, 124}, {98, 97}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>

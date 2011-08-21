@@ -29,5 +29,12 @@
     return self; 
 } 
 
+- (void)destroy {
+    NSLog(@"DESTROY WOUND");
+//    cpSpaceRemoveBody(space, body);
+    cpSpaceRemoveShape(space, shape);
+
+    [self removeFromParentAndCleanup:YES];
+}
 
 @end

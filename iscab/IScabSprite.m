@@ -21,7 +21,7 @@
 - (id)initWithCoder:(NSCoder *)coder {    
     if (self != nil) {
         self.rotation = [coder decodeFloatForKey:@"rotation"];
-        //[self createBodyAtLocation:ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"])];
+        [self createBodyAtLocation:ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]) filename:@"scab0.png"];
     }
     
     return self; 
@@ -33,7 +33,7 @@
 }
 
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts {    
-    float mass = 1.0;
+    float mass = 0.1;
     float moment = cpMomentForPoly(mass, numVerts, verts, CGPointZero);
     body = cpBodyNew(mass, moment);
     
@@ -153,6 +153,51 @@
             cpv(74.5f, -66.0f)
         };
         [self addBodyWithVerts:verts atLocation:location numVerts:14];
+    } else if ([filename isEqualToString:@"wound0.png"]) {
+        CGPoint verts[] = {
+            cpv(-5.0f, -48.5f),
+            cpv(-11.0f, -47.5f),
+            cpv(-17.0f, -45.5f),
+            cpv(-25.0f, -41.5f),
+            cpv(-28.0f, -39.5f),
+            cpv(-34.0f, -34.5f),
+            cpv(-40.0f, -26.5f),
+            cpv(-44.0f, -18.5f),
+            cpv(-46.0f, -12.5f),
+            cpv(-47.0f, -6.5f),
+            cpv(-47.0f, 3.5f),
+            cpv(-46.0f, 9.5f),
+            cpv(-44.0f, 15.5f),
+            cpv(-40.0f, 23.5f),
+            cpv(-38.0f, 26.5f),
+            cpv(-28.0f, 36.5f),
+            cpv(-25.0f, 38.5f),
+            cpv(-17.0f, 42.5f),
+            cpv(-11.0f, 44.5f),
+            cpv(-5.0f, 45.5f),
+            cpv(5.0f, 45.5f),
+            cpv(11.0f, 44.5f),
+            cpv(17.0f, 42.5f),
+            cpv(25.0f, 38.5f),
+            cpv(28.0f, 36.5f),
+            cpv(38.0f, 26.5f),
+            cpv(40.0f, 23.5f),
+            cpv(44.0f, 15.5f),
+            cpv(46.0f, 9.5f),
+            cpv(47.0f, 3.5f),
+            cpv(47.0f, -6.5f),
+            cpv(46.0f, -12.5f),
+            cpv(44.0f, -18.5f),
+            cpv(40.0f, -26.5f),
+            cpv(38.0f, -29.5f),
+            cpv(28.0f, -39.5f),
+            cpv(25.0f, -41.5f),
+            cpv(17.0f, -45.5f),
+            cpv(11.0f, -47.5f),
+            cpv(5.0f, -48.5f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:40];
     }
 }
 
@@ -163,6 +208,13 @@
     }
         
     return self;
+}
+
+- (void)destroy {
+    NSLog(@"DESTROY");
+    cpSpaceRemoveBody(space, body);
+    cpSpaceRemoveShape(space, shape);
+    [self removeFromParentAndCleanup:YES];
 }
 
 @end
