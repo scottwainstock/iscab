@@ -15,15 +15,17 @@
 
 @interface GamePlay : CCLayer {
     cpSpace *space;
-    cpMouse *mouse;
-    
+    cpMouse *mouse;    
     CCSpriteBatchNode *batchNode;
 }
+
+@property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 
 + (id)scene;
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
+- (void)createWound:(ScabChunk *)scab;
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)displayBoard;
 - (void)updateBackground;

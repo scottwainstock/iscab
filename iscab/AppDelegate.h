@@ -17,7 +17,7 @@
 	RootViewController	*viewController;
     AVAudioPlayer       *audioPlayer;
     NSMutableArray *allScabs;
-    NSMutableArray *allWounds;
+    NSMutableArray *allWounds;    
 }
 
 - (void)saveState;
