@@ -13,6 +13,7 @@
 #import "drawSpace.h"
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
+#import "CCParticleMyBlood.h"
 
 @implementation GamePlay
 
@@ -281,6 +282,12 @@ static AppDelegate *app;
 
 - (void)createWound:(ScabChunk *)scab {
     app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    CCParticleMyBlood *particles = [[CCParticleMyBlood alloc]init];
+    particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
+    particles.position = scab.position;
+    [self addChild:particles z:9];
+    particles.autoRemoveOnFinish = YES;
     
     Wound *wound = [[[Wound alloc] initWithSpace:space location:ccp(scab.position.x, scab.position.y) filename:@"wound0.png"] autorelease];     
     cpBodySetAngle(wound.body, self.rotation);

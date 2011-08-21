@@ -8,7 +8,6 @@
 
 #import "ScabChunk.h"
 #import "Wound.h"
-#import "CCParticleMyBlood.h"
 #import "SimpleAudioEngine.h"
 #import "GamePlay.h"
 
@@ -21,14 +20,6 @@
     
     [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
      
-    /*
-    CCParticleMyBlood *particles = [[CCParticleMyBlood alloc]init];
-    particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
-    particles.position = ccp(25,25);
-    [self addChild:particles z:9];
-    particles.autoRemoveOnFinish = YES;
-    */
-    
     [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self];
 }
 
