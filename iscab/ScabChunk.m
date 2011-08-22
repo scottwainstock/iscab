@@ -10,10 +10,19 @@
 #import "Wound.h"
 #import "SimpleAudioEngine.h"
 #import "GamePlay.h"
+#import "AppDelegate.h"
 
 @implementation ScabChunk
 
 @synthesize priority, health, free, action, scabNo;
+
+struct RAW_CHUNK_DATA {
+    float posX;
+    float posY;
+    int health;
+    int priorty;
+    int scabNo;
+};
 
 - (void)ripOffScab {
     free= YES;
@@ -24,24 +33,25 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-    
+    [coder encodeInt:self.position.x forKey:@"xPos"]; 
+    [coder encodeInt:self.position.y forKey:@"yPos"]; 
+    [coder encodeFloat:self.rotation forKey:@"rotation"];    
     [coder encodeInt:self.health forKey:@"health"];
     [coder encodeInt:self.priority forKey:@"priority"];
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
-    self = [[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]];
+    self = [[ScabChunk alloc] init];
     
     if (self != nil) {
+        self.savedLocation = ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]);
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
         self.health = [coder decodeIntForKey:@"health"];
         self.priority = [coder decodeIntForKey:@"priority"];
+        self.rotation = [coder decodeFloatForKey:@"rotation"];
     }
     
-    [super initWithCoder:coder];
-        
     return self; 
 }
 

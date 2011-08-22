@@ -14,12 +14,16 @@
 #import "cpMouse.h"
 
 @interface GamePlay : CCLayer {
-    cpSpace *space;
     cpMouse *mouse;    
+    cpSpace *space;
     CCSpriteBatchNode *batchNode;
+    NSMutableArray *allScabs;
+    NSMutableArray *allWounds;
 }
 
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
+@property (nonatomic, retain) NSMutableArray *allScabs;
+@property (nonatomic, retain) NSMutableArray *allWounds;
 
 + (id)scene;
 - (void)removeScab:(ScabChunk *)chunk;
@@ -27,7 +31,9 @@
 - (void)clearLowerScabs:(ScabChunk *)newScab;
 - (void)createWound:(ScabChunk *)scab;
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority;
-- (void)displayBoard;
+- (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
+- (void)displaySavedBoard;
 - (void)updateBackground;
+- (cpSpace *)createSpace;
 
 @end

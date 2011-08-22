@@ -8,18 +8,37 @@
 
 #import "GamePlay.h"
 #import "ScabChunk.h"
-#import "AppDelegate.h"
 #import "Wound.h"
 #import "drawSpace.h"
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
 #import "CCParticleMyBlood.h"
+#import "cpSpace.h"
+
+#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
+#define DEFAULT_FONT_SIZE 30
 
 @implementation GamePlay
 
-@synthesize batchNode;
+@synthesize batchNode, allScabs, allWounds;
 
-static AppDelegate *app;
+- (NSMutableArray *)allScabs { 
+    @synchronized(allScabs) {
+        if (allScabs == nil)
+            allScabs = [[NSMutableArray alloc] init];
+        return allScabs;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)allWounds { 
+    @synchronized(allWounds) {
+        if (allWounds == nil)
+            allWounds = [[NSMutableArray alloc] init];
+        return allWounds;
+    }
+    return nil;
+}
 
 - (CCSpriteBatchNode *)batchNode { 
     @synchronized(batchNode) {
@@ -28,13 +47,6 @@ static AppDelegate *app;
         return batchNode;
     }
     return nil;
-}
-
-- (void)createSpace {    
-    space = cpSpaceNew();
-    space->gravity = ccp(0, -750);
-    cpSpaceResizeStaticHash(space, 400, 200);
-    cpSpaceResizeActiveHash(space, 200, 200);
 }
 
 - (void)update:(ccTime)dt {
@@ -68,30 +80,60 @@ static AppDelegate *app;
 - (id)init {
     if((self=[super init])) {
         self.isTouchEnabled = YES;
-        app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
         [self createSpace]; 
-        
         mouse = cpMouseNew(space);
+        
+        NSData *mScabs = [defaults objectForKey:@"allScabs"];
+        if (mScabs != nil) {
+            NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
+            if (oldSavedArray != nil) {
+                self.allScabs = [[NSMutableArray alloc] init];
+                
+                for (ScabChunk *scab in oldSavedArray) {
+                    [self.allScabs addObject:[[[ScabChunk alloc] initWithSpace:space location:scab.savedLocation filename:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease]];
+                    //cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(self.rotation));
+                }
+            }
+        }
+        
+        NSData *mWounds = [defaults objectForKey:@"allWounds"];
+        if (mWounds != nil) {
+            NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mWounds];
+            if (oldSavedArray != nil) {
+                self.allWounds = [[NSMutableArray alloc] init];
+                
+                for (Wound *wound in oldSavedArray) {
+                    [self.allWounds addObject:[[[Wound alloc] initWithSpace:space location:wound.savedLocation filename:@"wound0.png"] autorelease]];
+                    //cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(self.rotation));
+                }
+            }
+        }
 
         [self updateBackground];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
         [self addChild:batchNode];
 
-        NSLog(@"SCAB COUNT %d", [app.allScabs count]);
-        if (![app.allScabs count]) {
+        if (![self.allScabs count]) {
             [self generateScabs];
+        } else {
+            [self displaySavedBoard];
         }
-                
-        /*
-        [self displayBoard];
-         */
-                        
+                                        
         [self scheduleUpdate];
     }
             
     return self;
+}
+
+- (cpSpace *)createSpace {    
+    space = cpSpaceNew();
+    space->gravity = ccp(0, -750);
+    cpSpaceResizeStaticHash(space, 400, 200);
+    cpSpaceResizeActiveHash(space, 200, 200);
+    
+    return space;
 }
 
 - (void)updateBackground {
@@ -121,14 +163,14 @@ static AppDelegate *app;
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
 
-- (void)displayBoard {
-    for (Wound *wound in [app allWounds]) {
-        [self addChild:wound z:0];            
+- (void)displaySavedBoard {    
+    for (ScabChunk *scab in [self allScabs]) {
+        [batchNode addChild:scab];        
     }
     
-    for (ScabChunk *scab in [app allScabs]) {
-        [self addChild:scab z:1];            
-    }    
+    for (Wound *wound in [self allWounds]) {
+        [batchNode addChild:wound];        
+    }
 }
 
 - (void)generateScabs {
@@ -165,33 +207,29 @@ static AppDelegate *app;
 
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
     ScabChunk *scab = [[[ScabChunk alloc] initWithSpace:space location:ccp(coordinates.x, coordinates.y) filename:[NSString stringWithFormat:@"scab%d.png", scabIndex]] autorelease]; 
-
-    cpBodySetAngle(scab.body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     
     [scab setScabNo:scabIndex];
     [scab setPriority:priority];
     [scab setHealth:priority * 2];
     
-   // [self clearLowerScabs:scab];    
-    [app.allScabs addObject:scab];
-
-    NSLog(@"ALL SCABS %d", [app.allScabs count]);
+    //[self clearLowerScabs:scab];
+    [self.allScabs addObject:scab];
     
     return scab;
 }
 
 - (void)clearLowerScabs:(ScabChunk *)newScab {
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
-    for (ScabChunk *checkScab in [app allScabs]) {        
-        if (CGRectIntersectsRect([newScab boundingBox], [checkScab boundingBox])) {
-            if (ccpDistance(newScab.position, checkScab.position) < 50.0) {
+    for (ScabChunk *checkScab in [self allScabs]) {  
+        if (cpSpacePointQueryFirst(space, checkScab.savedLocation, GRABABLE_MASK_BIT, 0)) {    
+            //if (ccpDistance(newScab.position, checkScab.position) < 50.0) {
                 [scabsToDelete addObject:checkScab];
-            }
+            //}
         }
     }
     
     for (ScabChunk *deleteScab in scabsToDelete) {
-        [app removeScab:deleteScab initing:YES];
+        [self removeScab:deleteScab initing:YES];
     }
     
     [scabsToDelete release];
@@ -276,25 +314,50 @@ static AppDelegate *app;
 }
 
 - (void)removeScab:(ScabChunk *)chunk {
-    NSLog(@"REMOVE");
-    [app removeScab:chunk initing:NO];
+    [self removeScab:chunk initing:NO];
 }
 
-- (void)createWound:(ScabChunk *)scab {
-    app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
+- (void)createWound:(ScabChunk *)scab {    
     CCParticleMyBlood *particles = [[CCParticleMyBlood alloc]init];
     particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
     particles.position = scab.position;
     [self addChild:particles z:9];
     particles.autoRemoveOnFinish = YES;
     
-    Wound *wound = [[[Wound alloc] initWithSpace:space location:ccp(scab.position.x, scab.position.y) filename:@"wound0.png"] autorelease];     
-    cpBodySetAngle(wound.body, self.rotation);
+    Wound *wound = [[[Wound alloc] initWithSpace:space location:scab.savedLocation filename:@"wound0.png"] autorelease];     
     wound.scabNo = scab.scabNo;
     
-    [app.allWounds addObject:wound];
+    [self.allWounds addObject:wound];
     [batchNode addChild:wound];        
+}
+
+- (void)removeScab:(ScabChunk *)scab initing:(bool)initing {
+    [self.allScabs removeObject:scab];
+    [scab destroy];
+    
+    //NSLog(@"CURR COUNT: %d   INITING: %@", [self.allScabs count], initing);
+    if ([self.allScabs count] == 0 && !initing) {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
+        
+        CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+        title.position =  ccp(-100, 380);
+        [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+        
+        [[[CCDirector sharedDirector] runningScene] addChild:title];
+        
+        NSLog(@"WOUND COUNT %d", [self.allWounds count]);
+        for (Wound *wound in [self allWounds]) {
+            NSLog(@"REMOVING A WOUND");
+            [wound destroy];
+        }
+        
+        allWounds = [[NSMutableArray alloc] init];
+    }
+}
+
+- (void)resetBoard {
+    [self updateBackground];
+    [self generateScabs];
 }
 
 - (void)dealloc {

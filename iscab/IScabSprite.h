@@ -10,17 +10,20 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
-@interface IScabSprite : CCSprite <NSCoding> {
+@interface IScabSprite : CCSprite {
     cpBody *body;
     cpShape *shape;
     cpSpace *space;
+    
+    CGPoint savedLocation;
 }
 
-@property (assign) cpBody *body;
+@property (nonatomic, assign) CGPoint savedLocation;
 
 - (id)initWithSpace:(cpSpace *)theSpace location:(CGPoint)location filename:(NSString *)filename;
 - (void)update;
 - (void)destroy;
 - (void)createBodyAtLocation:(CGPoint)location filename:(NSString *)filename;
+- (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts;
 
 @end

@@ -13,28 +13,22 @@
 @synthesize scabNo;
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-    
+    [coder encodeInt:self.position.x forKey:@"xPos"]; 
+    [coder encodeInt:self.position.y forKey:@"yPos"]; 
+    [coder encodeFloat:self.rotation forKey:@"rotation"];    
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
 } 
 
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [[Wound alloc] initWithTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]]]];        
-    [self setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];
+- (id)initWithCoder:(NSCoder *)coder {    
+    self = [[Wound alloc] init];
     
-    self.scabNo = [coder decodeIntForKey:@"scabNo"];
-    
-    [super initWithCoder:coder];
+    if (self != nil) {
+        self.savedLocation = ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]);
+        self.scabNo = [coder decodeIntForKey:@"scabNo"];
+        self.rotation = [coder decodeFloatForKey:@"rotation"];
+    }
     
     return self; 
 } 
-
-- (void)destroy {
-    NSLog(@"DESTROY WOUND");
-//    cpSpaceRemoveBody(space, body);
-    cpSpaceRemoveShape(space, shape);
-
-    [self removeFromParentAndCleanup:YES];
-}
 
 @end

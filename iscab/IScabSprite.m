@@ -7,25 +7,32 @@
 //
 
 #import "IScabSprite.h"
+#import "GamePlay.h"
+#import "cpShape.h"
+
+#define MASS 0.1
 
 @implementation IScabSprite
 
-@synthesize body;
+@synthesize savedLocation;
 
 - (void)encodeWithCoder:(NSCoder *)coder {     
-    [coder encodeInt:self.position.x forKey:@"xPos"]; 
-    [coder encodeInt:self.position.y forKey:@"yPos"]; 
-    [coder encodeFloat:self.rotation forKey:@"rotation"];
 } 
 
-- (id)initWithCoder:(NSCoder *)coder {    
+/*
+- (id)initWithCoder:(NSCoder *)coder {
+    //self = [self initWithSpace:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] space] location:ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]) filename:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]];
+    
+    NSLog(@"LOADED POSITION: %@", NSStringFromCGPoint(self.savedLocation));
+
     if (self != nil) {
         self.rotation = [coder decodeFloatForKey:@"rotation"];
-        [self createBodyAtLocation:ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]) filename:@"scab0.png"];
+        //cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(self.rotation));
     }
     
     return self; 
 }
+ */
 
 - (void)update {
     self.position = body->p;
@@ -33,9 +40,8 @@
 }
 
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts {    
-    float mass = 0.1;
-    float moment = cpMomentForPoly(mass, numVerts, verts, CGPointZero);
-    body = cpBodyNew(mass, moment);
+    float moment = cpMomentForPoly(MASS, numVerts, verts, CGPointZero);
+    body = cpBodyNew(MASS, moment);
     
     body->p = location;
     body->data = self;
@@ -44,7 +50,7 @@
     shape->e = 0.3; 
     shape->u = 1.0;
     shape->data = self;
-    
+        
     cpSpaceAddShape(space, shape);
 }
 
@@ -152,6 +158,7 @@
             cpv(74.5f, -30.0f),
             cpv(74.5f, -66.0f)
         };
+
         [self addBodyWithVerts:verts atLocation:location numVerts:14];
     } else if ([filename isEqualToString:@"wound0.png"]) {
         CGPoint verts[] = {
@@ -202,9 +209,12 @@
 }
 
 - (id)initWithSpace:(cpSpace *)theSpace location:(CGPoint)location filename:(NSString *)filename {
-    if ((self = [super initWithSpriteFrameName:filename])) {        
+    if ((self = [super initWithSpriteFrameName:filename])) {     
         space = theSpace;
-        [self createBodyAtLocation:location filename:filename];
+        savedLocation = location;
+        [self createBodyAtLocation:savedLocation filename:(NSString *)filename];  
+
+        cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     }
         
     return self;
@@ -212,7 +222,6 @@
 
 - (void)destroy {
     NSLog(@"DESTROY");
-    cpSpaceRemoveBody(space, body);
     cpSpaceRemoveShape(space, shape);
     [self removeFromParentAndCleanup:YES];
 }
