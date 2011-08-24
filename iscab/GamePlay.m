@@ -8,17 +8,41 @@
 
 #import "GamePlay.h"
 #import "ScabChunk.h"
-#import "AppDelegate.h"
 #import "Wound.h"
 #import "drawSpace.h"
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
+#import "CCParticleMyBlood.h"
+#import "cpSpace.h"
+#import "AppDelegate.h"
+
+#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
+#define DEFAULT_FONT_SIZE 30
 
 @implementation GamePlay
 
-@synthesize batchNode;
+@synthesize batchNode, allScabs, allWounds;
 
-static AppDelegate *app;
+AppDelegate *app;
+CGRect homeFrame;
+
+- (NSMutableArray *)allScabs { 
+    @synchronized(allScabs) {
+        if (allScabs == nil)
+            allScabs = [[NSMutableArray alloc] init];
+        return allScabs;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)allWounds { 
+    @synchronized(allWounds) {
+        if (allWounds == nil)
+            allWounds = [[NSMutableArray alloc] init];
+        return allWounds;
+    }
+    return nil;
+}
 
 - (CCSpriteBatchNode *)batchNode { 
     @synchronized(batchNode) {
@@ -29,13 +53,6 @@ static AppDelegate *app;
     return nil;
 }
 
-- (void)createSpace {    
-    space = cpSpaceNew();
-    space->gravity = ccp(0, -750);
-    cpSpaceResizeStaticHash(space, 400, 200);
-    cpSpaceResizeActiveHash(space, 200, 200);
-}
-
 - (void)update:(ccTime)dt {
     cpSpaceStep(space, dt);
         
@@ -44,6 +61,14 @@ static AppDelegate *app;
         
         if ([sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
             [self removeScab:(ScabChunk *)sprite];
+        } else if (![sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
+            [sprite removeFromParentAndCleanup:YES];
+        }
+    }
+    
+    for (Wound *wound in self.allWounds) {
+        if ((arc4random() % 10) == 5) {
+            [batchNode addChild:[[[IScabSprite alloc] initWithSpace:space location:wound.savedLocation filename:@"blood.png"] autorelease]];
         }
     }    
 }
@@ -64,33 +89,88 @@ static AppDelegate *app;
     drawSpace(space, &options);
 }
 
+- (void)didRotate {
+    if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft)) {
+        space->gravity = ccp(-750, 0);
+    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
+        space->gravity = ccp(750, 0);
+    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait)) {
+        space->gravity = ccp(0, -750);
+    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown)) {
+        space->gravity = ccp(0, 750);
+    }
+
+}
+
 - (id)init {
     if((self=[super init])) {
-        self.isTouchEnabled = YES;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        
-        [self createSpace]; 
-        
-        mouse = cpMouseNew(space);
+        self.isTouchEnabled = YES;
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+        [self createSpace]; 
+        mouse = cpMouseNew(space);
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didRotate)
+                                                     name:UIDeviceOrientationDidChangeNotification object:nil];
+        
+        NSData *mWounds = [defaults objectForKey:@"allWounds"];
+        if (mWounds != nil) {
+            NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mWounds];
+            if (oldSavedArray != nil) {
+                self.allWounds = [[NSMutableArray alloc] init];
+                
+                for (Wound *savedWound in oldSavedArray) {
+                    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", savedWound.scabNo]] autorelease];
+                    [wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];                    
+                    wound.position = savedWound.savedLocation;
+                    wound.rotation = savedWound.rotation;
+                    wound.savedLocation = savedWound.savedLocation;
+                    wound.scabNo = savedWound.scabNo;
+                    
+                    [self.allWounds addObject:wound];
+                }
+            }
+        }
+                
+        NSData *mScabs = [defaults objectForKey:@"allScabs"];
+        if (mScabs != nil) {
+            NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
+            if (oldSavedArray != nil) {
+                self.allScabs = [[NSMutableArray alloc] init];
+                
+                for (ScabChunk *scab in oldSavedArray) {
+                    [self.allScabs addObject:[[[ScabChunk alloc] initWithSpace:space location:scab.savedLocation filename:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease]];
+                    //cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(self.rotation));
+                }
+            }
+        }
+        
         [self updateBackground];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
         [self addChild:batchNode];
 
-        NSLog(@"SCAB COUNT %d", [app.allScabs count]);
-        if (![app.allScabs count]) {
+        if (![self.allScabs count]) {
             [self generateScabs];
+        } else {
+            [self displaySavedBoard];
         }
-                
-        /*
-        [self displayBoard];
-         */
-                        
+                                        
         [self scheduleUpdate];
     }
             
     return self;
+}
+
+- (cpSpace *)createSpace {    
+    space = cpSpaceNew();
+    space->gravity = ccp(0, -750);
+    cpSpaceResizeStaticHash(space, 400, 200);
+    cpSpaceResizeActiveHash(space, 200, 200);
+    space->elasticIterations = 10;
+    
+    return space;
 }
 
 - (void)updateBackground {
@@ -109,25 +189,26 @@ static AppDelegate *app;
     jarIcon.position = ccp(280, 40);
     [self addChild:jarIcon z:1];
     
-    /*
-    CCMenuItem *homeButton = [CCMenuItemImage itemFromNormalImage:@"home-icon.png" selectedImage:@"home-icon.png" target:self selector:@selector(homeTapped:)];
-    homeButton.position = ccp(40, 40);
-    [self addChild:homeButton z:2];*/
+    CCSprite *homeIcon = [CCSprite spriteWithFile:@"home-icon.png"];
+    homeIcon.position = ccp(40, 40);
+    homeFrame = homeIcon.textureRect;
+    [self addChild:homeIcon z:2];
 }
 
-- (void)homeTapped:(CCMenuItem  *)menuItem {  
+- (void)homeTapped {  
     NSLog(@"HOME TAPPED");
+    [app saveState];
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
 
-- (void)displayBoard {
-    for (Wound *wound in [app allWounds]) {
-        [self addChild:wound z:0];            
+- (void)displaySavedBoard {    
+    for (ScabChunk *scab in [self allScabs]) {
+        [batchNode addChild:scab];        
     }
     
-    for (ScabChunk *scab in [app allScabs]) {
-        [self addChild:scab z:1];            
-    }    
+    for (Wound *wound in [self allWounds]) {
+        [self addChild:wound z:-1];        
+    }
 }
 
 - (void)generateScabs {
@@ -164,33 +245,29 @@ static AppDelegate *app;
 
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
     ScabChunk *scab = [[[ScabChunk alloc] initWithSpace:space location:ccp(coordinates.x, coordinates.y) filename:[NSString stringWithFormat:@"scab%d.png", scabIndex]] autorelease]; 
-
-    cpBodySetAngle(scab.body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     
     [scab setScabNo:scabIndex];
     [scab setPriority:priority];
     [scab setHealth:priority * 2];
     
-   // [self clearLowerScabs:scab];    
-    [app.allScabs addObject:scab];
-
-    NSLog(@"ALL SCABS %d", [app.allScabs count]);
+    //[self clearLowerScabs:scab];
+    [self.allScabs addObject:scab];
     
     return scab;
 }
 
 - (void)clearLowerScabs:(ScabChunk *)newScab {
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
-    for (ScabChunk *checkScab in [app allScabs]) {        
-        if (CGRectIntersectsRect([newScab boundingBox], [checkScab boundingBox])) {
-            if (ccpDistance(newScab.position, checkScab.position) < 50.0) {
+    for (ScabChunk *checkScab in [self allScabs]) {  
+        if (cpSpacePointQueryFirst(space, checkScab.savedLocation, GRABABLE_MASK_BIT, 0)) {    
+            //if (ccpDistance(newScab.position, checkScab.position) < 50.0) {
                 [scabsToDelete addObject:checkScab];
-            }
+            //}
         }
     }
     
     for (ScabChunk *deleteScab in scabsToDelete) {
-        [app removeScab:deleteScab initing:YES];
+        [self removeScab:deleteScab initing:YES];
     }
     
     [scabsToDelete release];
@@ -202,6 +279,10 @@ static AppDelegate *app;
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+        
+    if (CGRectContainsPoint(homeFrame, touchLocation)) {
+        [self homeTapped];
+    }
     
     cpShape *shape = cpSpacePointQueryFirst(space, touchLocation, GRABABLE_MASK_BIT, 0);    
     if (shape) {
@@ -275,19 +356,51 @@ static AppDelegate *app;
 }
 
 - (void)removeScab:(ScabChunk *)chunk {
-    NSLog(@"REMOVE");
-    [app removeScab:chunk initing:NO];
+    [self removeScab:chunk initing:NO];
 }
 
-- (void)createWound:(ScabChunk *)scab {
-    app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
-    Wound *wound = [[[Wound alloc] initWithSpace:space location:ccp(scab.position.x, scab.position.y) filename:@"wound0.png"] autorelease];     
-    cpBodySetAngle(wound.body, self.rotation);
+- (void)createWound:(ScabChunk *)scab {    
+    CCParticleMyBlood *particles = [[CCParticleMyBlood alloc] init];
+    particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
+    particles.position = scab.position;
+    [self addChild:particles z:9];
+    particles.autoRemoveOnFinish = YES;
+        
+    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease];
+    [wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];
+    wound.position = scab.savedLocation;
+    wound.rotation = scab.rotation;
+    wound.savedLocation = scab.savedLocation;
     wound.scabNo = scab.scabNo;
     
-    [app.allWounds addObject:wound];
-    [batchNode addChild:wound];        
+    [self.allWounds addObject:wound];
+    [self addChild:wound z:-1];
+}
+
+- (void)removeScab:(ScabChunk *)scab initing:(bool)initing {
+    [self.allScabs removeObject:scab];
+    [scab destroy];
+    
+    if ([self.allScabs count] == 0 && !initing) {
+        [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
+        
+        CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+        title.position =  ccp(-100, 380);
+        [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+        
+        [[[CCDirector sharedDirector] runningScene] addChild:title];
+        
+        for (Wound *wound in [self allWounds]) {
+            [wound destroy];
+        }
+        
+        allWounds = [[NSMutableArray alloc] init];
+    }
+}
+
+- (void)resetBoard {
+    [self updateBackground];
+    [self generateScabs];
 }
 
 - (void)dealloc {

@@ -16,15 +16,10 @@
 	UIWindow			*window;
 	RootViewController	*viewController;
     AVAudioPlayer       *audioPlayer;
-    NSMutableArray *allScabs;
-    NSMutableArray *allWounds;    
 }
 
 - (void)saveState;
-- (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
 
 @property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) NSMutableArray *allScabs;
-@property (nonatomic, retain) NSMutableArray *allWounds;
 
 @end
