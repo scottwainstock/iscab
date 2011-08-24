@@ -5,6 +5,26 @@
 	<key>frames</key>
 	<dict>
 		
+		<key>blood.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {16, 16}}</string>
+			<key>spriteOffset</key>
+			<string>{0, -0}</string>
+			<key>spriteSize</key>
+			<string>{16, 16}</string>
+			<key>spriteSourceSize</key>
+			<string>{16, 16}</string>
+			<key>spriteTrimmed</key>
+			<true/>
+			<key>textureRect</key>
+			<string>{{437, 2}, {16, 16}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		
 		<key>scab0.png</key>
 		<dict>
 			<key>aliases</key>

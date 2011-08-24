@@ -16,19 +16,9 @@
 
 @synthesize priority, health, free, action, scabNo;
 
-struct RAW_CHUNK_DATA {
-    float posX;
-    float posY;
-    int health;
-    int priorty;
-    int scabNo;
-};
-
 - (void)ripOffScab {
     free= YES;
-    
     [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
-     
     [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self];
 }
 

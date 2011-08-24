@@ -11,47 +11,38 @@
 #import "cpShape.h"
 
 #define MASS 0.1
+#define SCAB_COLLISION_TYPE 1
+#define WOUND_COLLISION_TYPE 2
+#define BLOOD_COLLISION_TYPE 3
 
 @implementation IScabSprite
 
 @synthesize savedLocation;
-
-- (void)encodeWithCoder:(NSCoder *)coder {     
-} 
-
-/*
-- (id)initWithCoder:(NSCoder *)coder {
-    //self = [self initWithSpace:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] space] location:ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]) filename:[NSString stringWithFormat:@"scab%d.png", [coder decodeIntForKey:@"scabNo"]]];
-    
-    NSLog(@"LOADED POSITION: %@", NSStringFromCGPoint(self.savedLocation));
-
-    if (self != nil) {
-        self.rotation = [coder decodeFloatForKey:@"rotation"];
-        //cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(self.rotation));
-    }
-    
-    return self; 
-}
- */
 
 - (void)update {
     self.position = body->p;
     self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
 }
 
-- (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts {    
+- (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType {    
     float moment = cpMomentForPoly(MASS, numVerts, verts, CGPointZero);
     body = cpBodyNew(MASS, moment);
     
     body->p = location;
     body->data = self;
+    if (collisionType == BLOOD_COLLISION_TYPE) {
+        cpSpaceAddBody(space, body);
+    }
     
     shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
     shape->e = 0.3; 
     shape->u = 1.0;
+    shape->collision_type = collisionType;
     shape->data = self;
         
-    cpSpaceAddShape(space, shape);
+    if (collisionType != BLOOD_COLLISION_TYPE) {
+        cpSpaceAddShape(space, shape);
+    }
 }
 
 - (void)createBodyAtLocation:(CGPoint)location filename:(NSString *)filename {    
@@ -77,7 +68,7 @@
             cpv(55.0f, -60.0f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:18];
+        [self addBodyWithVerts:verts atLocation:location numVerts:18 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"scab1.png"]) {
         CGPoint verts[] = {
             cpv(-37.0f, -60.0f),
@@ -100,7 +91,7 @@
             cpv(-32.0f, -60.0f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:18];
+        [self addBodyWithVerts:verts atLocation:location numVerts:18 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"scab2.png"]) {
         CGPoint verts[] = {
             cpv(3.5f, -23.0f),
@@ -118,7 +109,7 @@
             cpv(18.5f, -23.0f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:13];
+        [self addBodyWithVerts:verts atLocation:location numVerts:13 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"scab3.png"]) {
         CGPoint verts[] = {
             cpv(-34.5f, -26.5f),
@@ -140,7 +131,7 @@
             cpv(16.5f, -26.5f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:17];
+        [self addBodyWithVerts:verts atLocation:location numVerts:17 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"scab4.png"]) {
         CGPoint verts[] = {
             cpv(48.5f, -66.0f),
@@ -159,7 +150,7 @@
             cpv(74.5f, -66.0f)
         };
 
-        [self addBodyWithVerts:verts atLocation:location numVerts:14];
+        [self addBodyWithVerts:verts atLocation:location numVerts:14 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"wound0.png"]) {
         CGPoint verts[] = {
             cpv(-5.0f, -48.5f),
@@ -204,7 +195,23 @@
             cpv(5.0f, -48.5f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:40];
+        [self addBodyWithVerts:verts atLocation:location numVerts:40 collisionType:WOUND_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"blood.png"]) {
+        CGPoint verts[] = {
+            cpv(-3.0f, -8.0f),
+            cpv(-5.0f, -7.0f),
+            cpv(-7.0f, -5.0f),
+            cpv(-8.0f, -3.0f),
+            cpv(-8.0f, 3.0f),
+            cpv(-4.0f, 7.0f),
+            cpv(3.0f, 7.0f),
+            cpv(7.0f, 3.0f),
+            cpv(7.0f, -4.0f),
+            cpv(4.0f, -7.0f),
+            cpv(2.0f, -8.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:11 collisionType:BLOOD_COLLISION_TYPE];
     }
 }
 
@@ -220,9 +227,22 @@
     return self;
 }
 
+- (id)initWithLocation:(CGPoint)location filename:(NSString *)filename {
+    if ((self = [super initWithSpriteFrameName:filename])) {     
+        self.position = location;
+        savedLocation = location;
+        
+        return self;
+    }
+    
+    return nil;
+}
+
 - (void)destroy {
     NSLog(@"DESTROY");
-    cpSpaceRemoveShape(space, shape);
+    if (shape) {
+        cpSpaceRemoveShape(space, shape);
+    }
     [self removeFromParentAndCleanup:YES];
 }
 
