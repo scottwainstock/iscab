@@ -21,10 +21,20 @@
 
 @implementation GamePlay
 
-@synthesize batchNode, allScabs, allWounds;
+@synthesize batchNode, allScabs, allWounds, allBlood;
 
 AppDelegate *app;
 CGRect homeFrame;
+bool endSequenceRunning;
+
+- (NSMutableArray *)allBlood { 
+    @synchronized(allBlood) {
+        if (allBlood == nil)
+            allBlood = [[NSMutableArray alloc] init];
+        return allScabs;
+    }
+    return nil;
+}
 
 - (NSMutableArray *)allScabs { 
     @synchronized(allScabs) {
@@ -55,22 +65,27 @@ CGRect homeFrame;
 
 - (void)update:(ccTime)dt {
     cpSpaceStep(space, dt);
+    
+    if (!endSequenceRunning) {
+        for (IScabSprite *sprite in batchNode.children) {
+            [sprite update];
+
+            if ([sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
+                [self removeScab:(ScabChunk *)sprite];
+            } else if (![sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
+                [sprite removeFromParentAndCleanup:YES];
+            }            
+        }
         
-    for (IScabSprite *sprite in batchNode.children) {
-        [sprite update];
-        
-        if ([sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
-            [self removeScab:(ScabChunk *)sprite];
-        } else if (![sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
-            [sprite removeFromParentAndCleanup:YES];
+        for (Wound *wound in self.allWounds) {
+            if ((arc4random() % 10) == 5) {
+                IScabSprite *drop = [[[IScabSprite alloc] initWithSpace:space location:wound.savedLocation filename:@"blood.png"] autorelease];
+
+                [allBlood addObject:drop];
+                [batchNode addChild:drop];       
+            }
         }
     }
-    
-    for (Wound *wound in self.allWounds) {
-        if ((arc4random() % 10) == 5) {
-            [batchNode addChild:[[[IScabSprite alloc] initWithSpace:space location:wound.savedLocation filename:@"blood.png"] autorelease]];
-        }
-    }    
 }
 
 + (id)scene {
@@ -106,6 +121,7 @@ CGRect homeFrame;
     if((self=[super init])) {
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
+        endSequenceRunning = false;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
         [self createSpace]; 
@@ -212,7 +228,7 @@ CGRect homeFrame;
 }
 
 - (void)generateScabs {
-    for (int x = 0; x < 2; x++) { 
+    for (int x = 0; x < 40; x++) { 
         int scabIndex = arc4random() % 4;
         
         float startX = arc4random() % 300;
@@ -250,7 +266,7 @@ CGRect homeFrame;
     [scab setPriority:priority];
     [scab setHealth:priority * 2];
     
-    //[self clearLowerScabs:scab];
+    [self clearLowerScabs:scab];
     [self.allScabs addObject:scab];
     
     return scab;
@@ -258,15 +274,14 @@ CGRect homeFrame;
 
 - (void)clearLowerScabs:(ScabChunk *)newScab {
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
-    for (ScabChunk *checkScab in [self allScabs]) {  
-        if (cpSpacePointQueryFirst(space, checkScab.savedLocation, GRABABLE_MASK_BIT, 0)) {    
-            //if (ccpDistance(newScab.position, checkScab.position) < 50.0) {
-                [scabsToDelete addObject:checkScab];
-            //}
+    for (ScabChunk *checkScab in [self allScabs]) {
+        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 50.0) {
+            [scabsToDelete addObject:checkScab];
         }
     }
     
     for (ScabChunk *deleteScab in scabsToDelete) {
+        NSLog(@"REMOVE");
         [self removeScab:deleteScab initing:YES];
     }
     
@@ -381,7 +396,8 @@ CGRect homeFrame;
     [self.allScabs removeObject:scab];
     [scab destroy];
     
-    if ([self.allScabs count] == 0 && !initing) {
+    if (([self.allScabs count] == 0) && !initing) {
+        endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
         CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
@@ -389,18 +405,23 @@ CGRect homeFrame;
         [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         
         [[[CCDirector sharedDirector] runningScene] addChild:title];
-        
-        for (Wound *wound in [self allWounds]) {
-            [wound destroy];
-        }
-        
-        allWounds = [[NSMutableArray alloc] init];
     }
 }
 
 - (void)resetBoard {
+    for (Wound *wound in [self allWounds]) {
+        [wound destroy];
+    }
+    allWounds = [[NSMutableArray alloc] init];
+    
+    for (IScabSprite *drop in [self allBlood]) {
+        [drop removeFromParentAndCleanup:YES];
+    }
+    allBlood = [[NSMutableArray alloc] init];
+    
     [self updateBackground];
     [self generateScabs];
+    endSequenceRunning = false;
 }
 
 - (void)dealloc {

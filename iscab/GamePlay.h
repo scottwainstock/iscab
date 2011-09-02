@@ -19,11 +19,13 @@
     CCSpriteBatchNode *batchNode;
     NSMutableArray *allScabs;
     NSMutableArray *allWounds;
+    NSMutableArray *allBlood;
 }
 
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) NSMutableArray *allScabs;
 @property (nonatomic, retain) NSMutableArray *allWounds;
+@property (nonatomic, retain) NSMutableArray *allBlood;
 
 + (id)scene;
 - (void)removeScab:(ScabChunk *)chunk;
