@@ -78,7 +78,7 @@ bool endSequenceRunning;
         }
         
         for (Wound *wound in self.allWounds) {
-            if ((arc4random() % 10) == 5) {
+            if (((arc4random() % 10) == 5) && wound.bleeding) {
                 IScabSprite *drop = [[[IScabSprite alloc] initWithSpace:space location:wound.savedLocation filename:@"blood.png"] autorelease];
 
                 [allBlood addObject:drop];
@@ -212,7 +212,6 @@ bool endSequenceRunning;
 }
 
 - (void)homeTapped {  
-    NSLog(@"HOME TAPPED");
     [app saveState];
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
@@ -387,6 +386,7 @@ bool endSequenceRunning;
     wound.rotation = scab.rotation;
     wound.savedLocation = scab.savedLocation;
     wound.scabNo = scab.scabNo;
+    wound.bleeding = (arc4random() % 2 == 1) ? TRUE : FALSE; 
     
     [self.allWounds addObject:wound];
     [self addChild:wound z:-1];

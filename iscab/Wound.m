@@ -10,13 +10,14 @@
 
 @implementation Wound
 
-@synthesize scabNo;
+@synthesize scabNo, bleeding;
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeInt:self.position.x forKey:@"xPos"]; 
     [coder encodeInt:self.position.y forKey:@"yPos"]; 
     [coder encodeFloat:self.rotation forKey:@"rotation"];    
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
+    [coder encodeBool:self.bleeding forKey:@"bleeding"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {    
@@ -25,6 +26,7 @@
     if (self != nil) {
         self.savedLocation = ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]);
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
+        self.bleeding = [coder decodeBoolForKey:@"bleeding"];
         self.rotation = [coder decodeFloatForKey:@"rotation"];
     }
     
