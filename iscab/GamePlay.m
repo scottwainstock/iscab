@@ -241,8 +241,9 @@ bool endSequenceRunning;
 }
 
 - (void)generateScabs {
-    for (int x = 0; x < 40; x++) { 
-        int scabIndex = arc4random() % 4;
+    for (int x = 0; x < 50; x++) { 
+        //int scabIndex = arc4random() % 2;
+        int scabIndex = 0;
         
         float startX = arc4random() % 300;
         float startY = (arc4random() % 300) + 100;
@@ -250,26 +251,25 @@ bool endSequenceRunning;
         [batchNode addChild:[self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:1]];        
     }
         
-    /*
-     for (int x = 0; x < 10; x++) {
-     float startX = arc4random() % 300;
-     float startY = (arc4random() % 300) + 100;
-     
-     if (startX < 100) {
-     startX += 50;
-     } else if (startX > 200) {
-     startX -= 50;
-     }
-     
-     if (startY < 100) {
-     startY += 50;
-     } else if (startY > 200) {
-     startY -= 50;
-     }
-     
-     [self createScab:CGPointMake(startX, startY) usingScabImage:@"scab0.png" havingPriority:2];
-     }
-     */
+    for (int x = 0; x < 50; x++) {
+        float startX = arc4random() % 300;
+        float startY = (arc4random() % 300) + 100;
+        int scabIndex = 1;
+         
+        if (startX < 100) {
+             startX += 50;
+        } else if (startX > 200) {
+             startX -= 50;
+        }
+         
+        if (startY < 100) {
+             startY += 50;
+        } else if (startY > 200) {
+             startY -= 50;
+        }
+         
+        [batchNode addChild:[self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:2]];        
+    }
 }
 
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {    
@@ -288,7 +288,7 @@ bool endSequenceRunning;
 - (void)clearLowerScabs:(ScabChunk *)newScab {
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
     for (ScabChunk *checkScab in [self allScabs]) {
-        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 50.0) {
+        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 20.0) {
             [scabsToDelete addObject:checkScab];
         }
     }
@@ -394,12 +394,13 @@ bool endSequenceRunning;
     [self addChild:particles z:9];
     particles.autoRemoveOnFinish = YES;
         
-    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease];
-    [wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];
+    //Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease];
+    //[wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];
+    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"wound0.png", 0]] autorelease];
     wound.position = scab.savedLocation;
     wound.savedLocation = scab.savedLocation;
     wound.scabNo = scab.scabNo;
-    wound.bleeding = (arc4random() % 2 == 1) ? TRUE : FALSE;
+    wound.bleeding = (arc4random() % 10 == 1) ? TRUE : FALSE;
     
     if (wound.bleeding) {
         CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];

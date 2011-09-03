@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E2113481412B55400361F99 /* scab0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E2113461412B55400361F99 /* scab0.png */; };
+		8E2113491412B55400361F99 /* scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E2113471412B55400361F99 /* scab1.png */; };
 		8E429B9114002E6E00895741 /* scabs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E429B8F14002E6E00895741 /* scabs.plist */; };
 		8E429B9214002E6E00895741 /* scabs.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E429B9014002E6E00895741 /* scabs.png */; };
 		8E49336A13F4A1D4009908FD /* icon_retina.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E49336913F4A1D4009908FD /* icon_retina.png */; };
@@ -47,11 +49,6 @@
 		8EB71ACC13F399F600072593 /* scabcomplete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB213F399F600072593 /* scabcomplete.wav */; };
 		8EB71ACD13F399F600072593 /* button.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB313F399F600072593 /* button.wav */; };
 		8EB71ACE13F399F600072593 /* wound0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB413F399F600072593 /* wound0.png */; };
-		8EB71AD013F399F600072593 /* scab4.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB613F399F600072593 /* scab4.png */; };
-		8EB71AD113F399F600072593 /* scab3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB713F399F600072593 /* scab3.png */; };
-		8EB71AD213F399F600072593 /* scab2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB813F399F600072593 /* scab2.png */; };
-		8EB71AD313F399F600072593 /* scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AB913F399F600072593 /* scab1.png */; };
-		8EB71AD413F399F600072593 /* scab0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71ABA13F399F600072593 /* scab0.png */; };
 		8EB71AD513F399F600072593 /* menu-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71ABB13F399F600072593 /* menu-background.png */; };
 		8EB71AD613F399F600072593 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71ABC13F399F600072593 /* logo.png */; };
 		8EB71AD713F399F600072593 /* label5.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71ABD13F399F600072593 /* label5.png */; };
@@ -75,7 +72,6 @@
 		8ECA192513F397AC006597EA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ECA192413F397AC006597EA /* CoreGraphics.framework */; };
 		8ECA192B13F397AC006597EA /* fps_images.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ECA192A13F397AC006597EA /* fps_images.png */; };
 		8ECA193713F397AC006597EA /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ECA193613F397AC006597EA /* Icon@2x.png */; };
-		8ECA193A13F397AC006597EA /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 8ECA193913F397AC006597EA /* iTunesArtwork */; };
 		8ECA193F13F397AC006597EA /* CCAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA193E13F397AC006597EA /* CCAction.m */; };
 		8ECA194213F397AC006597EA /* CCActionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA194113F397AC006597EA /* CCActionCamera.m */; };
 		8ECA194513F397AC006597EA /* CCActionEase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA194413F397AC006597EA /* CCActionEase.m */; };
@@ -199,10 +195,11 @@
 		8ECA1AD313F397AF006597EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD213F397AF006597EA /* main.m */; };
 		8ECA1AD613F397AF006597EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD513F397AF006597EA /* AppDelegate.m */; };
 		8ECA1AD913F397AF006597EA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD813F397AF006597EA /* RootViewController.m */; };
-		8ECA1ADF13F397AF006597EA /* grossini_dance_atlas.png in Resources */ = {isa = PBXBuildFile; fileRef = 8ECA1ADE13F397AF006597EA /* grossini_dance_atlas.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E2113461412B55400361F99 /* scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab0.png; path = Resources/scab0.png; sourceTree = "<group>"; };
+		8E2113471412B55400361F99 /* scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab1.png; path = Resources/scab1.png; sourceTree = "<group>"; };
 		8E429B8F14002E6E00895741 /* scabs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scabs.plist; sourceTree = "<group>"; };
 		8E429B9014002E6E00895741 /* scabs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scabs.png; sourceTree = "<group>"; };
 		8E49336913F4A1D4009908FD /* icon_retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_retina.png; path = ./Resources/icon_retina.png; sourceTree = "<group>"; };
@@ -257,11 +254,6 @@
 		8EB71AB213F399F600072593 /* scabcomplete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = scabcomplete.wav; path = Resources/scabcomplete.wav; sourceTree = "<group>"; };
 		8EB71AB313F399F600072593 /* button.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = button.wav; path = Resources/button.wav; sourceTree = "<group>"; };
 		8EB71AB413F399F600072593 /* wound0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = wound0.png; path = Resources/wound0.png; sourceTree = "<group>"; };
-		8EB71AB613F399F600072593 /* scab4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab4.png; path = Resources/scab4.png; sourceTree = "<group>"; };
-		8EB71AB713F399F600072593 /* scab3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab3.png; path = Resources/scab3.png; sourceTree = "<group>"; };
-		8EB71AB813F399F600072593 /* scab2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab2.png; path = Resources/scab2.png; sourceTree = "<group>"; };
-		8EB71AB913F399F600072593 /* scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab1.png; path = Resources/scab1.png; sourceTree = "<group>"; };
-		8EB71ABA13F399F600072593 /* scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scab0.png; path = Resources/scab0.png; sourceTree = "<group>"; };
 		8EB71ABB13F399F600072593 /* menu-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu-background.png"; path = "Resources/menu-background.png"; sourceTree = "<group>"; };
 		8EB71ABC13F399F600072593 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = Resources/logo.png; sourceTree = "<group>"; };
 		8EB71ABD13F399F600072593 /* label5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = label5.png; path = Resources/label5.png; sourceTree = "<group>"; };
@@ -288,7 +280,6 @@
 		8ECA192A13F397AC006597EA /* fps_images.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fps_images.png; path = Resources/fps_images.png; sourceTree = "<group>"; };
 		8ECA193613F397AC006597EA /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		8ECA193813F397AC006597EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = "<group>"; };
-		8ECA193913F397AC006597EA /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Resources/iTunesArtwork; sourceTree = "<group>"; };
 		8ECA193D13F397AC006597EA /* CCAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCAction.h; path = libs/cocos2d/CCAction.h; sourceTree = "<group>"; };
 		8ECA193E13F397AC006597EA /* CCAction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CCAction.m; path = libs/cocos2d/CCAction.m; sourceTree = "<group>"; };
 		8ECA194013F397AC006597EA /* CCActionCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCActionCamera.h; path = libs/cocos2d/CCActionCamera.h; sourceTree = "<group>"; };
@@ -563,7 +554,6 @@
 		8ECA1AD713F397AF006597EA /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		8ECA1AD813F397AF006597EA /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		8ECA1ADD13F397AF006597EA /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
-		8ECA1ADE13F397AF006597EA /* grossini_dance_atlas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grossini_dance_atlas.png; path = Resources/grossini_dance_atlas.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -674,9 +664,11 @@
 		8ECA192713F397AC006597EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8E64898B14108AF400308537 /* blood_streak.png */,
+				8E2113461412B55400361F99 /* scab0.png */,
+				8E2113471412B55400361F99 /* scab1.png */,
 				8E429B8E14002E5700895741 /* spritesheets */,
 				8E49338D13F4B36B009908FD /* Icon.png */,
+				8E64898B14108AF400308537 /* blood_streak.png */,
 				8E49338713F4AFDD009908FD /* Scratch0.m4a */,
 				8E49338813F4AFDE009908FD /* Scratch1.m4a */,
 				8E49338913F4AFDF009908FD /* Scratch2.m4a */,
@@ -698,11 +690,6 @@
 				8EB71AB213F399F600072593 /* scabcomplete.wav */,
 				8EB71AB313F399F600072593 /* button.wav */,
 				8EB71AB413F399F600072593 /* wound0.png */,
-				8EB71AB613F399F600072593 /* scab4.png */,
-				8EB71AB713F399F600072593 /* scab3.png */,
-				8EB71AB813F399F600072593 /* scab2.png */,
-				8EB71AB913F399F600072593 /* scab1.png */,
-				8EB71ABA13F399F600072593 /* scab0.png */,
 				8EB71ABB13F399F600072593 /* menu-background.png */,
 				8EB71ABC13F399F600072593 /* logo.png */,
 				8EB71ABD13F399F600072593 /* label5.png */,
@@ -719,8 +706,6 @@
 				8ECA192A13F397AC006597EA /* fps_images.png */,
 				8ECA193613F397AC006597EA /* Icon@2x.png */,
 				8ECA193813F397AC006597EA /* Info.plist */,
-				8ECA193913F397AC006597EA /* iTunesArtwork */,
-				8ECA1ADE13F397AF006597EA /* grossini_dance_atlas.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1193,8 +1178,6 @@
 			files = (
 				8ECA192B13F397AC006597EA /* fps_images.png in Resources */,
 				8ECA193713F397AC006597EA /* Icon@2x.png in Resources */,
-				8ECA193A13F397AC006597EA /* iTunesArtwork in Resources */,
-				8ECA1ADF13F397AF006597EA /* grossini_dance_atlas.png in Resources */,
 				8EB71AC813F399F600072593 /* drew.ttf in Resources */,
 				8EB71AC913F399F600072593 /* startup.wav in Resources */,
 				8EB71ACA13F399F600072593 /* scabrip.wav in Resources */,
@@ -1202,11 +1185,6 @@
 				8EB71ACC13F399F600072593 /* scabcomplete.wav in Resources */,
 				8EB71ACD13F399F600072593 /* button.wav in Resources */,
 				8EB71ACE13F399F600072593 /* wound0.png in Resources */,
-				8EB71AD013F399F600072593 /* scab4.png in Resources */,
-				8EB71AD113F399F600072593 /* scab3.png in Resources */,
-				8EB71AD213F399F600072593 /* scab2.png in Resources */,
-				8EB71AD313F399F600072593 /* scab1.png in Resources */,
-				8EB71AD413F399F600072593 /* scab0.png in Resources */,
 				8EB71AD513F399F600072593 /* menu-background.png in Resources */,
 				8EB71AD613F399F600072593 /* logo.png in Resources */,
 				8EB71AD713F399F600072593 /* label5.png in Resources */,
@@ -1238,6 +1216,8 @@
 				8E429B9114002E6E00895741 /* scabs.plist in Resources */,
 				8E429B9214002E6E00895741 /* scabs.png in Resources */,
 				8E64898C14108AF400308537 /* blood_streak.png in Resources */,
+				8E2113481412B55400361F99 /* scab0.png in Resources */,
+				8E2113491412B55400361F99 /* scab1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
