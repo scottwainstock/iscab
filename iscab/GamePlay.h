@@ -20,8 +20,10 @@
     NSMutableArray *allScabs;
     NSMutableArray *allWounds;
     NSMutableArray *allBlood;
+    cpVect gravity;
 }
 
+@property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) NSMutableArray *allScabs;
 @property (nonatomic, retain) NSMutableArray *allWounds;

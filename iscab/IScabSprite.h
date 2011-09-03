@@ -11,11 +11,12 @@
 #import "chipmunk.h"
 
 @interface IScabSprite : CCSprite {
-    cpBody *body;
     cpShape *shape;
-    cpSpace *space;
-    
+    cpSpace *space;    
     CGPoint savedLocation;
+    
+    @public
+        cpBody *body;
 }
 
 @property (nonatomic, assign) CGPoint savedLocation;

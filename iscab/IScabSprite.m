@@ -30,9 +30,9 @@
     
     body->p = location;
     body->data = self;
-    if (collisionType == BLOOD_COLLISION_TYPE) {
-        cpSpaceAddBody(space, body);
-    }
+   // if (collisionType == BLOOD_COLLISION_TYPE) {
+   //     cpSpaceAddBody(space, body);
+   // }
     
     shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
     shape->e = 0.3; 

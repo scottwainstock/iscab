@@ -25,6 +25,7 @@
 		8E49338B13F4AFE2009908FD /* Scratch1.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8E49338813F4AFDE009908FD /* Scratch1.m4a */; };
 		8E49338C13F4AFE2009908FD /* Scratch2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 8E49338913F4AFDF009908FD /* Scratch2.m4a */; };
 		8E49338E13F4B36C009908FD /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E49338D13F4B36B009908FD /* Icon.png */; };
+		8E64898C14108AF400308537 /* blood_streak.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E64898B14108AF400308537 /* blood_streak.png */; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -220,6 +221,7 @@
 		8E49338813F4AFDE009908FD /* Scratch1.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Scratch1.m4a; sourceTree = "<group>"; };
 		8E49338913F4AFDF009908FD /* Scratch2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Scratch2.m4a; sourceTree = "<group>"; };
 		8E49338D13F4B36B009908FD /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		8E64898B14108AF400308537 /* blood_streak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blood_streak.png; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
@@ -672,6 +674,7 @@
 		8ECA192713F397AC006597EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8E64898B14108AF400308537 /* blood_streak.png */,
 				8E429B8E14002E5700895741 /* spritesheets */,
 				8E49338D13F4B36B009908FD /* Icon.png */,
 				8E49338713F4AFDD009908FD /* Scratch0.m4a */,
@@ -1234,6 +1237,7 @@
 				8E49338E13F4B36C009908FD /* Icon.png in Resources */,
 				8E429B9114002E6E00895741 /* scabs.plist in Resources */,
 				8E429B9214002E6E00895741 /* scabs.png in Resources */,
+				8E64898C14108AF400308537 /* blood_streak.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

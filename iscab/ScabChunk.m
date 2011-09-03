@@ -25,7 +25,6 @@
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeInt:self.position.x forKey:@"xPos"]; 
     [coder encodeInt:self.position.y forKey:@"yPos"]; 
-    [coder encodeFloat:self.rotation forKey:@"rotation"];    
     [coder encodeInt:self.health forKey:@"health"];
     [coder encodeInt:self.priority forKey:@"priority"];
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
@@ -39,7 +38,6 @@
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
         self.health = [coder decodeIntForKey:@"health"];
         self.priority = [coder decodeIntForKey:@"priority"];
-        self.rotation = [coder decodeFloatForKey:@"rotation"];
     }
     
     return self; 
