@@ -409,7 +409,7 @@ bool endSequenceRunning;
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean {    
     [self splatterBlood:scab];
     
-    bool bleeding = (!clean && (arc4random() % 10 == 1)) ? TRUE : FALSE;
+    bool bleeding = (!clean && (arc4random() % 2 == 1)) ? TRUE : FALSE;
     NSString *woundType;
     if (clean) {
         woundType = @"clean_skin0.png";
@@ -427,11 +427,15 @@ bool endSequenceRunning;
     wound.bleeding = bleeding;
     
     if (wound.bleeding) {
-        CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
-        
-        streak.position = wound.savedLocation;
-        [self addChild:streak];
-        [allBlood addObject:streak];
+        for (Wound *savedWound in self.allWounds) {
+            if (savedWound.bleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 40.0)) {
+                CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
+            
+                streak.position = wound.savedLocation;
+                [self addChild:streak];
+                [allBlood addObject:streak];
+            }
+        }
     }
     
     [self.allWounds addObject:wound];
