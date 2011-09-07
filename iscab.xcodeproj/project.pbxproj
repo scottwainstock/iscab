@@ -195,6 +195,8 @@
 		8ECA1AD313F397AF006597EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD213F397AF006597EA /* main.m */; };
 		8ECA1AD613F397AF006597EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD513F397AF006597EA /* AppDelegate.m */; };
 		8ECA1AD913F397AF006597EA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD813F397AF006597EA /* RootViewController.m */; };
+		8EEA626B141707ED000AFC33 /* clean_skin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EEA626A141707ED000AFC33 /* clean_skin0.png */; };
+		8EEA626E14170C70000AFC33 /* bloody_skin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EEA626D14170C70000AFC33 /* bloody_skin0.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -554,6 +556,8 @@
 		8ECA1AD713F397AF006597EA /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		8ECA1AD813F397AF006597EA /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		8ECA1ADD13F397AF006597EA /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		8EEA626A141707ED000AFC33 /* clean_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clean_skin0.png; path = Resources/clean_skin0.png; sourceTree = "<group>"; };
+		8EEA626D14170C70000AFC33 /* bloody_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bloody_skin0.png; path = Resources/bloody_skin0.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -664,6 +668,8 @@
 		8ECA192713F397AC006597EA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8EEA626D14170C70000AFC33 /* bloody_skin0.png */,
+				8EEA626A141707ED000AFC33 /* clean_skin0.png */,
 				8E2113461412B55400361F99 /* scab0.png */,
 				8E2113471412B55400361F99 /* scab1.png */,
 				8E429B8E14002E5700895741 /* spritesheets */,
@@ -1218,6 +1224,8 @@
 				8E64898C14108AF400308537 /* blood_streak.png in Resources */,
 				8E2113481412B55400361F99 /* scab0.png in Resources */,
 				8E2113491412B55400361F99 /* scab1.png in Resources */,
+				8EEA626B141707ED000AFC33 /* clean_skin0.png in Resources */,
+				8EEA626E14170C70000AFC33 /* bloody_skin0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

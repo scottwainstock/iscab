@@ -19,7 +19,13 @@
 - (void)ripOffScab {
     free= YES;
     [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
-    [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self];
+    
+    NSLog(@"LOCALE %@", NSStringFromCGPoint(self.savedLocation));
+    if (ccpDistance(self.savedLocation, ccp(230, 160)) < 150.0) {
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:NO];
+    } else {
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:YES];
+    }
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {

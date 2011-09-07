@@ -13,8 +13,10 @@
 @interface Wound : IScabSprite <NSCoding> {
     int scabNo;
     bool bleeding;
+    bool clean;
 }
 
+@property (nonatomic, assign) bool clean;
 @property (nonatomic, assign) bool bleeding;
 @property (nonatomic, assign) int scabNo;
 

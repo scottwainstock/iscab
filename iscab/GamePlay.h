@@ -33,7 +33,7 @@
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
-- (void)createWound:(ScabChunk *)scab;
+- (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
 - (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
 - (void)displaySavedBoard;

@@ -179,6 +179,76 @@
         };
         
         [self addBodyWithVerts:verts atLocation:location numVerts:11 collisionType:BLOOD_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"clean_skin0.png"]) {
+        CGPoint verts[] = {
+            cpv(-4.0f, -25.0f),
+            cpv(-8.0f, -24.0f),
+            cpv(-12.0f, -22.0f),
+            cpv(-15.0f, -20.0f),
+            cpv(-19.0f, -16.0f),
+            cpv(-21.0f, -13.0f),
+            cpv(-22.0f, -11.0f),
+            cpv(-24.0f, -4.0f),
+            cpv(-24.0f, 2.0f),
+            cpv(-22.0f, 9.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-13.0f, 19.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-2.0f, 23.0f),
+            cpv(1.0f, 23.0f),
+            cpv(6.0f, 22.0f),
+            cpv(9.0f, 21.0f),
+            cpv(13.0f, 19.0f),
+            cpv(19.0f, 13.0f),
+            cpv(21.0f, 10.0f),
+            cpv(22.0f, 8.0f),
+            cpv(23.0f, 5.0f),
+            cpv(23.0f, -7.0f),
+            cpv(22.0f, -10.0f),
+            cpv(20.0f, -14.0f),
+            cpv(17.0f, -18.0f),
+            cpv(16.0f, -19.0f),
+            cpv(10.0f, -23.0f),
+            cpv(3.0f, -25.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:30 collisionType:WOUND_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"bloody_skin0.png"]) {
+        CGPoint verts[] = {
+            cpv(-2.0f, -25.0f),
+            cpv(-7.0f, -24.0f),
+            cpv(-10.0f, -23.0f),
+            cpv(-16.0f, -19.0f),
+            cpv(-18.0f, -17.0f),
+            cpv(-20.0f, -14.0f),
+            cpv(-23.0f, -8.0f),
+            cpv(-24.0f, -3.0f),
+            cpv(-24.0f, 1.0f),
+            cpv(-23.0f, 6.0f),
+            cpv(-20.0f, 12.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-10.0f, 21.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-2.0f, 23.0f),
+            cpv(2.0f, 23.0f),
+            cpv(7.0f, 22.0f),
+            cpv(13.0f, 19.0f),
+            cpv(20.0f, 12.0f),
+            cpv(22.0f, 8.0f),
+            cpv(23.0f, 5.0f),
+            cpv(24.0f, 0.0f),
+            cpv(24.0f, -2.0f),
+            cpv(23.0f, -7.0f),
+            cpv(22.0f, -10.0f),
+            cpv(20.0f, -14.0f),
+            cpv(13.0f, -21.0f),
+            cpv(7.0f, -24.0f),
+            cpv(2.0f, -25.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:30 collisionType:WOUND_COLLISION_TYPE];
     }
 }
 

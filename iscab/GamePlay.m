@@ -152,11 +152,21 @@ bool endSequenceRunning;
                 self.allWounds = [[NSMutableArray alloc] init];
                 
                 for (Wound *savedWound in oldSavedArray) {
-                    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", savedWound.scabNo]] autorelease];
-                    [wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];                    
+                    
+                    NSString *woundType;
+                    if (savedWound.clean) {
+                        woundType = @"clean_skin0.png";
+                    } else if (!savedWound.clean && savedWound.bleeding) {
+                        woundType = @"bloody_skin0.png";
+                    } else {
+                        woundType = @"wound0.png";
+                    }
+
+                    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
                     wound.position = savedWound.savedLocation;
                     wound.savedLocation = savedWound.savedLocation;
                     wound.scabNo = savedWound.scabNo;
+                    wound.clean = savedWound.clean;
                     wound.bleeding = savedWound.bleeding;
                     
                     [self.allWounds addObject:wound];
@@ -387,23 +397,37 @@ bool endSequenceRunning;
     [self removeScab:chunk initing:NO];
 }
 
-- (void)createWound:(ScabChunk *)scab {    
+
+- (void)splatterBlood:(ScabChunk *)scab {
     CCParticleMyBlood *particles = [[CCParticleMyBlood alloc] init];
     particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
     particles.position = scab.position;
     [self addChild:particles z:9];
-    particles.autoRemoveOnFinish = YES;
-        
-    //Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", scab.scabNo]] autorelease];
-    //[wound setTexture:[[CCTexture2D alloc] initWithImage:[UIImage imageNamed:@"wound0.png"]]];
-    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"wound0.png", 0]] autorelease];
+    particles.autoRemoveOnFinish = YES; 
+}
+
+- (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean {    
+    [self splatterBlood:scab];
+    
+    bool bleeding = (!clean && (arc4random() % 10 == 1)) ? TRUE : FALSE;
+    NSString *woundType;
+    if (clean) {
+        woundType = @"clean_skin0.png";
+    } else if (!clean && bleeding) {
+        woundType = @"bloody_skin0.png";
+    } else {
+        woundType = @"wound0.png";
+    }
+
+    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
     wound.position = scab.savedLocation;
     wound.savedLocation = scab.savedLocation;
     wound.scabNo = scab.scabNo;
-    wound.bleeding = (arc4random() % 10 == 1) ? TRUE : FALSE;
+    wound.clean = clean;
+    wound.bleeding = bleeding;
     
     if (wound.bleeding) {
-        CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
+        CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
         
         streak.position = wound.savedLocation;
         [self addChild:streak];
@@ -440,7 +464,7 @@ bool endSequenceRunning;
         [streak removeFromParentAndCleanup:YES];
     }
     allBlood = [[NSMutableArray alloc] init];
-    
+        
     [self updateBackground];
     [self generateScabs];
     endSequenceRunning = false;
