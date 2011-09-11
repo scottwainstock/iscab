@@ -30,6 +30,8 @@
 @property (nonatomic, retain) NSMutableArray *allBlood;
 
 + (id)scene;
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding;
+
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;

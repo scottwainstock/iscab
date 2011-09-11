@@ -11,7 +11,7 @@
 #import "cpShape.h"
 
 #define MASS 0.1
-#define SCAB_COLLISION_TYPE 1
+#define SCAB_COLLISION_TYPE  1
 #define WOUND_COLLISION_TYPE 2
 #define BLOOD_COLLISION_TYPE 3
 
@@ -257,8 +257,6 @@
         space = theSpace;
         savedLocation = location;
         [self createBodyAtLocation:savedLocation filename:(NSString *)filename];  
-
-        cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     }
         
     return self;
@@ -276,7 +274,7 @@
 }
 
 - (void)destroy {
-    NSLog(@"DESTROY");
+   // NSLog(@"DESTROY");
     if (shape) {
         cpSpaceRemoveShape(space, shape);
     }

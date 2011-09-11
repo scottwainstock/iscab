@@ -14,14 +14,14 @@
 
 @implementation ScabChunk
 
-@synthesize priority, health, free, action, scabNo;
+@synthesize priority, health, action, scabNo;
 
 - (void)ripOffScab {
-    free= YES;
-    [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
+    //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
     
-    NSLog(@"LOCALE %@", NSStringFromCGPoint(self.savedLocation));
-    if (ccpDistance(self.savedLocation, ccp(230, 160)) < 150.0) {
+    CGRect screenRect =[[UIScreen mainScreen] bounds];
+    
+    if (ccpDistance(self.savedLocation, ccp(screenRect.size.width / 2, screenRect.size.height / 2)) < 75.0) {
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:NO];
     } else {
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:YES];
