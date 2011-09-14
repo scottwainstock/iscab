@@ -49,7 +49,6 @@
 		8E6A6DBE141F062700921E7E /* scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D94141F062700921E7E /* scab1.png */; };
 		8E6A6DBF141F062700921E7E /* wound0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D95141F062700921E7E /* wound0.png */; };
 		8E6A6DC0141F062700921E7E /* scabs.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D97141F062700921E7E /* scabs.png */; };
-		8E6A6DC1141F062700921E7E /* scabs.tmx in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D98141F062700921E7E /* scabs.tmx */; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -243,8 +242,6 @@
 		8E6A6D93141F062700921E7E /* scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab0.png; sourceTree = "<group>"; };
 		8E6A6D94141F062700921E7E /* scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab1.png; sourceTree = "<group>"; };
 		8E6A6D95141F062700921E7E /* wound0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wound0.png; sourceTree = "<group>"; };
-		8E6A6D97141F062700921E7E /* scabs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scabs.png; sourceTree = "<group>"; };
-		8E6A6D98141F062700921E7E /* scabs.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scabs.tmx; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
@@ -666,16 +663,6 @@
 			path = Resources/Sprites;
 			sourceTree = "<group>";
 		};
-		8E6A6D96141F062700921E7E /* Tiles */ = {
-			isa = PBXGroup;
-			children = (
-				8E6A6D97141F062700921E7E /* scabs.png */,
-				8E6A6D98141F062700921E7E /* scabs.tmx */,
-			);
-			name = Tiles;
-			path = Resources/Tiles;
-			sourceTree = "<group>";
-		};
 		8ECA190713F397AC006597EA = {
 			isa = PBXGroup;
 			children = (
@@ -770,7 +757,6 @@
 				8E6A6D7D141F062700921E7E /* Labels */,
 				8E6A6D85141F062700921E7E /* Sound */,
 				8E6A6D8E141F062700921E7E /* Sprites */,
-				8E6A6D96141F062700921E7E /* Tiles */,
 				8E429B8E14002E5700895741 /* spritesheets */,
 			);
 			name = Resources;
@@ -1287,7 +1273,6 @@
 				8E6A6DBE141F062700921E7E /* scab1.png in Resources */,
 				8E6A6DBF141F062700921E7E /* wound0.png in Resources */,
 				8E6A6DC0141F062700921E7E /* scabs.png in Resources */,
-				8E6A6DC1141F062700921E7E /* scabs.tmx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
