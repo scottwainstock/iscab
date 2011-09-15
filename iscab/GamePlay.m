@@ -444,8 +444,8 @@ bool endSequenceRunning;
 
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean {    
     [self splatterBlood:scab];
-    
-    bool bleeding = (!clean && (arc4random() % 2 == 1)) ? TRUE : FALSE;
+            
+    bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfScab, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
     NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding];
     
     Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
