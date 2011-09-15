@@ -18,10 +18,8 @@
 
 - (void)ripOffScab {
     //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
-    
-    CGRect screenRect =[[UIScreen mainScreen] bounds];
-    
-    if (ccpDistance(self.savedLocation, ccp(screenRect.size.width / 2, screenRect.size.height / 2)) < 75.0) {
+        
+    if (ccpDistance(self.savedLocation, [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] centerOfScab]) < 75.0) {
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:NO];
     } else {
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:YES];

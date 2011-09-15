@@ -21,7 +21,7 @@
 
 @implementation GamePlay
 
-@synthesize batchNode, allScabs, allWounds, allBlood, gravity;
+@synthesize batchNode, allScabs, allWounds, allBlood, gravity, centerOfScab;
 
 AppDelegate *app;
 CGRect homeFrame;
@@ -181,10 +181,24 @@ bool endSequenceRunning;
             [self displaySavedBoard];
         }
     
-        [self scheduleUpdate];                
+        [self scheduleUpdate];
+        centerOfScab = [self getCenterOfScab];
+        
+        NSLog(@"CENTER %@", NSStringFromCGPoint(centerOfScab));
     }
             
     return self;
+}
+
+- (CGPoint)getCenterOfScab {
+    int x = 0;
+    int y = 0;
+    for (ScabChunk *scab in self.allScabs) {
+        x += scab.savedLocation.x;
+        y += scab.savedLocation.y;
+    }
+    
+    return CGPointMake(x / [self.allScabs count], y / [self.allScabs count]);
 }
 
 - (cpSpace *)createSpace {    
@@ -296,6 +310,8 @@ bool endSequenceRunning;
     if (CGRectContainsPoint(homeFrame, touchLocation)) {
         [self homeTapped];
     }
+    
+    NSLog(@"TOUCHED %@", NSStringFromCGPoint(touchLocation));
     
     for (ScabChunk *scabChunk in self.allScabs) {
         if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
@@ -489,7 +505,8 @@ bool endSequenceRunning;
 }
 
 - (void)dealloc {
-    [super dealloc];/*
+    [super dealloc];
+    /*
     cpMouseFree(mouse);
     cpSpaceFree(space);
     [batchNode release];

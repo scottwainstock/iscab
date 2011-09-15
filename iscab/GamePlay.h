@@ -21,8 +21,10 @@
     NSMutableArray *allWounds;
     NSMutableArray *allBlood;
     cpVect gravity;
+    CGPoint centerOfScab;
 }
 
+@property (nonatomic) CGPoint centerOfScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) NSMutableArray *allScabs;
@@ -32,6 +34,7 @@
 + (id)scene;
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding;
 
+- (CGPoint)getCenterOfScab;
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
