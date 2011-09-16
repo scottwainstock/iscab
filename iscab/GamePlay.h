@@ -19,18 +19,27 @@
     CCSpriteBatchNode *batchNode;
     NSMutableArray *allScabs;
     NSMutableArray *allWounds;
+    NSMutableArray *allBlood;
+    cpVect gravity;
+    CGPoint centerOfScab;
 }
 
+@property (nonatomic) CGPoint centerOfScab;
+@property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) NSMutableArray *allScabs;
 @property (nonatomic, retain) NSMutableArray *allWounds;
+@property (nonatomic, retain) NSMutableArray *allBlood;
 
 + (id)scene;
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
+
+- (CGPoint)getCenterOfScab;
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
-- (void)createWound:(ScabChunk *)scab;
-- (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority;
+- (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
+- (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
 - (void)displaySavedBoard;
 - (void)updateBackground;

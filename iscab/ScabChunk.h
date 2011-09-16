@@ -15,8 +15,9 @@
     int health;
     int scabNo;
 
-    BOOL free;
     id action;
+    
+    NSString *type;
 }
 
 - (void)ripOffScab;
@@ -24,7 +25,8 @@
 @property (nonatomic, assign) int scabNo;
 @property (assign) int priority;
 @property (assign) int health;
-@property (assign) BOOL free;
 @property (nonatomic, assign) id action;
+
+@property (nonatomic, assign) NSString *type;
 
 @end

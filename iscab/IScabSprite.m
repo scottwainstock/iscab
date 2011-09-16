@@ -11,7 +11,7 @@
 #import "cpShape.h"
 
 #define MASS 0.1
-#define SCAB_COLLISION_TYPE 1
+#define SCAB_COLLISION_TYPE  1
 #define WOUND_COLLISION_TYPE 2
 #define BLOOD_COLLISION_TYPE 3
 
@@ -30,9 +30,9 @@
     
     body->p = location;
     body->data = self;
-    if (collisionType == BLOOD_COLLISION_TYPE) {
-        cpSpaceAddBody(space, body);
-    }
+   // if (collisionType == BLOOD_COLLISION_TYPE) {
+   //     cpSpaceAddBody(space, body);
+   // }
     
     shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
     shape->e = 0.3; 
@@ -48,109 +48,76 @@
 - (void)createBodyAtLocation:(CGPoint)location filename:(NSString *)filename {    
     if ([filename isEqualToString:@"scab0.png"]) {
         CGPoint verts[] = {
-            cpv(44.0f, -60.0f),
-            cpv(-18.0f, -50.0f),
-            cpv(-70.0f, -19.0f),
-            cpv(-74.0f, -15.0f),
-            cpv(-75.0f, -12.0f),
-            cpv(-75.0f, 10.0f),
-            cpv(-74.0f, 16.0f),
-            cpv(-35.0f, 59.0f),
-            cpv(45.0f, 54.0f),
-            cpv(53.0f, 51.0f),
-            cpv(56.0f, 49.0f),
-            cpv(59.0f, 46.0f),
-            cpv(63.0f, 33.0f),
-            cpv(74.0f, -30.0f),
-            cpv(74.0f, -43.0f),
-            cpv(72.0f, -47.0f),
-            cpv(71.0f, -48.0f),
-            cpv(55.0f, -60.0f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:18 collisionType:SCAB_COLLISION_TYPE];
-    } else if ([filename isEqualToString:@"scab1.png"]) {
-        CGPoint verts[] = {
-            cpv(-37.0f, -60.0f),
-            cpv(-39.0f, -59.0f),
-            cpv(-40.0f, -58.0f),
-            cpv(-42.0f, -55.0f),
-            cpv(-63.0f, 34.0f),
-            cpv(-62.0f, 35.0f),
-            cpv(-56.0f, 40.0f),
-            cpv(18.0f, 59.0f),
-            cpv(30.0f, 59.0f),
-            cpv(41.0f, 48.0f),
-            cpv(63.0f, -10.0f),
-            cpv(63.0f, -24.0f),
-            cpv(62.0f, -33.0f),
-            cpv(56.0f, -46.0f),
-            cpv(54.0f, -49.0f),
-            cpv(50.0f, -53.0f),
-            cpv(47.0f, -54.0f),
-            cpv(-32.0f, -60.0f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:18 collisionType:SCAB_COLLISION_TYPE];
-    } else if ([filename isEqualToString:@"scab2.png"]) {
-        CGPoint verts[] = {
-            cpv(3.5f, -23.0f),
-            cpv(-37.5f, -21.0f),
-            cpv(-37.5f, -20.0f),
-            cpv(-36.5f, -18.0f),
-            cpv(-10.5f, 20.0f),
-            cpv(-8.5f, 22.0f),
-            cpv(-2.5f, 22.0f),
-            cpv(-0.5f, 21.0f),
-            cpv(2.5f, 19.0f),
-            cpv(35.5f, -10.0f),
-            cpv(36.5f, -12.0f),
-            cpv(36.5f, -14.0f),
-            cpv(18.5f, -23.0f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:13 collisionType:SCAB_COLLISION_TYPE];
-    } else if ([filename isEqualToString:@"scab3.png"]) {
-        CGPoint verts[] = {
-            cpv(-34.5f, -26.5f),
-            cpv(-37.5f, -24.5f),
-            cpv(-38.5f, -23.5f),
-            cpv(-43.5f, -16.5f),
-            cpv(-43.5f, -13.5f),
-            cpv(-37.5f, 14.5f),
-            cpv(-36.5f, 15.5f),
-            cpv(-7.5f, 24.5f),
-            cpv(0.5f, 25.5f),
-            cpv(36.5f, 23.5f),
-            cpv(39.5f, 20.5f),
-            cpv(42.5f, 13.5f),
-            cpv(42.5f, -6.5f),
-            cpv(40.5f, -12.5f),
-            cpv(38.5f, -16.5f),
-            cpv(34.5f, -20.5f),
-            cpv(16.5f, -26.5f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:17 collisionType:SCAB_COLLISION_TYPE];
-    } else if ([filename isEqualToString:@"scab4.png"]) {
-        CGPoint verts[] = {
-            cpv(48.5f, -66.0f),
-            cpv(-70.5f, -61.0f),
-            cpv(-75.5f, 42.0f),
-            cpv(-72.5f, 49.0f),
-            cpv(-65.5f, 55.0f),
-            cpv(-44.5f, 63.0f),
-            cpv(28.5f, 66.0f),
-            cpv(36.5f, 64.0f),
-            cpv(40.5f, 62.0f),
-            cpv(43.5f, 60.0f),
-            cpv(48.5f, 55.0f),
-            cpv(49.5f, 53.0f),
-            cpv(74.5f, -30.0f),
-            cpv(74.5f, -66.0f)
+            cpv(-1.0f, -25.0f),
+            cpv(-7.0f, -24.0f),
+            cpv(-13.0f, -21.0f),
+            cpv(-16.0f, -19.0f),
+            cpv(-18.0f, -17.0f),
+            cpv(-20.0f, -14.0f),
+            cpv(-23.0f, -8.0f),
+            cpv(-24.0f, -3.0f),
+            cpv(-24.0f, 1.0f),
+            cpv(-23.0f, 6.0f),
+            cpv(-20.0f, 12.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-13.0f, 19.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-1.0f, 23.0f),
+            cpv(1.0f, 23.0f),
+            cpv(6.0f, 22.0f),
+            cpv(9.0f, 21.0f),
+            cpv(11.0f, 20.0f),
+            cpv(14.0f, 18.0f),
+            cpv(19.0f, 13.0f),
+            cpv(22.0f, 7.0f),
+            cpv(23.0f, 4.0f),
+            cpv(23.0f, -6.0f),
+            cpv(22.0f, -9.0f),
+            cpv(19.0f, -15.0f),
+            cpv(13.0f, -21.0f),
+            cpv(9.0f, -23.0f),
+            cpv(6.0f, -24.0f),
+            cpv(1.0f, -25.0f)
         };
 
-        [self addBodyWithVerts:verts atLocation:location numVerts:14 collisionType:SCAB_COLLISION_TYPE];
+        [self addBodyWithVerts:verts atLocation:location numVerts:31 collisionType:SCAB_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"scab1.png"]) {
+        CGPoint verts[] = {
+            cpv(-1.0f, -25.0f),
+            cpv(-7.0f, -24.0f),
+            cpv(-13.0f, -21.0f),
+            cpv(-16.0f, -19.0f),
+            cpv(-18.0f, -17.0f),
+            cpv(-20.0f, -14.0f),
+            cpv(-23.0f, -8.0f),
+            cpv(-24.0f, -3.0f),
+            cpv(-24.0f, 1.0f),
+            cpv(-23.0f, 6.0f),
+            cpv(-20.0f, 12.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-13.0f, 19.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-1.0f, 23.0f),
+            cpv(1.0f, 23.0f),
+            cpv(6.0f, 22.0f),
+            cpv(9.0f, 21.0f),
+            cpv(11.0f, 20.0f),
+            cpv(14.0f, 18.0f),
+            cpv(19.0f, 13.0f),
+            cpv(22.0f, 7.0f),
+            cpv(23.0f, 4.0f),
+            cpv(23.0f, -6.0f),
+            cpv(22.0f, -9.0f),
+            cpv(19.0f, -15.0f),
+            cpv(13.0f, -21.0f),
+            cpv(9.0f, -23.0f),
+            cpv(6.0f, -24.0f),
+            cpv(1.0f, -25.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:31 collisionType:SCAB_COLLISION_TYPE];
     } else if ([filename isEqualToString:@"wound0.png"]) {
         CGPoint verts[] = {
             cpv(-5.0f, -48.5f),
@@ -212,6 +179,76 @@
         };
         
         [self addBodyWithVerts:verts atLocation:location numVerts:11 collisionType:BLOOD_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"clean_skin0.png"]) {
+        CGPoint verts[] = {
+            cpv(-4.0f, -25.0f),
+            cpv(-8.0f, -24.0f),
+            cpv(-12.0f, -22.0f),
+            cpv(-15.0f, -20.0f),
+            cpv(-19.0f, -16.0f),
+            cpv(-21.0f, -13.0f),
+            cpv(-22.0f, -11.0f),
+            cpv(-24.0f, -4.0f),
+            cpv(-24.0f, 2.0f),
+            cpv(-22.0f, 9.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-13.0f, 19.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-2.0f, 23.0f),
+            cpv(1.0f, 23.0f),
+            cpv(6.0f, 22.0f),
+            cpv(9.0f, 21.0f),
+            cpv(13.0f, 19.0f),
+            cpv(19.0f, 13.0f),
+            cpv(21.0f, 10.0f),
+            cpv(22.0f, 8.0f),
+            cpv(23.0f, 5.0f),
+            cpv(23.0f, -7.0f),
+            cpv(22.0f, -10.0f),
+            cpv(20.0f, -14.0f),
+            cpv(17.0f, -18.0f),
+            cpv(16.0f, -19.0f),
+            cpv(10.0f, -23.0f),
+            cpv(3.0f, -25.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:30 collisionType:WOUND_COLLISION_TYPE];
+    } else if ([filename isEqualToString:@"bloody_skin0.png"]) {
+        CGPoint verts[] = {
+            cpv(-2.0f, -25.0f),
+            cpv(-7.0f, -24.0f),
+            cpv(-10.0f, -23.0f),
+            cpv(-16.0f, -19.0f),
+            cpv(-18.0f, -17.0f),
+            cpv(-20.0f, -14.0f),
+            cpv(-23.0f, -8.0f),
+            cpv(-24.0f, -3.0f),
+            cpv(-24.0f, 1.0f),
+            cpv(-23.0f, 6.0f),
+            cpv(-20.0f, 12.0f),
+            cpv(-18.0f, 15.0f),
+            cpv(-16.0f, 17.0f),
+            cpv(-10.0f, 21.0f),
+            cpv(-7.0f, 22.0f),
+            cpv(-2.0f, 23.0f),
+            cpv(2.0f, 23.0f),
+            cpv(7.0f, 22.0f),
+            cpv(13.0f, 19.0f),
+            cpv(20.0f, 12.0f),
+            cpv(22.0f, 8.0f),
+            cpv(23.0f, 5.0f),
+            cpv(24.0f, 0.0f),
+            cpv(24.0f, -2.0f),
+            cpv(23.0f, -7.0f),
+            cpv(22.0f, -10.0f),
+            cpv(20.0f, -14.0f),
+            cpv(13.0f, -21.0f),
+            cpv(7.0f, -24.0f),
+            cpv(2.0f, -25.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:30 collisionType:WOUND_COLLISION_TYPE];
     }
 }
 
@@ -220,8 +257,6 @@
         space = theSpace;
         savedLocation = location;
         [self createBodyAtLocation:savedLocation filename:(NSString *)filename];  
-
-        cpBodySetAngle(body, CC_DEGREES_TO_RADIANS(arc4random() % 360));
     }
         
     return self;
@@ -239,7 +274,7 @@
 }
 
 - (void)destroy {
-    NSLog(@"DESTROY");
+   // NSLog(@"DESTROY");
     if (shape) {
         cpSpaceRemoveShape(space, shape);
     }

@@ -14,21 +14,25 @@
 
 @implementation ScabChunk
 
-@synthesize priority, health, free, action, scabNo;
+@synthesize priority, health, action, scabNo, type;
 
 - (void)ripOffScab {
-    free= YES;
-    [[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
-    [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self];
+    //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
+        
+    if (ccpDistance(self.savedLocation, [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] centerOfScab]) < 75.0) {
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:NO];
+    } else {
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:YES];
+    }
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeInt:self.position.x forKey:@"xPos"]; 
     [coder encodeInt:self.position.y forKey:@"yPos"]; 
-    [coder encodeFloat:self.rotation forKey:@"rotation"];    
     [coder encodeInt:self.health forKey:@"health"];
     [coder encodeInt:self.priority forKey:@"priority"];
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
+    [coder encodeObject:self.type forKey:@"type"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -39,7 +43,7 @@
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
         self.health = [coder decodeIntForKey:@"health"];
         self.priority = [coder decodeIntForKey:@"priority"];
-        self.rotation = [coder decodeFloatForKey:@"rotation"];
+        self.type = [coder decodeObjectForKey:@"type"];
     }
     
     return self; 
