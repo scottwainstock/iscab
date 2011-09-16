@@ -32,14 +32,14 @@
 @property (nonatomic, retain) NSMutableArray *allBlood;
 
 + (id)scene;
-+ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding;
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
 
 - (CGPoint)getCenterOfScab;
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
-- (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority;
+- (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
 - (void)displaySavedBoard;
 - (void)updateBackground;

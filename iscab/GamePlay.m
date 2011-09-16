@@ -143,7 +143,7 @@ bool endSequenceRunning;
             NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mWounds];
             if (oldSavedArray != nil) {                
                 for (Wound *savedWound in oldSavedArray) {
-                    NSString *woundType = [GamePlay woundFrameNameForClean:savedWound.clean isBleeding:savedWound.bleeding];
+                    NSString *woundType = [GamePlay woundFrameNameForClean:savedWound.clean isBleeding:savedWound.bleeding scabNo:savedWound.scabNo];
                     Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
                     wound.position = savedWound.savedLocation;
                     wound.savedLocation = savedWound.savedLocation;
@@ -251,26 +251,25 @@ bool endSequenceRunning;
 
 - (void)generateScabs {
     for (int x = 0; x < 200; x++) { 
-        //int scabIndex = arc4random() % 2;
-        int scabIndex = 0;
-        
+        int scabIndex = arc4random() % 2;
+                
         float startX = 75 + (arc4random() % 200);
         float startY = 125 + (arc4random() % 200);
                 
-        [self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:1];
+        [self createScab:CGPointMake(startX, startY) type:@"light" scabIndex:(int)scabIndex havingPriority:1];
     }
        
     for (int x = 0; x < 100; x++) {
         float startX = 100 + (arc4random() % 100);
         float startY = 150 + (arc4random() % 100);
-        int scabIndex = 1;
+        int scabIndex = arc4random() % 2;
          
-        [self createScab:CGPointMake(startX, startY) usingScabIndex:scabIndex havingPriority:2];
+        [self createScab:CGPointMake(startX, startY) type:@"dark" scabIndex:(int)scabIndex havingPriority:2];
     }
 }
 
-- (ScabChunk *)createScab:(CGPoint)coordinates usingScabIndex:(int)scabIndex havingPriority:(int)priority {
-    ScabChunk *scab = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", scabIndex]] autorelease];
+- (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority {
+    ScabChunk *scab = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", type, scabIndex]] autorelease];
 
     [scab setPosition:ccp(coordinates.x, coordinates.y)];
     [scab setSavedLocation:scab.position];
@@ -288,7 +287,7 @@ bool endSequenceRunning;
 - (void)clearLowerScabs:(ScabChunk *)newScab {    
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
     for (ScabChunk *checkScab in [self allScabs]) {
-        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 10.0) {
+        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 5.0) {
             [scabsToDelete addObject:checkScab];
         }
     }
@@ -432,13 +431,13 @@ bool endSequenceRunning;
     [particles release];
 }
 
-+ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding {
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo {
     if (isClean) {
-        return @"clean_skin0.png";
+        return [NSString stringWithFormat:@"clean_skin%d.png", scabNo];
     } else if (!isClean && isBleeding) {
-        return @"bloody_skin0.png";
+        return [NSString stringWithFormat:@"bloody_skin%d.png", scabNo];
     } else {
-        return @"wound0.png";
+        return [NSString stringWithFormat:@"wound%d.png", scabNo];
     }
 }
 
@@ -446,7 +445,9 @@ bool endSequenceRunning;
     [self splatterBlood:scab];
             
     bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfScab, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
-    NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding];
+    NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding scabNo:scab.scabNo];
+    
+    NSLog(@"TYPE %@", woundType);
     
     Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
     wound.position = scab.savedLocation;

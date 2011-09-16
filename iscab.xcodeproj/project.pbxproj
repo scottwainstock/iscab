@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E429B9114002E6E00895741 /* scabs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E429B8F14002E6E00895741 /* scabs.plist */; };
 		8E49336C13F4A1F0009908FD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E49336B13F4A1F0009908FD /* Default.png */; };
 		8E6A6D99141F062700921E7E /* clean-skin-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D6B141F062700921E7E /* clean-skin-background.png */; };
 		8E6A6D9A141F062700921E7E /* menu-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D6C141F062700921E7E /* menu-background.png */; };
@@ -31,8 +30,6 @@
 		8E6A6DAC141F062700921E7E /* label3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D80141F062700921E7E /* label3.png */; };
 		8E6A6DAD141F062700921E7E /* label4.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D81141F062700921E7E /* label4.png */; };
 		8E6A6DAE141F062700921E7E /* label5.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D82141F062700921E7E /* label5.png */; };
-		8E6A6DAF141F062700921E7E /* scabs.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D83141F062700921E7E /* scabs.png */; };
-		8E6A6DB0141F062700921E7E /* scabs.zss in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D84141F062700921E7E /* scabs.zss */; };
 		8E6A6DB1141F062700921E7E /* button.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D86141F062700921E7E /* button.wav */; };
 		8E6A6DB2141F062700921E7E /* scabcomplete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D87141F062700921E7E /* scabcomplete.wav */; };
 		8E6A6DB3141F062700921E7E /* scabinjar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D88141F062700921E7E /* scabinjar.wav */; };
@@ -45,10 +42,8 @@
 		8E6A6DBA141F062700921E7E /* blood_streak.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D90141F062700921E7E /* blood_streak.png */; };
 		8E6A6DBB141F062700921E7E /* bloody_skin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D91141F062700921E7E /* bloody_skin0.png */; };
 		8E6A6DBC141F062700921E7E /* clean_skin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D92141F062700921E7E /* clean_skin0.png */; };
-		8E6A6DBD141F062700921E7E /* scab0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D93141F062700921E7E /* scab0.png */; };
-		8E6A6DBE141F062700921E7E /* scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D94141F062700921E7E /* scab1.png */; };
 		8E6A6DBF141F062700921E7E /* wound0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D95141F062700921E7E /* wound0.png */; };
-		8E6A6DC0141F062700921E7E /* scabs.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D97141F062700921E7E /* scabs.png */; };
+		8E6A6DC0141F062700921E7E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -198,10 +193,19 @@
 		8ECA1AD313F397AF006597EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD213F397AF006597EA /* main.m */; };
 		8ECA1AD613F397AF006597EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD513F397AF006597EA /* AppDelegate.m */; };
 		8ECA1AD913F397AF006597EA /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECA1AD813F397AF006597EA /* RootViewController.m */; };
+		8EDB5C731422C7E400E59A64 /* scabs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C701422C7E400E59A64 /* scabs.plist */; };
+		8EDB5C741422C7E400E59A64 /* scabs.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C711422C7E400E59A64 /* scabs.png */; };
+		8EDB5C751422C7E400E59A64 /* scabs.zss in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C721422C7E400E59A64 /* scabs.zss */; };
+		8EDB5C7D1422D2FA00E59A64 /* bloody_skin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C761422D2F900E59A64 /* bloody_skin1.png */; };
+		8EDB5C7E1422D2FA00E59A64 /* clean_skin1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C771422D2F900E59A64 /* clean_skin1.png */; };
+		8EDB5C7F1422D2FA00E59A64 /* dark_scab0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C781422D2F900E59A64 /* dark_scab0.png */; };
+		8EDB5C801422D2FA00E59A64 /* dark_scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C791422D2F900E59A64 /* dark_scab1.png */; };
+		8EDB5C811422D2FA00E59A64 /* light_scab0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C7A1422D2F900E59A64 /* light_scab0.png */; };
+		8EDB5C821422D2FA00E59A64 /* light_scab1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C7B1422D2FA00E59A64 /* light_scab1.png */; };
+		8EDB5C831422D2FA00E59A64 /* wound1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDB5C7C1422D2FA00E59A64 /* wound1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8E429B8F14002E6E00895741 /* scabs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scabs.plist; sourceTree = "<group>"; };
 		8E49336B13F4A1F0009908FD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ./Resources/Default.png; sourceTree = "<group>"; };
 		8E6A6D6B141F062700921E7E /* clean-skin-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "clean-skin-background.png"; sourceTree = "<group>"; };
 		8E6A6D6C141F062700921E7E /* menu-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-background.png"; sourceTree = "<group>"; };
@@ -225,8 +229,6 @@
 		8E6A6D80141F062700921E7E /* label3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = label3.png; sourceTree = "<group>"; };
 		8E6A6D81141F062700921E7E /* label4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = label4.png; sourceTree = "<group>"; };
 		8E6A6D82141F062700921E7E /* label5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = label5.png; sourceTree = "<group>"; };
-		8E6A6D83141F062700921E7E /* scabs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scabs.png; path = Resources/scabs.png; sourceTree = "<group>"; };
-		8E6A6D84141F062700921E7E /* scabs.zss */ = {isa = PBXFileReference; lastKnownFileType = file; name = scabs.zss; path = Resources/scabs.zss; sourceTree = "<group>"; };
 		8E6A6D86141F062700921E7E /* button.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = button.wav; sourceTree = "<group>"; };
 		8E6A6D87141F062700921E7E /* scabcomplete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scabcomplete.wav; sourceTree = "<group>"; };
 		8E6A6D88141F062700921E7E /* scabinjar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = scabinjar.wav; sourceTree = "<group>"; };
@@ -239,8 +241,6 @@
 		8E6A6D90141F062700921E7E /* blood_streak.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blood_streak.png; sourceTree = "<group>"; };
 		8E6A6D91141F062700921E7E /* bloody_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin0.png; sourceTree = "<group>"; };
 		8E6A6D92141F062700921E7E /* clean_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clean_skin0.png; sourceTree = "<group>"; };
-		8E6A6D93141F062700921E7E /* scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab0.png; sourceTree = "<group>"; };
-		8E6A6D94141F062700921E7E /* scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab1.png; sourceTree = "<group>"; };
 		8E6A6D95141F062700921E7E /* wound0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wound0.png; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
@@ -559,6 +559,16 @@
 		8ECA1AD713F397AF006597EA /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		8ECA1AD813F397AF006597EA /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		8ECA1ADD13F397AF006597EA /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		8EDB5C701422C7E400E59A64 /* scabs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scabs.plist; sourceTree = "<group>"; };
+		8EDB5C711422C7E400E59A64 /* scabs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scabs.png; sourceTree = "<group>"; };
+		8EDB5C721422C7E400E59A64 /* scabs.zss */ = {isa = PBXFileReference; lastKnownFileType = file; path = scabs.zss; sourceTree = "<group>"; };
+		8EDB5C761422D2F900E59A64 /* bloody_skin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin1.png; sourceTree = "<group>"; };
+		8EDB5C771422D2F900E59A64 /* clean_skin1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clean_skin1.png; sourceTree = "<group>"; };
+		8EDB5C781422D2F900E59A64 /* dark_scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dark_scab0.png; sourceTree = "<group>"; };
+		8EDB5C791422D2F900E59A64 /* dark_scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dark_scab1.png; sourceTree = "<group>"; };
+		8EDB5C7A1422D2F900E59A64 /* light_scab0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light_scab0.png; sourceTree = "<group>"; };
+		8EDB5C7B1422D2FA00E59A64 /* light_scab1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light_scab1.png; sourceTree = "<group>"; };
+		8EDB5C7C1422D2FA00E59A64 /* wound1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wound1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -580,14 +590,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8E429B8E14002E5700895741 /* spritesheets */ = {
-			isa = PBXGroup;
-			children = (
-				8E429B8F14002E6E00895741 /* scabs.plist */,
-			);
-			name = spritesheets;
-			sourceTree = "<group>";
-		};
 		8E6A6D6A141F062700921E7E /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -651,13 +653,21 @@
 		8E6A6D8E141F062700921E7E /* Sprites */ = {
 			isa = PBXGroup;
 			children = (
+				8E6A6D91141F062700921E7E /* bloody_skin0.png */,
+				8EDB5C761422D2F900E59A64 /* bloody_skin1.png */,
+				8E6A6D92141F062700921E7E /* clean_skin0.png */,
+				8EDB5C771422D2F900E59A64 /* clean_skin1.png */,
+				8EDB5C781422D2F900E59A64 /* dark_scab0.png */,
+				8EDB5C791422D2F900E59A64 /* dark_scab1.png */,
+				8EDB5C7A1422D2F900E59A64 /* light_scab0.png */,
+				8EDB5C7B1422D2FA00E59A64 /* light_scab1.png */,
+				8E6A6D95141F062700921E7E /* wound0.png */,
+				8EDB5C7C1422D2FA00E59A64 /* wound1.png */,
+				8EDB5C701422C7E400E59A64 /* scabs.plist */,
+				8EDB5C711422C7E400E59A64 /* scabs.png */,
+				8EDB5C721422C7E400E59A64 /* scabs.zss */,
 				8E6A6D8F141F062700921E7E /* blood.png */,
 				8E6A6D90141F062700921E7E /* blood_streak.png */,
-				8E6A6D91141F062700921E7E /* bloody_skin0.png */,
-				8E6A6D92141F062700921E7E /* clean_skin0.png */,
-				8E6A6D93141F062700921E7E /* scab0.png */,
-				8E6A6D94141F062700921E7E /* scab1.png */,
-				8E6A6D95141F062700921E7E /* wound0.png */,
 			);
 			name = Sprites;
 			path = Resources/Sprites;
@@ -746,8 +756,6 @@
 				8E49336B13F4A1F0009908FD /* Default.png */,
 				8E6A6D76141F062700921E7E /* Icon.png */,
 				8E6A6D7C141F062700921E7E /* jar.png */,
-				8E6A6D83141F062700921E7E /* scabs.png */,
-				8E6A6D84141F062700921E7E /* scabs.zss */,
 				8EB71AAE13F399F600072593 /* drew.ttf */,
 				8ECA192A13F397AC006597EA /* fps_images.png */,
 				8ECA193613F397AC006597EA /* Icon@2x.png */,
@@ -757,7 +765,6 @@
 				8E6A6D7D141F062700921E7E /* Labels */,
 				8E6A6D85141F062700921E7E /* Sound */,
 				8E6A6D8E141F062700921E7E /* Sprites */,
-				8E429B8E14002E5700895741 /* spritesheets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1232,7 +1239,6 @@
 				8ECA193713F397AC006597EA /* Icon@2x.png in Resources */,
 				8EB71AC813F399F600072593 /* drew.ttf in Resources */,
 				8E49336C13F4A1F0009908FD /* Default.png in Resources */,
-				8E429B9114002E6E00895741 /* scabs.plist in Resources */,
 				8E6A6D99141F062700921E7E /* clean-skin-background.png in Resources */,
 				8E6A6D9A141F062700921E7E /* menu-background.png in Resources */,
 				8E6A6D9B141F062700921E7E /* skin_background0.png in Resources */,
@@ -1255,8 +1261,6 @@
 				8E6A6DAC141F062700921E7E /* label3.png in Resources */,
 				8E6A6DAD141F062700921E7E /* label4.png in Resources */,
 				8E6A6DAE141F062700921E7E /* label5.png in Resources */,
-				8E6A6DAF141F062700921E7E /* scabs.png in Resources */,
-				8E6A6DB0141F062700921E7E /* scabs.zss in Resources */,
 				8E6A6DB1141F062700921E7E /* button.wav in Resources */,
 				8E6A6DB2141F062700921E7E /* scabcomplete.wav in Resources */,
 				8E6A6DB3141F062700921E7E /* scabinjar.wav in Resources */,
@@ -1269,10 +1273,18 @@
 				8E6A6DBA141F062700921E7E /* blood_streak.png in Resources */,
 				8E6A6DBB141F062700921E7E /* bloody_skin0.png in Resources */,
 				8E6A6DBC141F062700921E7E /* clean_skin0.png in Resources */,
-				8E6A6DBD141F062700921E7E /* scab0.png in Resources */,
-				8E6A6DBE141F062700921E7E /* scab1.png in Resources */,
 				8E6A6DBF141F062700921E7E /* wound0.png in Resources */,
-				8E6A6DC0141F062700921E7E /* scabs.png in Resources */,
+				8E6A6DC0141F062700921E7E /* (null) in Resources */,
+				8EDB5C731422C7E400E59A64 /* scabs.plist in Resources */,
+				8EDB5C741422C7E400E59A64 /* scabs.png in Resources */,
+				8EDB5C751422C7E400E59A64 /* scabs.zss in Resources */,
+				8EDB5C7D1422D2FA00E59A64 /* bloody_skin1.png in Resources */,
+				8EDB5C7E1422D2FA00E59A64 /* clean_skin1.png in Resources */,
+				8EDB5C7F1422D2FA00E59A64 /* dark_scab0.png in Resources */,
+				8EDB5C801422D2FA00E59A64 /* dark_scab1.png in Resources */,
+				8EDB5C811422D2FA00E59A64 /* light_scab0.png in Resources */,
+				8EDB5C821422D2FA00E59A64 /* light_scab1.png in Resources */,
+				8EDB5C831422D2FA00E59A64 /* wound1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

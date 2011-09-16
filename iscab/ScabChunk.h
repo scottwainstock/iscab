@@ -16,6 +16,8 @@
     int scabNo;
 
     id action;
+    
+    NSString *type;
 }
 
 - (void)ripOffScab;
@@ -24,5 +26,7 @@
 @property (assign) int priority;
 @property (assign) int health;
 @property (nonatomic, assign) id action;
+
+@property (nonatomic, assign) NSString *type;
 
 @end
