@@ -446,9 +446,7 @@ bool endSequenceRunning;
             
     bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfScab, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
     NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding scabNo:scab.scabNo];
-    
-    NSLog(@"TYPE %@", woundType);
-    
+        
     Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
     wound.position = scab.savedLocation;
     wound.savedLocation = scab.savedLocation;
@@ -458,7 +456,7 @@ bool endSequenceRunning;
     
     if (wound.bleeding) {
         for (Wound *savedWound in self.allWounds) {
-            if (savedWound.bleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 40.0) && (arc4random() % 10 == 1)) {
+            if (savedWound.bleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 5.0) && (arc4random() % 20 == 1)) {
                 CCMotionStreak *streak = [CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)];
             
                 streak.position = wound.savedLocation;
