@@ -32,7 +32,7 @@
     [coder encodeInt:self.health forKey:@"health"];
     [coder encodeInt:self.priority forKey:@"priority"];
     [coder encodeInt:self.scabNo forKey:@"scabNo"];
-    [coder encodeObject:self.type forKey:@"type"];
+    [coder encodeObject:(NSString *)self.type forKey:@"type"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -43,10 +43,16 @@
         self.scabNo = [coder decodeIntForKey:@"scabNo"];
         self.health = [coder decodeIntForKey:@"health"];
         self.priority = [coder decodeIntForKey:@"priority"];
-        self.type = [coder decodeObjectForKey:@"type"];
+        self.type = (NSString *)[coder decodeObjectForKey:@"type"];
     }
     
     return self; 
+}
+
+- (void)dealloc {
+    [super dealloc];
+    [action release];
+    [type release];
 }
 
 @end
