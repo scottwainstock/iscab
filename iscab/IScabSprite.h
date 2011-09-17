@@ -21,11 +21,11 @@
 
 @property (nonatomic, assign) CGPoint savedLocation;
 
-- (id)initWithLocation:(CGPoint)location filename:(NSString *)filename;
-- (id)initWithSpace:(cpSpace *)theSpace location:(CGPoint)location filename:(NSString *)filename;
 - (void)update;
 - (void)destroy;
 - (void)createBodyAtLocation:(CGPoint)location filename:(NSString *)filename;
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType;
+- (id)initWithLocation:(CGPoint)location filename:(NSString *)filename;
+- (id)initWithSpace:(cpSpace *)theSpace location:(CGPoint)location filename:(NSString *)filename;
 
 @end

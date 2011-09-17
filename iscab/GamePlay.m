@@ -161,9 +161,10 @@ bool endSequenceRunning;
             NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
             if (oldSavedArray != nil) {                
                 for (ScabChunk *savedScab in oldSavedArray) {
-                    ScabChunk *scabChunk = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab%d.png", savedScab.scabNo]] autorelease];
+                    ScabChunk *scabChunk = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", savedScab.type, savedScab.scabNo]] autorelease];
                     scabChunk.position = savedScab.savedLocation;
                     scabChunk.savedLocation = savedScab.savedLocation;
+                    scabChunk.type = savedScab.type;
                     scabChunk.scabNo = savedScab.scabNo;
                     
                     [self.allScabs addObject:scabChunk];
@@ -275,6 +276,7 @@ bool endSequenceRunning;
     [scab setSavedLocation:scab.position];
     [scab setScabNo:scabIndex];
     [scab setPriority:priority];
+    [scab setType:type];
     [scab setHealth:priority * 2];
     
     [self clearLowerScabs:scab];
