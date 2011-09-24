@@ -17,12 +17,7 @@
 - (id)init {
     if((self=[super init] )) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
-
-        CCSprite *bg = [CCSprite spriteWithFile:@"clean-skin-background.png"];
-        bg.anchorPoint = ccp(0, 0);
-        bg.position = ccp(0, 0);
-        [self addChild:bg z:0];
-        
+    
         [self setupNavigationIcons];
     }
 
