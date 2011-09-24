@@ -8,7 +8,6 @@
 
 #import "MainMenu.h"
 #import "GamePlay.h"
-#import "Options.h"
 #import "Help.h"
 #import "JarScene.h"
 #import "Leaderboard.h"
@@ -78,13 +77,6 @@
     
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionShrinkGrow transitionWithDuration:0.5f scene:[Help scene]]];
-}
-
-- (void)optionsTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[Options scene]]];
 }
 
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem {

@@ -60,7 +60,6 @@
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
 		8EB71A9A13F399C200072593 /* ScabChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8D13F399C200072593 /* ScabChunk.m */; };
-		8EB71A9B13F399C200072593 /* Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8E13F399C200072593 /* Options.m */; };
 		8EB71A9C13F399C200072593 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8F13F399C200072593 /* MainMenu.m */; };
 		8EB71A9D13F399C200072593 /* Leaderboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9013F399C200072593 /* Leaderboard.m */; };
 		8EB71A9E13F399C200072593 /* JarScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9113F399C200072593 /* JarScene.m */; };
@@ -281,7 +280,6 @@
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
 		8EB71A7F13F399C200072593 /* SkinColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinColorPicker.h; sourceTree = "<group>"; };
 		8EB71A8013F399C200072593 /* ScabChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScabChunk.h; sourceTree = "<group>"; };
-		8EB71A8113F399C200072593 /* Options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Options.h; sourceTree = "<group>"; };
 		8EB71A8213F399C200072593 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		8EB71A8313F399C200072593 /* Leaderboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Leaderboard.h; sourceTree = "<group>"; };
 		8EB71A8413F399C200072593 /* JarScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JarScene.h; sourceTree = "<group>"; };
@@ -294,7 +292,6 @@
 		8EB71A8B13F399C200072593 /* Wound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wound.m; sourceTree = "<group>"; };
 		8EB71A8C13F399C200072593 /* SkinColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinColorPicker.m; sourceTree = "<group>"; };
 		8EB71A8D13F399C200072593 /* ScabChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScabChunk.m; sourceTree = "<group>"; };
-		8EB71A8E13F399C200072593 /* Options.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Options.m; sourceTree = "<group>"; };
 		8EB71A8F13F399C200072593 /* MainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenu.m; sourceTree = "<group>"; };
 		8EB71A9013F399C200072593 /* Leaderboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Leaderboard.m; sourceTree = "<group>"; };
 		8EB71A9113F399C200072593 /* JarScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JarScene.m; sourceTree = "<group>"; };
@@ -784,8 +781,6 @@
 				8EB71A8C13F399C200072593 /* SkinColorPicker.m */,
 				8EB71A8013F399C200072593 /* ScabChunk.h */,
 				8EB71A8D13F399C200072593 /* ScabChunk.m */,
-				8EB71A8113F399C200072593 /* Options.h */,
-				8EB71A8E13F399C200072593 /* Options.m */,
 				8EB71A8213F399C200072593 /* MainMenu.h */,
 				8EB71A8F13F399C200072593 /* MainMenu.m */,
 				8EB71A8313F399C200072593 /* Leaderboard.h */,
@@ -1509,7 +1504,6 @@
 				8EB71A9813F399C200072593 /* Wound.m in Sources */,
 				8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */,
 				8EB71A9A13F399C200072593 /* ScabChunk.m in Sources */,
-				8EB71A9B13F399C200072593 /* Options.m in Sources */,
 				8EB71A9C13F399C200072593 /* MainMenu.m in Sources */,
 				8EB71A9D13F399C200072593 /* Leaderboard.m in Sources */,
 				8EB71A9E13F399C200072593 /* JarScene.m in Sources */,

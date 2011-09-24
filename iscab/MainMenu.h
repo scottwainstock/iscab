@@ -30,7 +30,6 @@
 
 - (void)startPickinTapped:(CCMenuItem  *)menuItem;
 - (void)helpTapped:(CCMenuItem *)menuItem;
-- (void)optionsTapped:(CCMenuItem *)menuItem;
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem;
 - (void)chooseSkinTapped:(CCMenuItem *)menuItem;
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState;
