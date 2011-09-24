@@ -30,8 +30,6 @@
         CCLabelTTF *skinText = [CCLabelTTF labelWithString:@"This is where the skin picking will go." fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
         skinText.position =  ccp(160, 300);
         [self addChild:skinText];
-        
-        [self addBackButton];
     }
     
     return self;

@@ -12,9 +12,10 @@
 @interface IScabCCLayer : CCLayer {
 }
 
-- (void)addBackButton;
-- (void)homeTapped:(CCMenuItem  *)menuItem;
-- (void)backTapped:(CCMenuItem  *)menuItem;
+- (void)setupNavigationIcons;
+- (void)aboutTapped:(CCMenuItem*)menuItem;
+- (void)homeTapped:(CCMenuItem*)menuItem;
+- (void)jarTapped:(CCMenuItem*)menuItem;
 - (void)playMenuSound;
 
 @end

@@ -30,8 +30,6 @@
         CCLabelTTF *leaderboardText = [CCLabelTTF labelWithString:@"This is where the leaderboard text will go." fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
         leaderboardText.position =  ccp(160, 300);
         [self addChild:leaderboardText];
-        
-        [self addBackButton];
     }
     
     return self;

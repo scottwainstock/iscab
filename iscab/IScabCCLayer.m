@@ -8,10 +8,9 @@
 
 #import "IScabCCLayer.h"
 #import "MainMenu.h"
+#import "JarScene.h"
+#import "About.h"
 #import "SimpleAudioEngine.h"
-
-#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
-#define DEFAULT_FONT_SIZE 30
 
 @implementation IScabCCLayer
 
@@ -23,25 +22,29 @@
         bg.anchorPoint = ccp(0, 0);
         bg.position = ccp(0, 0);
         [self addChild:bg z:0];
-
-        CCMenuItem *homeButton = [CCMenuItemImage itemFromNormalImage:@"home-icon.png" selectedImage:@"home-icon.png" target:self selector:@selector(homeTapped:)];
-        homeButton.position = ccp(40, 40);
         
-        CCMenu *menu = [CCMenu menuWithItems:homeButton, nil];
-        menu.position = CGPointZero;
-        [self addChild:menu z:2];
+        [self setupNavigationIcons];
     }
 
     return self;
 }
 
-- (void)addBackButton {
-    CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"back-icon.png" selectedImage:@"back-icon.png" target:self selector:@selector(backTapped:)];
-    backButton.position = ccp(40, 400);
+- (void)setupNavigationIcons {
+    CCMenuItem *homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
+    homeButton.position = ccp(40, 40);
     
-    CCMenu *menu = [CCMenu menuWithItems:backButton, nil];
+    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"Jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton.position = ccp(280, 40);
+    
+    CCMenu *menu = [CCMenu menuWithItems:homeButton, jarButton, nil];
     menu.position = CGPointZero;
     [self addChild:menu z:2];
+}
+
+- (void)aboutTapped:(CCMenuItem  *)menuItem {
+    NSLog(@"ABOUT TAPPED");
+    [[CCDirector sharedDirector] replaceScene:
+	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[About scene]]];
 }
 
 - (void)homeTapped:(CCMenuItem  *)menuItem {    
@@ -49,8 +52,10 @@
 	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
 
-- (void)backTapped:(CCMenuItem *)menuItem {
-    [[CCDirector sharedDirector] popScene];
+- (void)jarTapped:(CCMenuItem  *)menuItem { 
+    NSLog(@"JAR TAPPED");
+    [[CCDirector sharedDirector] replaceScene:
+	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {

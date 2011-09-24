@@ -13,7 +13,7 @@
 #import "chipmunk.h"
 #import "cpMouse.h"
 
-@interface GamePlay : CCLayer {
+@interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
     cpSpace *space;
     CCSpriteBatchNode *batchNode;
