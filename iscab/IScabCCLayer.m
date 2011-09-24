@@ -47,20 +47,15 @@
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
-    NSLog(@"ABOUT TAPPED");
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[About scene]]];
+    [[CCDirector sharedDirector] replaceScene:[About scene]];
 }
 
 - (void)homeTapped:(CCMenuItem  *)menuItem {    
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
+    [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem { 
-    NSLog(@"JAR TAPPED");
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {
