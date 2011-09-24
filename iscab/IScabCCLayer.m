@@ -17,12 +17,17 @@
 - (id)init {
     if((self=[super init] )) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
-
-        CCSprite *bg = [CCSprite spriteWithFile:@"clean-skin-background.png"];
-        bg.anchorPoint = ccp(0, 0);
-        bg.position = ccp(0, 0);
-        [self addChild:bg z:0];
         
+        CCSprite *skinBG = [CCSprite spriteWithFile:@"clean-skin-background.png"];
+        skinBG.anchorPoint = ccp(0, 0);
+        skinBG.position = ccp(0, 0);
+        [self addChild:skinBG z:-10];
+        
+        CCSprite *paperBG = [CCSprite spriteWithFile:@"PaperBckgrnd.png"];
+        paperBG.anchorPoint = ccp(0, 0);
+        paperBG.position = ccp(0, 0);
+        [self addChild:paperBG z:-9];
+    
         [self setupNavigationIcons];
     }
 
@@ -42,20 +47,15 @@
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
-    NSLog(@"ABOUT TAPPED");
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[About scene]]];
+    [[CCDirector sharedDirector] replaceScene:[About scene]];
 }
 
 - (void)homeTapped:(CCMenuItem  *)menuItem {    
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
+    [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem { 
-    NSLog(@"JAR TAPPED");
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {

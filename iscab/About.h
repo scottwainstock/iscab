@@ -11,7 +11,10 @@
 #import "IScabCCLayer.h"
 
 @interface About : IScabCCLayer {
+    UITextView *aboutText;
 }
+
+@property (nonatomic, retain) UITextView *aboutText;
 
 + (id)scene;
 
