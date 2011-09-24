@@ -9,12 +9,13 @@
 #import "GamePlay.h"
 #import "ScabChunk.h"
 #import "Wound.h"
-#import "drawSpace.h"
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
+#import "JarScene.h"
 #import "CCParticleMyBlood.h"
-#import "cpSpace.h"
 #import "AppDelegate.h"
+#import "drawSpace.h"
+#import "cpSpace.h"
 
 #define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
 #define DEFAULT_FONT_SIZE 30
@@ -25,7 +26,6 @@
 @synthesize batchNode, allScabs, allWounds, allBlood, gravity, centerOfScab;
 
 AppDelegate *app;
-CGRect homeFrame;
 bool endSequenceRunning;
 
 - (NSMutableArray *)allBlood { 
@@ -235,21 +235,6 @@ bool endSequenceRunning;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
-    
-    CCSprite *jarIcon = [CCSprite spriteWithFile:@"jar-icon.png"];
-    jarIcon.tag = 778;
-    jarIcon.position = ccp(280, 40);
-    [self addChild:jarIcon z:1];
-    
-    CCSprite *homeIcon = [CCSprite spriteWithFile:@"home-icon.png"];
-    homeIcon.position = ccp(40, 40);
-    homeFrame = homeIcon.textureRect;
-    [self addChild:homeIcon z:2];
-}
-
-- (void)homeTapped {  
-    [app saveState];
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
 }
 
 - (void)displaySavedBoard {    
@@ -320,10 +305,6 @@ bool endSequenceRunning;
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
         
-    if (CGRectContainsPoint(homeFrame, touchLocation)) {
-        [self homeTapped];
-    }
-        
     for (ScabChunk *scabChunk in self.allScabs) {
         if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
             if ([scabChunk health] > 0) {
@@ -341,12 +322,14 @@ bool endSequenceRunning;
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
-    
+        
     NSMutableArray *removedScabs = [NSMutableArray array];
     for (ScabChunk *scabChunk in self.allScabs) {
         if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
             if ([scabChunk health] > 0) {
-                return;
+                [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % 3]];
+
+                scabChunk.health -= 1;
             }
             
             if (([scabChunk health] <= 0)) {
@@ -491,6 +474,18 @@ bool endSequenceRunning;
     [self updateBackground];
     [self generateScabs];
     endSequenceRunning = false;
+}
+
+- (void)homeTapped:(CCMenuItem  *)menuItem {    
+    [[CCDirector sharedDirector] replaceScene:
+	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
+    [app saveState];
+}
+
+- (void)jarTapped:(CCMenuItem  *)menuItem { 
+    [[CCDirector sharedDirector] replaceScene:
+	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [app saveState];
 }
 
 - (void)dealloc {

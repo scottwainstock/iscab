@@ -11,12 +11,13 @@
 #import "Options.h"
 #import "Help.h"
 #import "JarScene.h"
+#import "Leaderboard.h"
+#import "SkinColorPicker.h"
 #import "SimpleAudioEngine.h"
 
-#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
-#define DEFAULT_FONT_SIZE 30
-
 @implementation MainMenu
+
+@synthesize menu, start, leaderboard, chooseSkin, sound, help;
 
 +(id) scene {
     CCScene *scene = [CCScene node];
@@ -27,44 +28,42 @@
 
 -(id) init {
     if( (self=[super init] )) {
-        [CCMenuItemFont setFontName:DEFAULT_FONT_NAME];
-        [CCMenuItemFont setFontSize:DEFAULT_FONT_SIZE];
-                
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        
         CCSprite *bg = [CCSprite spriteWithFile:@"menu-background.png"];
         bg.anchorPoint = ccp(0, 0);
         bg.position = ccp(0, 0);
         [self addChild:bg z:0];
         
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"iSCAB" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 2];
-        title.position =  ccp(160, 380);
-        [self addChild: title];
-
-        CCMenuItemImage *startLabel = [CCMenuItemImage itemFromNormalImage:@"label1.png" selectedImage: @"label1.png" target:self selector:nil];
-        startLabel.position = ccp(0, 70);
-        CCMenuItemImage *jarLabel = [CCMenuItemImage itemFromNormalImage:@"label2.png" selectedImage: @"label2.png" target:self selector:nil];
-        jarLabel.position = ccp(0, 0);
-        CCMenuItemImage *optionsLabel = [CCMenuItemImage itemFromNormalImage:@"label3.png" selectedImage: @"label3.png" target:self selector:nil];
-        optionsLabel.position = ccp(0, -70);
-        CCMenuItemImage *helpLabel = [CCMenuItemImage itemFromNormalImage:@"label5.png" selectedImage: @"label5.png" target:self selector:nil];
-        helpLabel.position = ccp(0, -140);
-
-        CCMenu *labelMenu = [CCMenu menuWithItems:startLabel,jarLabel,optionsLabel,helpLabel,nil];
-        [self addChild:labelMenu];
+        start = [CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)];
         
-        CCMenuItem *start = [CCMenuItemFont itemFromString:@"START PICKIN'" target:self selector:@selector(startPickinTapped:)];
-        CCMenuItem *jar = [CCMenuItemFont itemFromString:@"JAR" target:self selector:@selector(jarTapped:)];
-        CCMenuItem *help = [CCMenuItemFont itemFromString:@"HELP" target:self selector:@selector(helpTapped:)];
-        CCMenuItem *options = [CCMenuItemFont itemFromString:@"OPTIONS" target:self selector:@selector(optionsTapped:)];
-    
-        CCMenu *menu = [CCMenu menuWithItems:start,jar,options,help,nil];
+        leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];
+        
+        chooseSkin = [CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)];
+        
+        sound = [self currentSoundState:[defaults boolForKey:@"sound"]];
+        
+        help = [CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)];
 
-        menu.position = ccp(160, 200);
-        [menu alignItemsVerticallyWithPadding:30.0];
-        [menu setColor:ccc3(0, 0, 0)];
+        menu = [CCMenu menuWithItems:start, leaderboard, chooseSkin, sound, help, nil];       
+        menu.position = ccp(160, 160);
+        [menu alignItemsVerticallyWithPadding:5.0];
         [self addChild:menu];        
     }
     
     return self;
+}
+
+- (void)setupNavigationIcons {
+    CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
+    aboutButton.position = ccp(40, 40);
+    
+    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"Jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton.position = ccp(280, 40);
+    
+    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
+    iconMenu.position = CGPointZero;
+    [self addChild:iconMenu z:2];
 }
 
 - (void)startPickinTapped:(CCMenuItem  *)menuItem {
@@ -72,13 +71,6 @@
     
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionFade transitionWithDuration:0.5f scene:[GamePlay scene]]];
-}
-
-- (void)jarTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionFlipAngular transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)helpTapped:(CCMenuItem *)menuItem {
@@ -95,8 +87,49 @@
 	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[Options scene]]];
 }
 
+- (void)leaderboardsTapped:(CCMenuItem *)menuItem {
+    [self playMenuSound];
+    
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[Leaderboard scene]]];
+}
+
+- (void)chooseSkinTapped:(CCMenuItem *)menuItem {
+    [self playMenuSound];
+    
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[SkinColorPicker scene]]];
+}
+
+- (void)soundTapped:(CCMenuItem *)menuItem {
+    [self playMenuSound];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
+    [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
+    [defaults synchronize];
+    
+    [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
+}
+
+- (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
+    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SOUND ON.png" selectedImage:@"SOUND ON-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SOUND OFF.png" selectedImage:@"SOUND OFF-Hover.png" target:nil selector:nil] retain];
+    
+    if (currentSoundState) {
+        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
+    } else {
+        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:off, on, nil];
+    }
+}
+
 - (void) dealloc { 
-    [super dealloc]; 
+    [super dealloc];
+    /*
+    [start release];
+    [leaderboard release];
+    [chooseSkin release];
+    [sound release];
+    [help release];  */     
 } 
 
 @end

@@ -31,11 +31,9 @@
         aboutText.position =  ccp(160, 300);
         [self addChild:aboutText];
         
-        CCSprite *logo = [CCSprite spriteWithFile:@"logo.png"];
+        /*CCSprite *logo = [CCSprite spriteWithFile:@"logo.png"];
         logo.position = ccp(160, 120);
-        [self addChild:logo z:1];
-        
-        [self addBackButton];
+        [self addChild:logo z:1];*/        
     }
     
     return self;
