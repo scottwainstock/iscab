@@ -325,7 +325,7 @@ bool endSequenceRunning;
         
     NSMutableArray *removedScabs = [NSMutableArray array];
     for (ScabChunk *scabChunk in self.allScabs) {
-        if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
+        if (ccpDistance(scabChunk.savedLocation, touchLocation) < 10.0) {
             if ([scabChunk health] > 0) {
                 [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % 3]];
 
