@@ -341,12 +341,14 @@ bool endSequenceRunning;
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
-    
+        
     NSMutableArray *removedScabs = [NSMutableArray array];
     for (ScabChunk *scabChunk in self.allScabs) {
         if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
             if ([scabChunk health] > 0) {
-                return;
+                [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % 3]];
+
+                scabChunk.health -= 1;
             }
             
             if (([scabChunk health] <= 0)) {
