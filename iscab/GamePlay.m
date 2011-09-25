@@ -248,7 +248,7 @@ bool endSequenceRunning;
 }
 
 - (void)generateScabs {
-    for (int x = 0; x < 200; x++) { 
+    for (int x = 0; x < 1500; x++) { 
         int scabIndex = arc4random() % NUM_SHAPES;
                 
         float startX = 75 + (arc4random() % 200);
@@ -257,7 +257,7 @@ bool endSequenceRunning;
         [self createScab:CGPointMake(startX, startY) type:@"light" scabIndex:(int)scabIndex havingPriority:1];
     }
        
-    for (int x = 0; x < 100; x++) {
+    for (int x = 0; x < 200; x++) {
         float startX = 100 + (arc4random() % 100);
         float startY = 150 + (arc4random() % 100);
         int scabIndex = arc4random() % NUM_SHAPES;
@@ -286,7 +286,7 @@ bool endSequenceRunning;
 - (void)clearLowerScabs:(ScabChunk *)newScab {    
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
     for (ScabChunk *checkScab in [self allScabs]) {
-        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 5.0) {
+        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 4.5) {
             [scabsToDelete addObject:checkScab];
         }
     }
