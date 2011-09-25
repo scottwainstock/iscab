@@ -8,7 +8,6 @@
 
 #import "MainMenu.h"
 #import "GamePlay.h"
-#import "Options.h"
 #import "Help.h"
 #import "JarScene.h"
 #import "Leaderboard.h"
@@ -58,7 +57,7 @@
     CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
-    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"Jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     jarButton.position = ccp(280, 40);
     
     CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
@@ -78,13 +77,6 @@
     
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionShrinkGrow transitionWithDuration:0.5f scene:[Help scene]]];
-}
-
-- (void)optionsTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[Options scene]]];
 }
 
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem {
@@ -112,7 +104,7 @@
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
-    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SOUND ON.png" selectedImage:@"SOUND ON-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SOUND On.png" selectedImage:@"SOUND ON-Hover.png" target:nil selector:nil] retain];
     CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SOUND OFF.png" selectedImage:@"SOUND OFF-Hover.png" target:nil selector:nil] retain];
     
     if (currentSoundState) {

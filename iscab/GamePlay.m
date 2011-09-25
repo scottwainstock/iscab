@@ -23,7 +23,7 @@
 
 @implementation GamePlay
 
-@synthesize batchNode, allScabs, allWounds, allBlood, gravity, centerOfScab;
+@synthesize batchNode, allScabs, allWounds, allBlood, looseScabs, gravity, centerOfScab;
 
 AppDelegate *app;
 bool endSequenceRunning;
@@ -55,11 +55,11 @@ bool endSequenceRunning;
     return nil;
 }
 
-- (CCSpriteBatchNode *)batchNode { 
-    @synchronized(batchNode) {
-        if (batchNode == nil)
-            batchNode = [[CCSpriteBatchNode alloc] init];
-        return batchNode;
+- (NSMutableArray *)looseScabs { 
+    @synchronized(looseScabs) {
+        if (looseScabs == nil)
+            looseScabs = [[NSMutableArray alloc] init];
+        return looseScabs;
     }
     return nil;
 }
@@ -72,14 +72,17 @@ bool endSequenceRunning;
         for (IScabSprite *sprite in batchNode.children) {
             [sprite update];
 
-            if (![sprite respondsToSelector:@selector(health)] && sprite.position.y < 0) {
+            if (sprite.position.y < 0) {
                 [spritesToDelete addObject:sprite];
             }            
         }
         
         for (IScabSprite *deleteSprite in spritesToDelete) {
-            NSLog(@"DELETING A SPRITE");
-            [batchNode removeChild:deleteSprite cleanup:NO];
+            if (deleteSprite->body) {
+                [looseScabs removeObject:deleteSprite];
+            }
+            
+            [batchNode removeChild:deleteSprite cleanup:YES];
             [deleteSprite destroy];
         }
         
@@ -149,7 +152,7 @@ bool endSequenceRunning;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                               selector:@selector(didRotate)
                                               name:UIDeviceOrientationDidChangeNotification object:nil];
-        
+         
         NSData *mWounds = [defaults objectForKey:@"allWounds"];
         if (mWounds != nil) {
             NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mWounds];
@@ -187,13 +190,13 @@ bool endSequenceRunning;
         [self updateBackground];
         batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
         [self addChild:batchNode];
-         
+                 
         if (![self.allScabs count]) {
             [self generateScabs];
         } else {
             [self displaySavedBoard];
         }
-    
+        
         [self scheduleUpdate];
         centerOfScab = [self getCenterOfScab];
         
@@ -248,7 +251,7 @@ bool endSequenceRunning;
 }
 
 - (void)generateScabs {
-    for (int x = 0; x < 200; x++) { 
+    for (int x = 0; x < 1500; x++) { 
         int scabIndex = arc4random() % NUM_SHAPES;
                 
         float startX = 75 + (arc4random() % 200);
@@ -256,8 +259,8 @@ bool endSequenceRunning;
                 
         [self createScab:CGPointMake(startX, startY) type:@"light" scabIndex:(int)scabIndex havingPriority:1];
     }
-       
-    for (int x = 0; x < 100; x++) {
+         
+    for (int x = 0; x < 200; x++) {
         float startX = 100 + (arc4random() % 100);
         float startY = 150 + (arc4random() % 100);
         int scabIndex = arc4random() % NUM_SHAPES;
@@ -267,7 +270,7 @@ bool endSequenceRunning;
 }
 
 - (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority {
-    ScabChunk *scab = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", type, scabIndex]] autorelease];
+    ScabChunk *scab = [[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", type, scabIndex]];
 
     [scab setPosition:ccp(coordinates.x, coordinates.y)];
     [scab setSavedLocation:scab.position];
@@ -278,7 +281,9 @@ bool endSequenceRunning;
     
     [self clearLowerScabs:scab];
     [self.allScabs addObject:scab];
-    [self addChild:scab z:5];
+    [batchNode addChild:scab z:5];
+    
+    [scab release];
         
     return scab;
 }
@@ -286,7 +291,7 @@ bool endSequenceRunning;
 - (void)clearLowerScabs:(ScabChunk *)newScab {    
     NSMutableArray *scabsToDelete = [[NSMutableArray alloc] init];
     for (ScabChunk *checkScab in [self allScabs]) {
-        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 5.0) {
+        if (ccpDistance(newScab.savedLocation, checkScab.savedLocation) < 3.5) {
             [scabsToDelete addObject:checkScab];
         }
     }
@@ -303,6 +308,9 @@ bool endSequenceRunning;
 }
 
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    return YES;
+    
+    /*
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
         
     for (ScabChunk *scabChunk in self.allScabs) {
@@ -317,15 +325,15 @@ bool endSequenceRunning;
         }
     }
     
-    return YES;
+    return YES;*/
 }
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
-        
+    
     NSMutableArray *removedScabs = [NSMutableArray array];
     for (ScabChunk *scabChunk in self.allScabs) {
-        if (CGRectContainsPoint(scabChunk.boundingBox, touchLocation)) {
+        if (ccpDistance(scabChunk.savedLocation, touchLocation) < 10.0) {
             if ([scabChunk health] > 0) {
                 [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % 3]];
 
@@ -333,22 +341,22 @@ bool endSequenceRunning;
             }
             
             if (([scabChunk health] <= 0)) {
-                for (ScabChunk *existingScab in self.allScabs) {
-                    if (ccpDistance(existingScab.savedLocation, scabChunk.savedLocation) < 7.0) {
-                        NSLog(@"RIPPED ONE");
-                        [removedScabs addObject:scabChunk];
-                        [scabChunk ripOffScab];
-                        
-                        IScabSprite *looseScab = [[[IScabSprite alloc] initWithSpace:space location:existingScab.savedLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", existingScab.type, existingScab.scabNo] shapeNo:existingScab.scabNo] autorelease];
-                        cpBodySetMass(looseScab->body, 1.0);
-                        cpSpaceAddBody(space, looseScab->body);
-                        
-                        [batchNode addChild:looseScab];
-                    }
+                [removedScabs addObject:scabChunk];
+                [scabChunk ripOffScab];
+                
+                if ([looseScabs count] < 10) {
+                    IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.savedLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo] shapeNo:scabChunk.scabNo];
+
+                    cpBodySetMass(looseScab->body, 10.0);
+                    cpSpaceAddBody(space, looseScab->body);
+                    
+                    [self.looseScabs addObject:looseScab];
+                    [batchNode addChild:looseScab];
+                    [looseScab release];
                 }
             }
-            
-            cpMouseMove(mouse, touchLocation);
+
+            //cpMouseMove(mouse, touchLocation);
         }
     }
     
@@ -419,7 +427,7 @@ bool endSequenceRunning;
     bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfScab, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
     NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding scabNo:scab.scabNo];
         
-    Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
+    Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];
     wound.position = scab.savedLocation;
     wound.savedLocation = scab.savedLocation;
     wound.scabNo = scab.scabNo;
@@ -441,7 +449,9 @@ bool endSequenceRunning;
     }
     
     [self.allWounds addObject:wound];
-    [self addChild:wound z:-1];
+    [batchNode addChild:wound z:-1];
+
+    [wound release];
 }
 
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing {
@@ -476,15 +486,13 @@ bool endSequenceRunning;
     endSequenceRunning = false;
 }
 
-- (void)homeTapped:(CCMenuItem  *)menuItem {    
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
+- (void)homeTapped:(CCMenuItem  *)menuItem { 
+    [super homeTapped:menuItem];
     [app saveState];
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem { 
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [super jarTapped:menuItem];
     [app saveState];
 }
 

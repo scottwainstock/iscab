@@ -52,7 +52,7 @@
 - (void)dealloc {
     [super dealloc];
     [aboutText removeFromSuperview];
-    [aboutText release];
+    //[aboutText release];
 }
 
 @end

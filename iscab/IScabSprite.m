@@ -20,8 +20,10 @@
 @synthesize savedLocation;
 
 - (void)update {
-    self.position = body->p;
-    self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
+    if (body) {
+        self.position = body->p;
+        self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
+    }
 }
 
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType {    
@@ -32,14 +34,12 @@
     body->data = self;
     
     shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
-    shape->e = 0.3; 
-    shape->u = 1.0;
+    shape->e = 0.5; 
+    shape->u = 0.8;
     shape->collision_type = collisionType;
     shape->data = self;
 
-//    if (collisionType != BLOOD_COLLISION_TYPE) {
-        cpSpaceAddShape(space, shape);
-//    }
+    cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
@@ -136,7 +136,6 @@
 }
 
 - (void)destroy {
-   // NSLog(@"DESTROY");
     if (shape) {
         cpSpaceRemoveShape(space, shape);
     }
