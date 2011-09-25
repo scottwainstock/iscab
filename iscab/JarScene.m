@@ -21,7 +21,7 @@
 
 - (id)init {
     if( (self=[super init] )) {
-        CCSprite *bg = [CCSprite spriteWithFile:@"jar.png"];
+        CCSprite *bg = [CCSprite spriteWithFile:@"jar-background.png"];
         bg.position = ccp(175, 250);
         [self addChild:bg z:0];
     }

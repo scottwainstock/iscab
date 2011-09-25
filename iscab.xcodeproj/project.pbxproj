@@ -17,7 +17,6 @@
 		8E60E2E6142E48D200D920C3 /* Home-Over.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2E0142E48D200D920C3 /* Home-Over.png */; };
 		8E60E2E7142E48D200D920C3 /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2E1142E48D200D920C3 /* Home.png */; };
 		8E60E2E8142E48D200D920C3 /* Jar-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2E2142E48D200D920C3 /* Jar-Hover.png */; };
-		8E60E2E9142E48D200D920C3 /* Jar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2E3142E48D200D920C3 /* Jar.png */; };
 		8E60E2F6142E5C3C00D920C3 /* ChooseSkin-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2EA142E5C3C00D920C3 /* ChooseSkin-Hover.png */; };
 		8E60E2F7142E5C3C00D920C3 /* ChooseSkin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2EB142E5C3C00D920C3 /* ChooseSkin.png */; };
 		8E60E2F8142E5C3C00D920C3 /* Help-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2EC142E5C3C00D920C3 /* Help-Hover.png */; };
@@ -56,6 +55,8 @@
 		8E6A6DBC141F062700921E7E /* clean_skin0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D92141F062700921E7E /* clean_skin0.png */; };
 		8E6A6DBF141F062700921E7E /* wound0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E6A6D95141F062700921E7E /* wound0.png */; };
 		8E6A6DC0141F062700921E7E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		8E8272AF142FB8130061B06C /* jar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272AE142FB8130061B06C /* jar.png */; };
+		8E8272B1142FB8A60061B06C /* jar-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272B0142FB8A60061B06C /* jar-background.png */; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -237,7 +238,6 @@
 		8E60E2E0142E48D200D920C3 /* Home-Over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Home-Over.png"; sourceTree = "<group>"; };
 		8E60E2E1142E48D200D920C3 /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
 		8E60E2E2142E48D200D920C3 /* Jar-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Jar-Hover.png"; sourceTree = "<group>"; };
-		8E60E2E3142E48D200D920C3 /* Jar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Jar.png; sourceTree = "<group>"; };
 		8E60E2EA142E5C3C00D920C3 /* ChooseSkin-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChooseSkin-Hover.png"; sourceTree = "<group>"; };
 		8E60E2EB142E5C3C00D920C3 /* ChooseSkin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChooseSkin.png; sourceTree = "<group>"; };
 		8E60E2EC142E5C3C00D920C3 /* Help-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Help-Hover.png"; sourceTree = "<group>"; };
@@ -275,6 +275,8 @@
 		8E6A6D91141F062700921E7E /* bloody_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin0.png; sourceTree = "<group>"; };
 		8E6A6D92141F062700921E7E /* clean_skin0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clean_skin0.png; sourceTree = "<group>"; };
 		8E6A6D95141F062700921E7E /* wound0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wound0.png; sourceTree = "<group>"; };
+		8E8272AE142FB8130061B06C /* jar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jar.png; sourceTree = "<group>"; };
+		8E8272B0142FB8A60061B06C /* jar-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jar-background.png"; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
@@ -634,6 +636,7 @@
 		8E6A6D6A141F062700921E7E /* Backgrounds */ = {
 			isa = PBXGroup;
 			children = (
+				8E8272B0142FB8A60061B06C /* jar-background.png */,
 				8E46CB22142E87DF000FC690 /* PaperBckgrnd.png */,
 				8E60E2DC142E465700D920C3 /* menu-background.png */,
 				8E6A6D6B141F062700921E7E /* clean-skin-background.png */,
@@ -654,12 +657,12 @@
 		8E6A6D77141F062700921E7E /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				8E8272AE142FB8130061B06C /* jar.png */,
 				8E60E2DE142E48D200D920C3 /* About-Hover.png */,
 				8E60E2DF142E48D200D920C3 /* About.png */,
 				8E60E2E0142E48D200D920C3 /* Home-Over.png */,
 				8E60E2E1142E48D200D920C3 /* Home.png */,
 				8E60E2E2142E48D200D920C3 /* Jar-Hover.png */,
-				8E60E2E3142E48D200D920C3 /* Jar.png */,
 				8E6A6D7A141F062700921E7E /* icon_retina.png */,
 			);
 			name = Icons;
@@ -1352,7 +1355,6 @@
 				8E60E2E6142E48D200D920C3 /* Home-Over.png in Resources */,
 				8E60E2E7142E48D200D920C3 /* Home.png in Resources */,
 				8E60E2E8142E48D200D920C3 /* Jar-Hover.png in Resources */,
-				8E60E2E9142E48D200D920C3 /* Jar.png in Resources */,
 				8E60E2F6142E5C3C00D920C3 /* ChooseSkin-Hover.png in Resources */,
 				8E60E2F7142E5C3C00D920C3 /* ChooseSkin.png in Resources */,
 				8E60E2F8142E5C3C00D920C3 /* Help-Hover.png in Resources */,
@@ -1368,6 +1370,8 @@
 				8E46CB23142E87DF000FC690 /* PaperBckgrnd.png in Resources */,
 				8E46CB26142E8C1B000FC690 /* about-header.png in Resources */,
 				8E46CB28142E8DE6000FC690 /* logo.png in Resources */,
+				8E8272AF142FB8130061B06C /* jar.png in Resources */,
+				8E8272B1142FB8A60061B06C /* jar-background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
