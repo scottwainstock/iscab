@@ -476,15 +476,13 @@ bool endSequenceRunning;
     endSequenceRunning = false;
 }
 
-- (void)homeTapped:(CCMenuItem  *)menuItem {    
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[MainMenu scene]]];
+- (void)homeTapped:(CCMenuItem  *)menuItem { 
+    [super homeTapped:menuItem];
     [app saveState];
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem { 
-    [[CCDirector sharedDirector] replaceScene:
-	 [CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [super jarTapped:menuItem];
     [app saveState];
 }
 
