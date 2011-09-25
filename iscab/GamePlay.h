@@ -20,6 +20,7 @@
     NSMutableArray *allScabs;
     NSMutableArray *allWounds;
     NSMutableArray *allBlood;
+    NSMutableArray *looseScabs;
     cpVect gravity;
     CGPoint centerOfScab;
 }
@@ -30,6 +31,7 @@
 @property (nonatomic, retain) NSMutableArray *allScabs;
 @property (nonatomic, retain) NSMutableArray *allWounds;
 @property (nonatomic, retain) NSMutableArray *allBlood;
+@property (nonatomic, retain) NSMutableArray *looseScabs;
 
 + (id)scene;
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
