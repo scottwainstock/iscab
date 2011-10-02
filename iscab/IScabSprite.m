@@ -10,7 +10,7 @@
 #import "GamePlay.h"
 #import "cpShape.h"
 
-#define MASS 0.1
+#define MASS 1.0
 #define SCAB_COLLISION_TYPE  1
 #define WOUND_COLLISION_TYPE 2
 #define BLOOD_COLLISION_TYPE 3
@@ -20,9 +20,9 @@
 @synthesize savedLocation;
 
 - (void)update {
-    if (body) {
+    if (body) {        
         self.position = body->p;
-        self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
+        //self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
     }
 }
 
@@ -33,13 +33,12 @@
     body->p = location;
     body->data = self;
     
-    shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
-    shape->e = 0.5; 
-    shape->u = 0.8;
-    shape->collision_type = collisionType;
-    shape->data = self;
-
-    cpSpaceAddShape(space, shape);
+//    shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
+//    shape->e = 0.5; 
+//    shape->u = 0.8;
+//    shape->collision_type = collisionType;
+//    shape->data = self;
+//    cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
@@ -137,7 +136,7 @@
 
 - (void)destroy {
     if (shape) {
-        cpSpaceRemoveShape(space, shape);
+  //      cpSpaceRemoveShape(space, shape);
     }
     [self removeFromParentAndCleanup:YES];
 }

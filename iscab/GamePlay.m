@@ -20,10 +20,11 @@
 #define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
 #define DEFAULT_FONT_SIZE 30
 #define NUM_SHAPES 4
+#define NUM_BACKGROUNDS 8
 
 @implementation GamePlay
 
-@synthesize batchNode, allScabs, allWounds, allBlood, looseScabs, gravity, centerOfScab;
+@synthesize batchNode, allScabs, allWounds, allBlood, looseScabs, gravity, centerOfScab, skinBackground, skinBackgroundOffsets;
 
 AppDelegate *app;
 bool endSequenceRunning;
@@ -145,7 +146,9 @@ bool endSequenceRunning;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
+        
+        [self setupSkinBackgroundOffsets];
+        
         [self createSpace]; 
         mouse = cpMouseNew(space);
         
@@ -187,13 +190,15 @@ bool endSequenceRunning;
             }
         }
 
-        [self updateBackground];
         batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
         [self addChild:batchNode];
                  
         if (![self.allScabs count]) {
+            [self updateBackground:nil];
             [self generateScabs];
         } else {
+            NSLog(@"FOO %@", [defaults valueForKey:@"skinBackground"]);
+            [self updateBackground:[defaults valueForKey:@"skinBackground"]];
             [self displaySavedBoard];
         }
         
@@ -204,6 +209,19 @@ bool endSequenceRunning;
     }
             
     return self;
+}
+
+- (void)setupSkinBackgroundOffsets {
+    self.skinBackgroundOffsets = [[NSMutableDictionary alloc] init];
+    [self.skinBackgroundOffsets setObject:@"25" forKey:@"skin_background0.png"];
+    [self.skinBackgroundOffsets setObject:@"350" forKey:@"skin_background1.png"];
+    [self.skinBackgroundOffsets setObject:@"100" forKey:@"skin_background2.png"];
+    [self.skinBackgroundOffsets setObject:@"175" forKey:@"skin_background3.png"];
+    [self.skinBackgroundOffsets setObject:@"175" forKey:@"skin_background4.png"];
+    [self.skinBackgroundOffsets setObject:@"75" forKey:@"skin_background5.png"];
+    [self.skinBackgroundOffsets setObject:@"225" forKey:@"skin_background6.png"];
+    [self.skinBackgroundOffsets setObject:@"50" forKey:@"skin_background7.png"];
+    [self.skinBackgroundOffsets setObject:@"50" forKey:@"skin_background8.png"];
 }
 
 - (CGPoint)getCenterOfScab {
@@ -228,16 +246,22 @@ bool endSequenceRunning;
     return space;
 }
 
-- (void)updateBackground {
+- (void)updateBackground:(NSString *)newSkinBackground {
     [(CCSprite *)[self getChildByTag:777] removeFromParentAndCleanup:YES];
-    [(CCSprite *)[self getChildByTag:778] removeFromParentAndCleanup:YES];
+
+    NSLog(@"SKIN BACKGROUND %@", newSkinBackground);
     
-    int bgIndex = arc4random() % 8;
-    CCSprite *bg = [CCSprite spriteWithFile:[NSString stringWithFormat:@"skin_background%d.png", bgIndex]];
+    if (newSkinBackground == nil) {
+        int bgIndex = arc4random() % NUM_BACKGROUNDS;
+        newSkinBackground = [NSString stringWithFormat:@"skin_background%d.png", bgIndex];
+    }
+    
+    CCSprite *bg = [CCSprite spriteWithFile:newSkinBackground];
     bg.tag = 777;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
+    self.skinBackground = newSkinBackground;
 }
 
 - (void)displaySavedBoard {    
@@ -251,18 +275,22 @@ bool endSequenceRunning;
 }
 
 - (void)generateScabs {
+    int yOffset = [[skinBackgroundOffsets objectForKey:skinBackground] intValue];
+    
+    NSLog(@"BG OFFSET: %d", yOffset);
+    
     for (int x = 0; x < 1500; x++) { 
         int scabIndex = arc4random() % NUM_SHAPES;
                 
-        float startX = 75 + (arc4random() % 200);
-        float startY = 125 + (arc4random() % 200);
+        float startX = 75 + (arc4random() % 150);
+        float startY = yOffset + (arc4random() % 150);
                 
         [self createScab:CGPointMake(startX, startY) type:@"light" scabIndex:(int)scabIndex havingPriority:1];
     }
          
     for (int x = 0; x < 200; x++) {
-        float startX = 100 + (arc4random() % 100);
-        float startY = 150 + (arc4random() % 100);
+        float startX = 100 + (arc4random() % 75);
+        float startY = yOffset + (arc4random() % 75);
         int scabIndex = arc4random() % NUM_SHAPES;
          
         [self createScab:CGPointMake(startX, startY) type:@"dark" scabIndex:(int)scabIndex havingPriority:2];
@@ -343,11 +371,12 @@ bool endSequenceRunning;
             if (([scabChunk health] <= 0)) {
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
+               
                 
                 if ([looseScabs count] < 10) {
                     IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.savedLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo] shapeNo:scabChunk.scabNo];
 
-                    cpBodySetMass(looseScab->body, 10.0);
+                    cpBodySetMass(looseScab->body, 1.0);
                     cpSpaceAddBody(space, looseScab->body);
                     
                     [self.looseScabs addObject:looseScab];
@@ -481,7 +510,7 @@ bool endSequenceRunning;
     }
     allBlood = [[NSMutableArray alloc] init];
       
-    [self updateBackground];
+    [self updateBackground:nil];
     [self generateScabs];
     endSequenceRunning = false;
 }
@@ -491,7 +520,7 @@ bool endSequenceRunning;
     [app saveState];
 }
 
-- (void)jarTapped:(CCMenuItem  *)menuItem { 
+- (void)jarTapped:(CCMenuItem  *)menuItem {
     [super jarTapped:menuItem];
     [app saveState];
 }
@@ -501,6 +530,8 @@ bool endSequenceRunning;
     /*
     cpMouseFree(mouse);
     cpSpaceFree(space);
+    [skinBackground release];
+    [skinBackgroundOffsets release];
     [batchNode release];
     [allScabs release];
     [allWounds release];

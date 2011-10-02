@@ -23,6 +23,8 @@
     NSMutableArray *looseScabs;
     cpVect gravity;
     CGPoint centerOfScab;
+    NSString *skinBackground;
+    NSMutableDictionary *skinBackgroundOffsets;
 }
 
 @property (nonatomic) CGPoint centerOfScab;
@@ -32,11 +34,15 @@
 @property (nonatomic, retain) NSMutableArray *allWounds;
 @property (nonatomic, retain) NSMutableArray *allBlood;
 @property (nonatomic, retain) NSMutableArray *looseScabs;
+@property (nonatomic, retain) NSString *skinBackground;
+@property (nonatomic, retain) NSMutableDictionary *skinBackgroundOffsets;
+
 
 + (id)scene;
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
 
 - (CGPoint)getCenterOfScab;
+- (void)setupSkinBackgroundOffsets;
 - (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
 - (void)clearLowerScabs:(ScabChunk *)newScab;
@@ -44,7 +50,7 @@
 - (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
 - (void)displaySavedBoard;
-- (void)updateBackground;
+- (void)updateBackground:(NSString *)skinBackground;
 - (cpSpace *)createSpace;
 
 @end
