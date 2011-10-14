@@ -19,6 +19,7 @@
         cpBody *body;
 }
 
+@property (nonatomic, assign) cpShape *shape;
 @property (nonatomic, assign) CGPoint savedLocation;
 
 - (void)update;

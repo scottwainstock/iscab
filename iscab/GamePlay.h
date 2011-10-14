@@ -12,6 +12,7 @@
 #import "IScabCCLayer.h"
 #import "chipmunk.h"
 #import "cpMouse.h"
+#import "cpShape.h"
 
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
@@ -25,9 +26,13 @@
     CGPoint centerOfScab;
     NSString *skinBackground;
     NSMutableDictionary *skinBackgroundOffsets;
+    int sizeOfMoveableScab;
+    IScabSprite *moveableScab;
 }
 
+@property (nonatomic) int sizeOfMoveableScab;
 @property (nonatomic) CGPoint centerOfScab;
+@property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) NSMutableArray *allScabs;
@@ -37,10 +42,10 @@
 @property (nonatomic, retain) NSString *skinBackground;
 @property (nonatomic, retain) NSMutableDictionary *skinBackgroundOffsets;
 
-
 + (id)scene;
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
 
+- (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
 - (CGPoint)getCenterOfScab;
 - (void)setupSkinBackgroundOffsets;
 - (void)removeScab:(ScabChunk *)chunk;
