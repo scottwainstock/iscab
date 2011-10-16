@@ -14,6 +14,8 @@
 
 @implementation IScabCCLayer
 
+@synthesize homeButton, jarButton;
+
 - (id)init {
     if((self=[super init] )) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
@@ -35,10 +37,10 @@
 }
 
 - (void)setupNavigationIcons {
-    CCMenuItem *homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
+    homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
     homeButton.position = ccp(40, 40);
     
-    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     jarButton.position = ccp(280, 40);
     
     CCMenu *menu = [CCMenu menuWithItems:homeButton, jarButton, nil];
