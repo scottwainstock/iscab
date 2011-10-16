@@ -170,7 +170,7 @@
     NSLog(@"ABOUT TO SAVE: %@", [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] skinBackground]);
     
     [defaults setValue:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] skinBackground] forKey:@"skinBackground"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allScabs]] forKey:@"allScabs"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allScabChunks]] forKey:@"allScabChunks"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allWounds]] forKey:@"allWounds"];
     
     [defaults synchronize]; 
