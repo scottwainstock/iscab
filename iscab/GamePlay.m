@@ -26,8 +26,10 @@
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 10.0
 #define GRAVITY_FACTOR 750
 #define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
-#define NUM_INDIVIDUAL_SCABS 10
+#define NUM_INDIVIDUAL_SCABS 6
 #define NUM_DARK_PATCHES 4
+
+static const ccColor3B ccScabGlow={255,105,180};
 
 @implementation GamePlay
 
@@ -365,38 +367,23 @@ bool endSequenceRunning;
     }
 }
 
-- (ScabChunk *)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority {
+- (void)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority {
     ScabChunk *scabChunk = [[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", type, scabIndex]];
-
     [scabChunk setPosition:ccp(coordinates.x, coordinates.y)];
     [scabChunk setSavedLocation:scabChunk.position];
     [scabChunk setScabNo:scabIndex];
     [scabChunk setPriority:priority];
     [scabChunk setType:type];
     [scabChunk setHealth:priority * 2];
-    
-    //[self clearLowerScabs:scab];
-    [self.allScabChunks addObject:scabChunk];
+    [scabChunk setScale:0.8];
     [batchNode addChild:scabChunk z:5];
-    
+    [self.allScabChunks addObject:scabChunk];
     [scabChunk release];
-        
-    return scabChunk;
-}
-
-- (void)clearLowerScabChunks:(ScabChunk *)newScabChunk {       
-    NSMutableArray *scabChunksToDelete = [[NSMutableArray alloc] init];
-    for (ScabChunk *checkScabChunk in [self allScabChunks]) {
-        if (ccpDistance(newScabChunk.savedLocation, checkScabChunk.savedLocation) < 1.75) {
-            [scabChunksToDelete addObject:checkScabChunk];
-        }
-    }
     
-    for (ScabChunk *deleteScabChunk in scabChunksToDelete) {
-        [self removeScabChunk:deleteScabChunk initing:YES];
-    }
-    
-    [scabChunksToDelete release];
+    Wound *scabBorder = [[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"bloody_skin%d.png", scabIndex]];
+    [scabBorder setPosition:ccp(coordinates.x, coordinates.y)];
+    [batchNode addChild:scabBorder z:-2];
+    [self.allWounds addObject:scabBorder];
 }
 
 - (void)registerWithTouchDispatcher {
@@ -466,7 +453,6 @@ bool endSequenceRunning;
     if (foundShape) {
         CCSprite *newMoveableScabPiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo]];
         
-        
         [newMoveableScabPiece setPosition:CGPointMake(arc4random() % sizeOfMoveableScab, arc4random() % sizeOfMoveableScab)];
         [moveableScab addChild:newMoveableScabPiece];
                  
@@ -510,13 +496,14 @@ bool endSequenceRunning;
     bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfAllScabs, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
     
     NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding scabNo:scab.scabNo];
-        
+
     Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];
-    wound.position = scab.savedLocation;
-    wound.savedLocation = scab.savedLocation;
-    wound.scabNo = scab.scabNo;
-    wound.clean = clean;
-    wound.bleeding = bleeding;
+    [wound setPosition:scab.savedLocation];
+    [wound setSavedLocation:scab.savedLocation];
+    [wound setScabNo:scab.scabNo];
+    [wound setClean:clean];
+    [wound setBleeding:bleeding];
+    [wound setScale:0.8];
     
     if (wound.bleeding) {
         for (Wound *savedWound in self.allWounds) {

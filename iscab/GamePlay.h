@@ -53,9 +53,8 @@
 - (CGPoint)getCenterOfAllScabs;
 - (void)setupSkinBackgroundOffsets;
 - (void)generateScabs;
-- (void)clearLowerScabChunks:(ScabChunk *)newScabChunk;
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
-- (ScabChunk *)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
+- (void)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)displaySavedBoard;
 - (void)updateBackground:(NSString *)skinBackground;
