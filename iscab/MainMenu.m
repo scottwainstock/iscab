@@ -57,7 +57,7 @@
     CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
-    CCMenuItem *jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     jarButton.position = ccp(280, 40);
     
     CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];

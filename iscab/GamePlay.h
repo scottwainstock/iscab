@@ -12,43 +12,51 @@
 #import "IScabCCLayer.h"
 #import "chipmunk.h"
 #import "cpMouse.h"
+#import "cpShape.h"
 
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
     cpSpace *space;
     CCSpriteBatchNode *batchNode;
-    NSMutableArray *allScabs;
+    NSMutableArray *allScabChunks;
     NSMutableArray *allWounds;
     NSMutableArray *allBlood;
-    NSMutableArray *looseScabs;
+    NSMutableArray *looseScabChunks;
     cpVect gravity;
-    CGPoint centerOfScab;
+    CGPoint centerOfAllScabs;
     NSString *skinBackground;
     NSMutableDictionary *skinBackgroundOffsets;
+    int sizeOfMoveableScab;
+    IScabSprite *moveableScab;
+    int screenWidth;
+    int screenHeight;
 }
 
-@property (nonatomic) CGPoint centerOfScab;
+@property (nonatomic) int sizeOfMoveableScab;
+@property (nonatomic) CGPoint centerOfAllScabs;
+@property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
-@property (nonatomic, retain) NSMutableArray *allScabs;
+@property (nonatomic, retain) NSMutableArray *allScabChunks;
 @property (nonatomic, retain) NSMutableArray *allWounds;
 @property (nonatomic, retain) NSMutableArray *allBlood;
-@property (nonatomic, retain) NSMutableArray *looseScabs;
+@property (nonatomic, retain) NSMutableArray *looseScabChunks;
 @property (nonatomic, retain) NSString *skinBackground;
 @property (nonatomic, retain) NSMutableDictionary *skinBackgroundOffsets;
-
 
 + (id)scene;
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo;
 
-- (CGPoint)getCenterOfScab;
+- (void)initializeSprites;
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)origin scabBoundingRect:(CGRect)scabBoundingRect maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge;
+- (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
+- (CGPoint)getCenterOfAllScabs;
 - (void)setupSkinBackgroundOffsets;
-- (void)removeScab:(ScabChunk *)chunk;
 - (void)generateScabs;
-- (void)clearLowerScabs:(ScabChunk *)newScab;
+- (void)clearLowerScabChunks:(ScabChunk *)newScabChunk;
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
-- (ScabChunk *)createScab:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
-- (void)removeScab:(ScabChunk *)scab initing:(bool)initing;
+- (ScabChunk *)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
+- (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)displaySavedBoard;
 - (void)updateBackground:(NSString *)skinBackground;
 - (cpSpace *)createSpace;

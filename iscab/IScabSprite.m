@@ -17,12 +17,12 @@
 
 @implementation IScabSprite
 
-@synthesize savedLocation;
+@synthesize savedLocation, shape;
 
 - (void)update {
     if (body) {        
         self.position = body->p;
-        //self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
+        self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
     }
 }
 
@@ -32,17 +32,45 @@
     
     body->p = location;
     body->data = self;
+    cpSpaceAddBody(space, body);
     
-//    shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
-//    shape->e = 0.5; 
-//    shape->u = 0.8;
-//    shape->collision_type = collisionType;
-//    shape->data = self;
-//    cpSpaceAddShape(space, shape);
+    shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
+    shape->e = 1.0f; 
+    shape->u = 1.0f;
+    shape->data = self;
+    shape->group = 1;
+    self.shape = shape;
+    cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
     if (shapeNo == 0) {
+        CGPoint verts[] = {
+            cpv(-1.0f, -2.0f),
+            cpv(-2.0f, -1.0f),
+            cpv(-2.0f, 0.0f),
+            cpv(-1.0f, 1.0f),
+            cpv(0.0f, 1.0f),
+            cpv(1.0f, 0.0f),
+            cpv(1.0f, -1.0f),
+            cpv(0.0f, -2.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:8 collisionType:WOUND_COLLISION_TYPE];
+    } else if (shapeNo == 1) {
+        CGPoint verts[] = {
+            cpv(-2.0f, -3.0f),
+            cpv(-3.0f, -2.0f),
+            cpv(-3.0f, 1.0f),
+            cpv(-2.0f, 2.0f),
+            cpv(1.0f, 2.0f),
+            cpv(2.0f, 1.0f),
+            cpv(2.0f, -2.0f),
+            cpv(1.0f, -3.0f)
+        };
+        
+        [self addBodyWithVerts:verts atLocation:location numVerts:8 collisionType:WOUND_COLLISION_TYPE];
+    } else if (shapeNo == 2) {
         CGPoint verts[] = {
             cpv(-2.0f, -4.0f),
             cpv(-4.0f, -2.0f),
@@ -54,62 +82,24 @@
             cpv(1.0f, -4.0f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:8 collisionType:WOUND_COLLISION_TYPE];
-    } else if (shapeNo == 1) {
-        CGPoint verts[] = {
-            cpv(-3.0f, -6.0f),
-            cpv(-6.0f, -3.0f),
-            cpv(-6.0f, 2.0f),
-            cpv(-3.0f, 5.0f),
-            cpv(2.0f, 5.0f),
-            cpv(5.0f, 2.0f),
-            cpv(5.0f, -3.0f),
-            cpv(2.0f, -6.0f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:8 collisionType:WOUND_COLLISION_TYPE];
-    } else if (shapeNo == 2) {
-        CGPoint verts[] = {
-            cpv(-3.0f, -8.0f),
-            cpv(-5.0f, -7.0f),
-            cpv(-7.0f, -5.0f),
-            cpv(-8.0f, -3.0f),
-            cpv(-8.0f, 2.0f),
-            cpv(-7.0f, 4.0f),
-            cpv(-5.0f, 6.0f),
-            cpv(-3.0f, 7.0f),
-            cpv(2.0f, 7.0f),
-            cpv(4.0f, 6.0f),
-            cpv(6.0f, 4.0f),
-            cpv(7.0f, 2.0f),
-            cpv(7.0f, -3.0f),
-            cpv(6.0f, -5.0f),
-            cpv(4.0f, -7.0f),
-            cpv(2.0f, -8.0f)
-        };
-        
-        [self addBodyWithVerts:verts atLocation:location numVerts:16 collisionType:WOUND_COLLISION_TYPE];        
+        [self addBodyWithVerts:verts atLocation:location numVerts:8 collisionType:WOUND_COLLISION_TYPE];        
     } else if (shapeNo == 3) {
         CGPoint verts[] = {
-            cpv(-4.0f, -10.0f),
-            cpv(-6.0f, -9.0f),
-            cpv(-9.0f, -6.0f),
-            cpv(-10.0f, -4.0f),
-            cpv(-10.0f, 3.0f),
-            cpv(-9.0f, 5.0f),
-            cpv(-6.0f, 8.0f),
-            cpv(-4.0f, 9.0f),
-            cpv(3.0f, 9.0f),
-            cpv(5.0f, 8.0f),
-            cpv(8.0f, 5.0f),
-            cpv(9.0f, 3.0f),
-            cpv(9.0f, -4.0f),
-            cpv(8.0f, -6.0f),
-            cpv(5.0f, -9.0f),
-            cpv(3.0f, -10.0f)
+            cpv(-2.0f, -5.0f),
+            cpv(-4.0f, -4.0f),
+            cpv(-5.0f, -2.0f),
+            cpv(-5.0f, 1.0f),
+            cpv(-4.0f, 3.0f),
+            cpv(-2.0f, 4.0f),
+            cpv(1.0f, 4.0f),
+            cpv(3.0f, 3.0f),
+            cpv(4.0f, 1.0f),
+            cpv(4.0f, -2.0f),
+            cpv(3.0f, -4.0f),
+            cpv(1.0f, -5.0f)
         };
         
-        [self addBodyWithVerts:verts atLocation:location numVerts:16 collisionType:WOUND_COLLISION_TYPE];
+        [self addBodyWithVerts:verts atLocation:location numVerts:12 collisionType:WOUND_COLLISION_TYPE];
     }
 }
 
@@ -136,7 +126,7 @@
 
 - (void)destroy {
     if (shape) {
-  //      cpSpaceRemoveShape(space, shape);
+        cpSpaceRemoveShape(space, shape);
     }
     [self removeFromParentAndCleanup:YES];
 }

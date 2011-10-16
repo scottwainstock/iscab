@@ -10,7 +10,13 @@
 #import "cocos2d.h"
 
 @interface IScabCCLayer : CCLayer {
+    CCMenuItem *homeButton;
+    CCMenuItem *jarButton;
+
 }
+
+@property (nonatomic, retain) CCMenuItem *homeButton;
+@property (nonatomic, retain) CCMenuItem *jarButton;
 
 - (void)setupNavigationIcons;
 - (void)aboutTapped:(CCMenuItem*)menuItem;
