@@ -14,6 +14,15 @@
 #import "cpMouse.h"
 #import "cpShape.h"
 
+#define NUM_SHAPE_TYPES 4
+#define NUM_BACKGROUNDS 8
+#define NUM_SCRATCH_SOUNDS 3
+#define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 10.0
+#define GRAVITY_FACTOR 750
+#define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
+#define NUM_INDIVIDUAL_SCABS 6
+#define NUM_DARK_PATCHES 4
+
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
     cpSpace *space;

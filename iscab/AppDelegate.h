@@ -14,6 +14,8 @@
 @class RootViewController;
 
 #define NUM_JARS_TO_FILL 3
+#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
+#define DEFAULT_FONT_SIZE 10
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow		   *window;

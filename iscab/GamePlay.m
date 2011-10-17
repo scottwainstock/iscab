@@ -18,17 +18,6 @@
 #import "cpSpace.h"
 #import "cpShape.h"
 
-#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
-#define DEFAULT_FONT_SIZE 30
-#define NUM_SHAPE_TYPES 4
-#define NUM_BACKGROUNDS 8
-#define NUM_SCRATCH_SOUNDS 3
-#define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 10.0
-#define GRAVITY_FACTOR 750
-#define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
-#define NUM_INDIVIDUAL_SCABS 6
-#define NUM_DARK_PATCHES 4
-
 static const ccColor3B ccScabGlow={255,105,180};
 
 @implementation GamePlay
@@ -533,7 +522,7 @@ bool endSequenceRunning;
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+        CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 3];
         title.position =  ccp(-100, 380);
         [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         

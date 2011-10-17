@@ -10,6 +10,11 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
+#define MASS 1.0
+#define SCAB_COLLISION_TYPE  1
+#define WOUND_COLLISION_TYPE 2
+#define BLOOD_COLLISION_TYPE 3
+
 @interface IScabSprite : CCSprite {
     cpShape *shape;
     cpSpace *space;    
