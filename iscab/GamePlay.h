@@ -39,13 +39,21 @@
     IScabSprite *moveableScab;
     int screenWidth;
     int screenHeight;
+    int numScabsInCurrentScoreTally;
+    bool isScoring;
+    bool endSequenceRunning;
+    CCTimer *scoringTimer;
 }
 
+@property (nonatomic) bool isScoring;
+@property (nonatomic) bool endSequenceRunning;
+@property (nonatomic) int numScabsInCurrentScoreTally;
 @property (nonatomic) int sizeOfMoveableScab;
 @property (nonatomic) CGPoint centerOfAllScabs;
 @property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
+@property (nonatomic, retain) CCTimer *scoringTimer;
 @property (nonatomic, retain) NSMutableArray *allScabChunks;
 @property (nonatomic, retain) NSMutableArray *allWounds;
 @property (nonatomic, retain) NSMutableArray *allBlood;
