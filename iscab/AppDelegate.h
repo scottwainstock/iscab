@@ -9,17 +9,23 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "ScabChunk.h"
+#import "Jar.h"
 
 @class RootViewController;
 
+#define NUM_JARS_TO_FILL 3
+
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
-	UIWindow			*window;
-	RootViewController	*viewController;
-    AVAudioPlayer       *audioPlayer;
+	UIWindow		   *window;
+	RootViewController *viewController;
+    AVAudioPlayer      *audioPlayer;
+    NSMutableArray     *jars;
 }
 
-- (void)saveState;
-
 @property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) NSMutableArray *jars;
+
+- (void)saveState;
+- (Jar *)getCurrentJar;
 
 @end

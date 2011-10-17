@@ -16,11 +16,21 @@
 #import "ScabChunk.h"
 #import "GamePlay.h"
 #import "Wound.h"
+#import "Jar.h"
 #import "chipmunk.h"
 
 @implementation AppDelegate
 
-@synthesize window;
+@synthesize window, jars;
+
+- (NSMutableArray *)jars { 
+    @synchronized(jars) {
+        if (jars == nil)
+            jars = [[NSMutableArray alloc] init];
+        return jars;
+    }
+    return nil;
+}
 
 - (void) removeStartupFlicker
 {
@@ -122,6 +132,28 @@
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
 
     cpInitChipmunk();
+        
+    NSData *mJars = [defaults objectForKey:@"jars"];
+    if (mJars != nil) {
+        NSLog(@"LOADING SAVED JARS");
+        NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
+        if (oldSavedArray != nil) {                
+            for (Jar *savedJar in oldSavedArray) {
+                Jar *jar = [[[Jar alloc] initWithNumScabChunks:savedJar.numScabChunks] autorelease];
+                                
+                [self.jars addObject:jar];
+            }
+        }
+    } else {
+        NSLog(@"CREATING NEW JARS");
+        for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
+            [self.jars addObject:[[[Jar alloc] initWithNumScabChunks:0] autorelease]];
+        }
+    }
+    
+    for (int i = 0; i < [self.jars count]; i++) {
+        NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabChunks]);
+    }
     
 	[[CCDirector sharedDirector] runWithScene: [MainMenu scene]];
 }
@@ -166,14 +198,23 @@
 - (void)saveState {    
     NSLog(@"SAVING");
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-        
-    NSLog(@"ABOUT TO SAVE: %@", [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] skinBackground]);
-    
+            
     [defaults setValue:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allScabChunks]] forKey:@"allScabChunks"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allWounds]] forKey:@"allWounds"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     
     [defaults synchronize]; 
+}
+
+- (Jar *)getCurrentJar {
+    for (Jar *jar in self.jars) {
+        if (jar.numScabChunks > 0 && jar.numScabChunks != NUM_SCABS_TO_FILL_JAR) {
+            return jar;
+        }
+    }
+    
+    return [self.jars objectAtIndex:0];
 }
  
 - (void)dealloc {

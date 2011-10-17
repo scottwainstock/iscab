@@ -126,6 +126,7 @@
 		8EB71AA413F399C200072593 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9713F399C200072593 /* About.m */; };
 		8EB71AC813F399F600072593 /* drew.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AAE13F399F600072593 /* drew.ttf */; };
 		8EB71AE413F39E1200072593 /* drawSpace.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71AE213F39E1200072593 /* drawSpace.c */; };
+		8EB816F5144BA49C004D2C73 /* Jar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB816F4144BA49C004D2C73 /* Jar.m */; };
 		8EC83324142848BC0095938B /* bloody_skin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331A142848BC0095938B /* bloody_skin2.png */; };
 		8EC83325142848BC0095938B /* bloody_skin3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331B142848BC0095938B /* bloody_skin3.png */; };
 		8EC83326142848BC0095938B /* clean_skin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331C142848BC0095938B /* clean_skin2.png */; };
@@ -415,6 +416,8 @@
 		8EB71AAE13F399F600072593 /* drew.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = drew.ttf; path = Resources/drew.ttf; sourceTree = "<group>"; };
 		8EB71AE213F39E1200072593 /* drawSpace.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = drawSpace.c; sourceTree = "<group>"; };
 		8EB71AE313F39E1200072593 /* drawSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = drawSpace.h; sourceTree = "<group>"; };
+		8EB816F3144BA49C004D2C73 /* Jar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jar.h; sourceTree = "<group>"; };
+		8EB816F4144BA49C004D2C73 /* Jar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Jar.m; sourceTree = "<group>"; };
 		8EC8331A142848BC0095938B /* bloody_skin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin2.png; sourceTree = "<group>"; };
 		8EC8331B142848BC0095938B /* bloody_skin3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin3.png; sourceTree = "<group>"; };
 		8EC8331C142848BC0095938B /* clean_skin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clean_skin2.png; sourceTree = "<group>"; };
@@ -971,6 +974,8 @@
 				8ECA1AD513F397AF006597EA /* AppDelegate.m */,
 				8ECA1AD713F397AF006597EA /* RootViewController.h */,
 				8ECA1AD813F397AF006597EA /* RootViewController.m */,
+				8EB816F3144BA49C004D2C73 /* Jar.h */,
+				8EB816F4144BA49C004D2C73 /* Jar.m */,
 				8ECA1ADD13F397AF006597EA /* GameConfig.h */,
 				8ECA192713F397AC006597EA /* Resources */,
 				8ECA193B13F397AC006597EA /* libs */,
@@ -1739,6 +1744,7 @@
 				8EB71AA413F399C200072593 /* About.m in Sources */,
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
 				8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */,
+				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
