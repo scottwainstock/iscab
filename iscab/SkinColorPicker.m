@@ -7,9 +7,7 @@
 //
 
 #import "SkinColorPicker.h"
-
-#define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
-#define DEFAULT_FONT_SIZE 10
+#import "AppDelegate.h"
 
 @implementation SkinColorPicker
 

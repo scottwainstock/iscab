@@ -14,6 +14,15 @@
 #import "cpMouse.h"
 #import "cpShape.h"
 
+#define NUM_SHAPE_TYPES 4
+#define NUM_BACKGROUNDS 8
+#define NUM_SCRATCH_SOUNDS 3
+#define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 10.0
+#define GRAVITY_FACTOR 750
+#define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
+#define NUM_INDIVIDUAL_SCABS 6
+#define NUM_DARK_PATCHES 4
+
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
     cpSpace *space;
@@ -30,13 +39,21 @@
     IScabSprite *moveableScab;
     int screenWidth;
     int screenHeight;
+    int numScabsInCurrentScoreTally;
+    bool isScoring;
+    bool endSequenceRunning;
+    CCTimer *scoringTimer;
 }
 
+@property (nonatomic) bool isScoring;
+@property (nonatomic) bool endSequenceRunning;
+@property (nonatomic) int numScabsInCurrentScoreTally;
 @property (nonatomic) int sizeOfMoveableScab;
 @property (nonatomic) CGPoint centerOfAllScabs;
 @property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, assign) CCSpriteBatchNode *batchNode;
+@property (nonatomic, retain) CCTimer *scoringTimer;
 @property (nonatomic, retain) NSMutableArray *allScabChunks;
 @property (nonatomic, retain) NSMutableArray *allWounds;
 @property (nonatomic, retain) NSMutableArray *allBlood;
@@ -53,9 +70,8 @@
 - (CGPoint)getCenterOfAllScabs;
 - (void)setupSkinBackgroundOffsets;
 - (void)generateScabs;
-- (void)clearLowerScabChunks:(ScabChunk *)newScabChunk;
 - (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean;
-- (ScabChunk *)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
+- (void)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)displaySavedBoard;
 - (void)updateBackground:(NSString *)skinBackground;
