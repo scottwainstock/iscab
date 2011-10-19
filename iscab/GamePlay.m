@@ -112,7 +112,7 @@ AppDelegate *app;
 
 - (void)draw {
     drawSpaceOptions options = {
-        0, 0, 1, 4.0, 4.0, 2.0
+        0, 0, 1, 1.0f, 0.0f, 1.0f
     };
     
     drawSpace(space, &options);
