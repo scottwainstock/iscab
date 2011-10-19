@@ -31,6 +31,7 @@
 
 - (void)update;
 - (void)destroy;
+- (bool)isOffscreen;
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo;
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType;
 - (id)initWithLocation:(CGPoint)location filename:(NSString *)filename shapeNo:(int)shapeNo;

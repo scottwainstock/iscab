@@ -68,7 +68,7 @@ AppDelegate *app;
         for (IScabSprite *sprite in app.batchNode.children) {
             [sprite update];
 
-            if (sprite.position.y < 0) {
+            if ([sprite isOffscreen]) {
                 [spritesToDelete addObject:sprite];
                 
                 [app getCurrentJar].numScabChunks += 1;
@@ -349,7 +349,7 @@ AppDelegate *app;
     for (Scab *scab in app.scabs) {
         for (ScabChunk *scabChunk in scab.scabChunks) {
             if (ccpDistance(scabChunk.savedLocation, touchLocation) < MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL) {
-                if (self.moveableScab == nil || self.moveableScab.position.y < 0) {
+                if (self.moveableScab == nil || [self.moveableScab isOffscreen]) {
                     moveableScab = [[IScabSprite alloc] initWithSpace:space location:touchLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabChunkNo] shapeNo:scabChunk.scabChunkNo];
                     [app.batchNode addChild:moveableScab];
                 }

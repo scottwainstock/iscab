@@ -20,6 +20,10 @@
     }
 }
 
+- (bool)isOffscreen {
+    return CGRectContainsPoint([UIScreen mainScreen].bounds, self.position) ? FALSE : TRUE;
+}
+
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType {    
     float moment = cpMomentForPoly(MASS, numVerts, verts, CGPointZero);
     body = cpBodyNew(MASS, moment);
