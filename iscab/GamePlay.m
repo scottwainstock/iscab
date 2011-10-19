@@ -23,7 +23,7 @@ static const ccColor3B ccScabGlow={255,105,180};
 
 @implementation GamePlay
 
-@synthesize allBlood, looseScabChunks, gravity, centerOfAllScabs, skinBackgroundOffsets, sizeOfMoveableScab, moveableScab, isScoring, endSequenceRunning, numScabsInCurrentScoreTally, scoringTimer;
+@synthesize allBlood, looseScabChunks, gravity, centerOfAllScabs, skinBackgroundOffsets, sizeOfMoveableScab, moveableScab, endSequenceRunning;
 
 AppDelegate *app;
 
@@ -60,10 +60,6 @@ AppDelegate *app;
     
     if (!endSequenceRunning) {
         NSMutableArray *spritesToDelete = [[NSMutableArray alloc] init];
-
-        if (self.scoringTimer) {
-            [self.scoringTimer update:delta];
-        }
         
         for (IScabSprite *sprite in app.batchNode.children) {
             [sprite update];
@@ -72,26 +68,7 @@ AppDelegate *app;
                 [spritesToDelete addObject:sprite];
                 
                 [app getCurrentJar].numScabChunks += 1;
-                
-                if (numScabsInCurrentScoreTally == 0)
-                    isScoring = true;
-
-                numScabsInCurrentScoreTally += 1;
-                self.scoringTimer = [CCTimer timerWithTarget:self selector:@selector(setIsScoringToFalse) interval:1.0];
             }
-        }
-        
-        if (!isScoring && numScabsInCurrentScoreTally > 0) {
-            NSLog(@"SCORE");
-            CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%d", numScabsInCurrentScoreTally] fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 2];
-            [scorePopup setPosition:ccp(240, 35)];
-            [scorePopup setColor:ccScabGlow];
-            [scorePopup runAction:[CCFadeOut actionWithDuration:2.5]]; 
-            
-            [self addChild:scorePopup z:100];
-            
-            isScoring = false;
-            numScabsInCurrentScoreTally = 0;
         }
         
         for (IScabSprite *deleteSprite in spritesToDelete) {
@@ -123,12 +100,6 @@ AppDelegate *app;
             }                
         }
     }
-}
-
-- (void)setIsScoringToFalse {
-    NSLog(@"SETTING IS SCORING TO FALSE");
-    self.isScoring = false;
-    self.scoringTimer = nil;
 }
 
 + (id)scene {
@@ -166,9 +137,7 @@ AppDelegate *app;
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
-        isScoring = false;
         endSequenceRunning = false;
-        numScabsInCurrentScoreTally = 0;
         
         [self setupSkinBackgroundOffsets];
         

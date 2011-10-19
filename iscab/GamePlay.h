@@ -27,25 +27,19 @@
     cpSpace *space;
     cpVect gravity;
     int sizeOfMoveableScab;
-    int numScabsInCurrentScoreTally;
-    bool isScoring;
     bool endSequenceRunning;
     IScabSprite *moveableScab;
-    CCTimer *scoringTimer;
     CGPoint centerOfAllScabs;
     NSMutableArray *allBlood;
     NSMutableArray *looseScabChunks;
     NSMutableDictionary *skinBackgroundOffsets;
 }
 
-@property (nonatomic) bool isScoring;
 @property (nonatomic) bool endSequenceRunning;
-@property (nonatomic) int numScabsInCurrentScoreTally;
 @property (nonatomic) int sizeOfMoveableScab;
 @property (nonatomic) CGPoint centerOfAllScabs;
 @property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
-@property (nonatomic, retain) CCTimer *scoringTimer;
 @property (nonatomic, retain) NSMutableArray *allBlood;
 @property (nonatomic, retain) NSMutableArray *looseScabChunks;
 @property (nonatomic, retain) NSMutableDictionary *skinBackgroundOffsets;
