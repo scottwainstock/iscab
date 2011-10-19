@@ -8,24 +8,25 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "Scab.h"
 #import "IScabSprite.h"
+
+#define DISTANCE_FROM_CENTER_TO_REMAIN_UNCLEAN 25.0
 
 @interface ScabChunk : IScabSprite <NSCoding> {
     int priority;
     int health;
-    int scabNo;
 
-    id action;
-    
+    Scab *scab;
     NSString *type;
 }
 
 - (void)ripOffScab;
+- (NSString *)filename;
 
 @property (assign) int priority;
 @property (assign) int health;
-@property (nonatomic, assign) int scabNo;
-@property (nonatomic, assign) id action;
 @property (nonatomic, retain) NSString *type;
+@property (nonatomic, retain) Scab *scab;
 
 @end

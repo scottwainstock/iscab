@@ -14,24 +14,28 @@
 
 @implementation ScabChunk
 
-@synthesize priority, health, action, scabNo, type;
+@synthesize priority, health, type, scab;
+
+- (NSString *)filename {
+    return [NSString stringWithFormat:@"%@_scab%d.png", self.type, self.scabChunkNo];
+}
 
 - (void)ripOffScab {
     //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
         
-    if (ccpDistance(self.savedLocation, [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] centerOfAllScabs]) < 75.0) {
-        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:NO];
+    if (ccpDistance(self.savedLocation, self.scab.center) < DISTANCE_FROM_CENTER_TO_REMAIN_UNCLEAN) {
+        [scab createWoundFromIScabSprite:self isClean:NO];
     } else {
-        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] createWound:self cleanSkin:YES];
+        [scab createWoundFromIScabSprite:self isClean:YES];
     }
 }
 
-- (void)encodeWithCoder:(NSCoder *)coder {
+- (void)encodeWithCoder:(NSCoder *)coder {    
     [coder encodeInt:self.position.x forKey:@"xPos"]; 
     [coder encodeInt:self.position.y forKey:@"yPos"]; 
     [coder encodeInt:self.health forKey:@"health"];
     [coder encodeInt:self.priority forKey:@"priority"];
-    [coder encodeInt:self.scabNo forKey:@"scabNo"];
+    [coder encodeInt:self.scabChunkNo forKey:@"scabChunkNo"];
     [coder encodeObject:(NSString *)self.type forKey:@"type"];
 } 
 
@@ -40,7 +44,7 @@
     
     if (self != nil) {
         self.savedLocation = ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]);
-        self.scabNo = [coder decodeIntForKey:@"scabNo"];
+        self.scabChunkNo = [coder decodeIntForKey:@"scabChunkNo"];
         self.health = [coder decodeIntForKey:@"health"];
         self.priority = [coder decodeIntForKey:@"priority"];
         self.type = (NSString *)[coder decodeObjectForKey:@"type"];
@@ -49,9 +53,13 @@
     return self; 
 }
 
+- (void)destroy {
+    [self.scab.scabChunks removeObject:self];
+    [super destroy];
+}
+
 - (void)dealloc {
     [super dealloc];
-    [action release];
     [type release];
 }
 

@@ -13,7 +13,6 @@
 #import "MainMenu.h"
 #import "RootViewController.h"
 #import "SimpleAudioEngine.h"
-#import "ScabChunk.h"
 #import "GamePlay.h"
 #import "Wound.h"
 #import "Jar.h"
@@ -21,13 +20,42 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground;
+
+- (NSMutableArray *)scabs { 
+    @synchronized(scabs) {
+        if (scabs == nil)
+            scabs = [[NSMutableArray alloc] init];
+        return scabs;
+    }
+    return nil;
+}
 
 - (NSMutableArray *)jars { 
     @synchronized(jars) {
         if (jars == nil)
             jars = [[NSMutableArray alloc] init];
         return jars;
+    }
+    return nil;
+}
+
+- (CCSpriteBatchNode *)batchNode {    
+    @synchronized(batchNode) {
+        if (batchNode == nil)
+            batchNode = [[CCSpriteBatchNode alloc] init];
+        
+        return batchNode;
+    }
+    return nil;
+}
+
+- (NSString *)skinBackground {    
+    @synchronized(skinBackground) {
+        if (skinBackground == nil)
+            skinBackground = [[NSString alloc] init];
+        
+        return skinBackground;
     }
     return nil;
 }
@@ -155,7 +183,34 @@
         NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabChunks]);
     }
     
-	[[CCDirector sharedDirector] runWithScene: [MainMenu scene]];
+    screenWidth = [UIScreen mainScreen].bounds.size.width;
+    screenHeight = [UIScreen mainScreen].bounds.size.height;
+    self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
+    
+    [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+}
+
+- (void)saveState {    
+    NSLog(@"SAVING");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
+    
+    [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
+    
+    [self.scabs removeAllObjects];
+    
+    [defaults synchronize]; 
+}
+
+- (Jar *)getCurrentJar {
+    for (Jar *jar in self.jars) {
+        if (jar.numScabChunks > 0 && jar.numScabChunks != NUM_SCABS_TO_FILL_JAR) {
+            return jar;
+        }
+    }
+    
+    return [self.jars objectAtIndex:0];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -190,31 +245,9 @@
 	[window release];
 	[director end];	
 }
-   
+
 - (void)applicationSignificantTimeChange:(UIApplication *)application {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
-}
-
-- (void)saveState {    
-    NSLog(@"SAVING");
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-            
-    [defaults setValue:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] skinBackground] forKey:@"skinBackground"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allScabChunks]] forKey:@"allScabChunks"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allWounds]] forKey:@"allWounds"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-    
-    [defaults synchronize]; 
-}
-
-- (Jar *)getCurrentJar {
-    for (Jar *jar in self.jars) {
-        if (jar.numScabChunks > 0 && jar.numScabChunks != NUM_SCABS_TO_FILL_JAR) {
-            return jar;
-        }
-    }
-    
-    return [self.jars objectAtIndex:0];
 }
  
 - (void)dealloc {

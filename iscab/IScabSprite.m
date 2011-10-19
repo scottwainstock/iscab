@@ -7,12 +7,11 @@
 //
 
 #import "IScabSprite.h"
-#import "GamePlay.h"
 #import "cpShape.h"
 
 @implementation IScabSprite
 
-@synthesize savedLocation, shape;
+@synthesize savedLocation, shape, scabChunkNo;
 
 - (void)update {
     if (body) {        

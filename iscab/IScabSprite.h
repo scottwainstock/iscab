@@ -19,11 +19,13 @@
     cpShape *shape;
     cpSpace *space;    
     CGPoint savedLocation;
+    int scabChunkNo;
     
     @public
         cpBody *body;
 }
 
+@property (nonatomic, assign) int scabChunkNo;
 @property (nonatomic, assign) cpShape *shape;
 @property (nonatomic, assign) CGPoint savedLocation;
 

@@ -111,6 +111,7 @@
 		8E7720281436A1D200D4D316 /* wound3-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E7720141436A1D100D4D316 /* wound3-hd.png */; };
 		8E8272AF142FB8130061B06C /* jar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272AE142FB8130061B06C /* jar.png */; };
 		8E8272B1142FB8A60061B06C /* jar-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272B0142FB8A60061B06C /* jar-background.png */; };
+		8E84548A144E1181002F5424 /* Scab.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E845489144E1181002F5424 /* Scab.m */; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -387,6 +388,8 @@
 		8E7720141436A1D100D4D316 /* wound3-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wound3-hd.png"; sourceTree = "<group>"; };
 		8E8272AE142FB8130061B06C /* jar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jar.png; sourceTree = "<group>"; };
 		8E8272B0142FB8A60061B06C /* jar-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jar-background.png"; sourceTree = "<group>"; };
+		8E845488144E1181002F5424 /* Scab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scab.h; sourceTree = "<group>"; };
+		8E845489144E1181002F5424 /* Scab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scab.m; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
@@ -976,6 +979,8 @@
 				8ECA1AD813F397AF006597EA /* RootViewController.m */,
 				8EB816F3144BA49C004D2C73 /* Jar.h */,
 				8EB816F4144BA49C004D2C73 /* Jar.m */,
+				8E845488144E1181002F5424 /* Scab.h */,
+				8E845489144E1181002F5424 /* Scab.m */,
 				8ECA1ADD13F397AF006597EA /* GameConfig.h */,
 				8ECA192713F397AC006597EA /* Resources */,
 				8ECA193B13F397AC006597EA /* libs */,
@@ -1745,6 +1750,7 @@
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
 				8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */,
 				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,
+				8E84548A144E1181002F5424 /* Scab.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
