@@ -105,7 +105,7 @@
     if ((self = [super initWithSpriteFrameName:filename])) {     
         space = theSpace;
         savedLocation = location;
-        [self createBodyAtLocation:savedLocation shapeNo:(int)shapeNo];  
+        [self createBodyAtLocation:location shapeNo:(int)shapeNo];  
     }
         
     return self;
@@ -124,7 +124,7 @@
 
 - (void)destroy {
     if (shape) {
-        cpSpaceRemoveShape(space, shape);
+        //cpSpaceRemoveShape(space, shape);
     }
     [self removeFromParentAndCleanup:YES];
 }

@@ -17,7 +17,7 @@
 
 #define NUM_BACKGROUNDS 8
 #define NUM_SCRATCH_SOUNDS 3
-#define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 10.0
+#define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
 #define GRAVITY_FACTOR 750
 #define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
 #define NUM_INDIVIDUAL_SCABS 6
@@ -52,7 +52,7 @@
 - (void)generateScabs;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)updateBackground:(NSString *)skinBackground;
-- (NSMutableArray *)allScabChunks;
+- (NSMutableArray *)activeScabChunks;
 - (cpSpace *)createSpace;
 
 @end

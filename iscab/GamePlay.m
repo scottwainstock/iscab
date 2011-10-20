@@ -45,14 +45,14 @@ AppDelegate *app;
     return nil;
 }
 
-- (NSMutableArray *)allScabChunks {
-    NSMutableArray *mAllScabChunks = [[NSMutableArray alloc] init];
+- (NSMutableArray *)activeScabChunks {
+    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
     for (Scab *scab in app.scabs) {
-        [mAllScabChunks addObjectsFromArray:scab.scabChunks];
+        [scabChunks addObjectsFromArray:scab.scabChunks];
     }
     
-    [mAllScabChunks release];
-    return mAllScabChunks;
+    //[scabChunks release];
+    return scabChunks;
 }
 
 - (void)update:(ccTime)delta {
@@ -176,7 +176,7 @@ AppDelegate *app;
                 [scab displaySprites];
             }
         }
-                
+        
         [self scheduleUpdate];
         centerOfAllScabs = [self getCenterOfAllScabs];        
     }
@@ -247,7 +247,7 @@ AppDelegate *app;
     CGPoint offsetLocation = CGPointMake(location.x + offsetX, location.y + offsetY);
     cpShape *foundShape = cpSpacePointQueryFirst(space, offsetLocation, GRABABLE_MASK_BIT, 0);
     if (foundShape) {
-        CCSprite *newMoveableScabPiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabChunkNo]];
+        CCSprite *newMoveableScabPiece = [CCSprite spriteWithSpriteFrameName:[scabChunk filename]];
         
         [newMoveableScabPiece setPosition:CGPointMake(arc4random() % sizeOfMoveableScab, arc4random() % sizeOfMoveableScab)];
         [moveableScab addChild:newMoveableScabPiece];
@@ -270,7 +270,7 @@ AppDelegate *app;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
     [scabChunk destroy];
 
-    if (([self.allScabChunks count] == 0) && !initing) {
+    if (([self.activeScabChunks count] == 0) && !initing) {
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
@@ -314,14 +314,13 @@ AppDelegate *app;
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     sizeOfMoveableScab = 1;
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    CGRect touchRect = CGRectMake(touchLocation.x, touchLocation.y, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL);
     
-    for (Scab *scab in app.scabs) {
-        for (ScabChunk *scabChunk in scab.scabChunks) {
-            if (ccpDistance(scabChunk.savedLocation, touchLocation) < MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL) {
-                if (self.moveableScab == nil || [self.moveableScab isOffscreen]) {
-                    moveableScab = [[IScabSprite alloc] initWithSpace:space location:touchLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabChunkNo] shapeNo:scabChunk.scabChunkNo];
-                    [app.batchNode addChild:moveableScab];
-                }
+    for (ScabChunk *scabChunk in [self activeScabChunks]) {
+        if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
+            if (self.moveableScab == nil || [self.moveableScab isOffscreen]) {
+                moveableScab = [[IScabSprite alloc] initWithSpace:space location:touchLocation filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
+                [app.batchNode addChild:moveableScab];
             }
         }
     }
@@ -333,33 +332,32 @@ AppDelegate *app;
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    CGRect touchRect = CGRectMake(touchLocation.x - (MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL / 2), touchLocation.y - (MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL /2), MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL);
     
     cpMouseMove(mouse, touchLocation);
     
     NSMutableArray *removedScabs = [NSMutableArray array];
-    for (Scab *scab in app.scabs) {
-        for (ScabChunk *scabChunk in scab.scabChunks) {
-            if (ccpDistance(scabChunk.savedLocation, touchLocation) < MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL) {
-                [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
+    for (ScabChunk *scabChunk in [self activeScabChunks]) {
+        if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
+            [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
+            
+            if ([scabChunk health] > 0) {
+                scabChunk.health -= 1;
+            }
+            
+            if (([scabChunk health] <= 0)) {
+                [removedScabs addObject:scabChunk];
+                [scabChunk ripOffScab];
                 
-                if ([scabChunk health] > 0) {
-                    scabChunk.health -= 1;
-                }
+                [self addScabChunk:scabChunk fromLocation:touchLocation];
                 
-                if (([scabChunk health] <= 0)) {
-                    [removedScabs addObject:scabChunk];
-                    [scabChunk ripOffScab];
+                if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
+                    IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.position filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
                     
-                    [self addScabChunk:scabChunk fromLocation:touchLocation];
-                    
-                    if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
-                        IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.savedLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabChunkNo] shapeNo:scabChunk.scabChunkNo];
-                        
-                        [self.looseScabChunks addObject:looseScab];
-                        [app.batchNode addChild:looseScab];
-                        [looseScab release];
-                    }                
-                }
+                    [self.looseScabChunks addObject:looseScab];
+                    [app.batchNode addChild:looseScab];
+                    [looseScab release];
+                }              
             }
         }
     }
@@ -369,7 +367,7 @@ AppDelegate *app;
             [self removeScabChunk:removedScabChunk initing:NO];
         }
     }
-    [removedScabs removeAllObjects];    
+    [removedScabs removeAllObjects];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
