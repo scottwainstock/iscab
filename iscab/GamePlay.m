@@ -19,7 +19,7 @@
 #import "cpSpace.h"
 #import "cpShape.h"
 
-static const ccColor3B ccScabGlow={255,105,180};
+static const ccColor3B ccSCABGLOW={255,105,180};
 
 @implementation GamePlay
 
@@ -266,8 +266,21 @@ AppDelegate *app;
     [particles release];
 }
 
+- (void)addScabToJar:(Scab *)scab {
+    CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:@"SCAB ADDED TO JAR!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+    [scorePopup setPosition:ccp(200, 35)];
+    [scorePopup setColor:ccBLACK];
+    [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
+    [self addChild:scorePopup z:100];
+}
+
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
+    Scab *scab = scabChunk.scab;
     [scabChunk destroy];
+
+    if ([scab.scabChunks count] == 0) {
+        [self addScabToJar:scab];
+    }
 
     if (([self.activeScabChunks count] == 0) && !initing) {
         endSequenceRunning = true;

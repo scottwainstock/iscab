@@ -38,7 +38,7 @@
     shape->data = self;
     shape->group = 1;
     self.shape = shape;
-    cpSpaceAddShape(space, shape);
+    //cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
