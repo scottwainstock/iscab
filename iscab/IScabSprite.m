@@ -7,18 +7,21 @@
 //
 
 #import "IScabSprite.h"
-#import "GamePlay.h"
 #import "cpShape.h"
 
 @implementation IScabSprite
 
-@synthesize savedLocation, shape;
+@synthesize savedLocation, shape, scabChunkNo;
 
 - (void)update {
     if (body) {        
         self.position = body->p;
         self.rotation = CC_RADIANS_TO_DEGREES(-1 * body->a);
     }
+}
+
+- (bool)isOffscreen {
+    return CGRectContainsPoint([UIScreen mainScreen].bounds, self.position) ? FALSE : TRUE;
 }
 
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType {    
@@ -35,7 +38,7 @@
     shape->data = self;
     shape->group = 1;
     self.shape = shape;
-    cpSpaceAddShape(space, shape);
+    //cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
@@ -102,7 +105,7 @@
     if ((self = [super initWithSpriteFrameName:filename])) {     
         space = theSpace;
         savedLocation = location;
-        [self createBodyAtLocation:savedLocation shapeNo:(int)shapeNo];  
+        [self createBodyAtLocation:location shapeNo:(int)shapeNo];  
     }
         
     return self;
@@ -121,7 +124,7 @@
 
 - (void)destroy {
     if (shape) {
-        cpSpaceRemoveShape(space, shape);
+        //cpSpaceRemoveShape(space, shape);
     }
     [self removeFromParentAndCleanup:YES];
 }

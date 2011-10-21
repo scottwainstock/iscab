@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "ScabChunk.h"
 #import "Jar.h"
 
 @class RootViewController;
@@ -18,14 +17,24 @@
 #define DEFAULT_FONT_SIZE 10
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
-	UIWindow		   *window;
+	UIWindow *window;
 	RootViewController *viewController;
-    AVAudioPlayer      *audioPlayer;
-    NSMutableArray     *jars;
+    AVAudioPlayer *audioPlayer;
+    NSMutableArray *jars;
+    int screenWidth;
+    int screenHeight;
+    CCSpriteBatchNode *batchNode;
+    NSMutableArray *scabs;
+    NSString *skinBackground;
 }
 
+@property (nonatomic) int screenWidth;
+@property (nonatomic) int screenHeight;
+@property (nonatomic, assign) NSString *skinBackground;
+@property (nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;
+@property (nonatomic, retain) NSMutableArray *scabs;
 
 - (void)saveState;
 - (Jar *)getCurrentJar;

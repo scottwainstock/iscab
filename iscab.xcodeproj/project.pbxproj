@@ -22,6 +22,14 @@
 		8E46CB23142E87DF000FC690 /* PaperBckgrnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E46CB22142E87DF000FC690 /* PaperBckgrnd.png */; };
 		8E46CB26142E8C1B000FC690 /* about-header.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E46CB25142E8C1B000FC690 /* about-header.png */; };
 		8E46CB28142E8DE6000FC690 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E46CB27142E8DE5000FC690 /* logo.png */; };
+		8E4832AD144F955A0064B82A /* scab_border0-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832A5144F955A0064B82A /* scab_border0-hd.png */; };
+		8E4832AE144F955A0064B82A /* scab_border0.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832A6144F955A0064B82A /* scab_border0.png */; };
+		8E4832AF144F955A0064B82A /* scab_border1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832A7144F955A0064B82A /* scab_border1-hd.png */; };
+		8E4832B0144F955A0064B82A /* scab_border1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832A8144F955A0064B82A /* scab_border1.png */; };
+		8E4832B1144F955A0064B82A /* scab_border2-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832A9144F955A0064B82A /* scab_border2-hd.png */; };
+		8E4832B2144F955A0064B82A /* scab_border2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AA144F955A0064B82A /* scab_border2.png */; };
+		8E4832B3144F955A0064B82A /* scab_border3-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AB144F955A0064B82A /* scab_border3-hd.png */; };
+		8E4832B4144F955A0064B82A /* scab_border3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AC144F955A0064B82A /* scab_border3.png */; };
 		8E49336C13F4A1F0009908FD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E49336B13F4A1F0009908FD /* Default.png */; };
 		8E60E2DD142E465700D920C3 /* menu-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2DC142E465700D920C3 /* menu-background.png */; };
 		8E60E2E4142E48D200D920C3 /* About-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2DE142E48D200D920C3 /* About-Hover.png */; };
@@ -111,6 +119,7 @@
 		8E7720281436A1D200D4D316 /* wound3-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E7720141436A1D100D4D316 /* wound3-hd.png */; };
 		8E8272AF142FB8130061B06C /* jar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272AE142FB8130061B06C /* jar.png */; };
 		8E8272B1142FB8A60061B06C /* jar-background.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E8272B0142FB8A60061B06C /* jar-background.png */; };
+		8E84548A144E1181002F5424 /* Scab.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E845489144E1181002F5424 /* Scab.m */; };
 		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
@@ -299,6 +308,14 @@
 		8E46CB22142E87DF000FC690 /* PaperBckgrnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PaperBckgrnd.png; sourceTree = "<group>"; };
 		8E46CB25142E8C1B000FC690 /* about-header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about-header.png"; sourceTree = "<group>"; };
 		8E46CB27142E8DE5000FC690 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = Resources/logo.png; sourceTree = "<group>"; };
+		8E4832A5144F955A0064B82A /* scab_border0-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scab_border0-hd.png"; sourceTree = "<group>"; };
+		8E4832A6144F955A0064B82A /* scab_border0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border0.png; sourceTree = "<group>"; };
+		8E4832A7144F955A0064B82A /* scab_border1-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scab_border1-hd.png"; sourceTree = "<group>"; };
+		8E4832A8144F955A0064B82A /* scab_border1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border1.png; sourceTree = "<group>"; };
+		8E4832A9144F955A0064B82A /* scab_border2-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scab_border2-hd.png"; sourceTree = "<group>"; };
+		8E4832AA144F955A0064B82A /* scab_border2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border2.png; sourceTree = "<group>"; };
+		8E4832AB144F955A0064B82A /* scab_border3-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scab_border3-hd.png"; sourceTree = "<group>"; };
+		8E4832AC144F955A0064B82A /* scab_border3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border3.png; sourceTree = "<group>"; };
 		8E49336B13F4A1F0009908FD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ./Resources/Default.png; sourceTree = "<group>"; };
 		8E60E2DC142E465700D920C3 /* menu-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "menu-background.png"; sourceTree = "<group>"; };
 		8E60E2DE142E48D200D920C3 /* About-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "About-Hover.png"; sourceTree = "<group>"; };
@@ -387,6 +404,8 @@
 		8E7720141436A1D100D4D316 /* wound3-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wound3-hd.png"; sourceTree = "<group>"; };
 		8E8272AE142FB8130061B06C /* jar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jar.png; sourceTree = "<group>"; };
 		8E8272B0142FB8A60061B06C /* jar-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jar-background.png"; sourceTree = "<group>"; };
+		8E845488144E1181002F5424 /* Scab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scab.h; sourceTree = "<group>"; };
+		8E845489144E1181002F5424 /* Scab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scab.m; sourceTree = "<group>"; };
 		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
 		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
@@ -853,6 +872,14 @@
 		8E6A6D8E141F062700921E7E /* Sprites */ = {
 			isa = PBXGroup;
 			children = (
+				8E4832A5144F955A0064B82A /* scab_border0-hd.png */,
+				8E4832A6144F955A0064B82A /* scab_border0.png */,
+				8E4832A7144F955A0064B82A /* scab_border1-hd.png */,
+				8E4832A8144F955A0064B82A /* scab_border1.png */,
+				8E4832A9144F955A0064B82A /* scab_border2-hd.png */,
+				8E4832AA144F955A0064B82A /* scab_border2.png */,
+				8E4832AB144F955A0064B82A /* scab_border3-hd.png */,
+				8E4832AC144F955A0064B82A /* scab_border3.png */,
 				8EEEF8421439673F00B2BB0E /* blood_streak-hd.png */,
 				8E46AB651437BD55001BD1B3 /* scabs-hd.zss */,
 				8E46AB661437BD55001BD1B3 /* scabs-hd.plist */,
@@ -976,6 +1003,8 @@
 				8ECA1AD813F397AF006597EA /* RootViewController.m */,
 				8EB816F3144BA49C004D2C73 /* Jar.h */,
 				8EB816F4144BA49C004D2C73 /* Jar.m */,
+				8E845488144E1181002F5424 /* Scab.h */,
+				8E845489144E1181002F5424 /* Scab.m */,
 				8ECA1ADD13F397AF006597EA /* GameConfig.h */,
 				8ECA192713F397AC006597EA /* Resources */,
 				8ECA193B13F397AC006597EA /* libs */,
@@ -1597,6 +1626,14 @@
 				8E46AB691437BD55001BD1B3 /* scabs-hd.plist in Resources */,
 				8E46AB6A1437BD55001BD1B3 /* scabs-hd.png in Resources */,
 				8EEEF8431439673F00B2BB0E /* blood_streak-hd.png in Resources */,
+				8E4832AD144F955A0064B82A /* scab_border0-hd.png in Resources */,
+				8E4832AE144F955A0064B82A /* scab_border0.png in Resources */,
+				8E4832AF144F955A0064B82A /* scab_border1-hd.png in Resources */,
+				8E4832B0144F955A0064B82A /* scab_border1.png in Resources */,
+				8E4832B1144F955A0064B82A /* scab_border2-hd.png in Resources */,
+				8E4832B2144F955A0064B82A /* scab_border2.png in Resources */,
+				8E4832B3144F955A0064B82A /* scab_border3-hd.png in Resources */,
+				8E4832B4144F955A0064B82A /* scab_border3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1745,6 +1782,7 @@
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
 				8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */,
 				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,
+				8E84548A144E1181002F5424 /* Scab.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

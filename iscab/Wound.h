@@ -11,13 +11,13 @@
 #import "IScabSprite.h"
 
 @interface Wound : IScabSprite <NSCoding> {
-    int scabNo;
-    bool bleeding;
-    bool clean;
+    bool isBleeding;
+    bool isClean;
 }
 
-@property (nonatomic, assign) bool clean;
-@property (nonatomic, assign) bool bleeding;
-@property (nonatomic, assign) int scabNo;
+@property (nonatomic, assign) bool isClean;
+@property (nonatomic, assign) bool isBleeding;
+
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabChunkNo:(int)scabChunkNo;
 
 @end

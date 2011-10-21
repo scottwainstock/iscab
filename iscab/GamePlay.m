@@ -9,6 +9,7 @@
 #import "GamePlay.h"
 #import "ScabChunk.h"
 #import "Wound.h"
+#import "Scab.h"
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
 #import "JarScene.h"
@@ -18,11 +19,11 @@
 #import "cpSpace.h"
 #import "cpShape.h"
 
-static const ccColor3B ccScabGlow={255,105,180};
+static const ccColor3B ccSCABGLOW={255,105,180};
 
 @implementation GamePlay
 
-@synthesize batchNode, allScabChunks, allWounds, allBlood, looseScabChunks, gravity, centerOfAllScabs, skinBackground, skinBackgroundOffsets, sizeOfMoveableScab, moveableScab, isScoring, endSequenceRunning, numScabsInCurrentScoreTally, scoringTimer;
+@synthesize allBlood, looseScabChunks, gravity, centerOfAllScabs, skinBackgroundOffsets, sizeOfMoveableScab, moveableScab, endSequenceRunning;
 
 AppDelegate *app;
 
@@ -31,24 +32,6 @@ AppDelegate *app;
         if (allBlood == nil)
             allBlood = [[NSMutableArray alloc] init];
         return allBlood;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)allScabChunks { 
-    @synchronized(allScabChunks) {
-        if (allScabChunks == nil)
-            allScabChunks = [[NSMutableArray alloc] init];
-        return allScabChunks;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)allWounds { 
-    @synchronized(allWounds) {
-        if (allWounds == nil)
-            allWounds = [[NSMutableArray alloc] init];
-        return allWounds;
     }
     return nil;
 }
@@ -62,42 +45,28 @@ AppDelegate *app;
     return nil;
 }
 
+- (NSMutableArray *)activeScabChunks {
+    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
+    for (Scab *scab in app.scabs) {
+        [scabChunks addObjectsFromArray:scab.scabChunks];
+    }
+    
+    //[scabChunks release];
+    return scabChunks;
+}
+
 - (void)update:(ccTime)delta {
     cpSpaceStep(space, delta);
+    
     if (!endSequenceRunning) {
         NSMutableArray *spritesToDelete = [[NSMutableArray alloc] init];
-
-        if (self.scoringTimer) {
-            [self.scoringTimer update:delta];
-        }
         
-        for (IScabSprite *sprite in batchNode.children) {
+        for (IScabSprite *sprite in app.batchNode.children) {
             [sprite update];
 
-            if (sprite.position.y < 0) {
+            if ([sprite isOffscreen]) {
                 [spritesToDelete addObject:sprite];
-                
-                [app getCurrentJar].numScabChunks += 1;
-                
-                if (numScabsInCurrentScoreTally == 0)
-                    isScoring = true;
-
-                numScabsInCurrentScoreTally += 1;
-                self.scoringTimer = [CCTimer timerWithTarget:self selector:@selector(setIsScoringToFalse) interval:1.0];
             }
-        }
-        
-        if (!isScoring && numScabsInCurrentScoreTally > 0) {
-            NSLog(@"SCORE");
-            CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"+%d", numScabsInCurrentScoreTally] fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 2];
-            [scorePopup setPosition:ccp(240, 35)];
-            [scorePopup setColor:ccScabGlow];
-            [scorePopup runAction:[CCFadeOut actionWithDuration:2.5]]; 
-            
-            [self addChild:scorePopup z:100];
-            
-            isScoring = false;
-            numScabsInCurrentScoreTally = 0;
         }
         
         for (IScabSprite *deleteSprite in spritesToDelete) {
@@ -105,7 +74,7 @@ AppDelegate *app;
                 [looseScabChunks removeObject:deleteSprite];
             }
             
-            [batchNode removeChild:deleteSprite cleanup:YES];
+            [app.batchNode removeChild:deleteSprite cleanup:YES];
             [deleteSprite destroy];
         }
         
@@ -131,23 +100,17 @@ AppDelegate *app;
     }
 }
 
-- (void)setIsScoringToFalse {
-    NSLog(@"SETTING IS SCORING TO FALSE");
-    self.isScoring = false;
-    self.scoringTimer = nil;
-}
-
 + (id)scene {
     CCScene *scene = [CCScene node];
     GamePlay *layer = [GamePlay node];
-    [scene addChild:layer z:0 tag:1];
+    [scene addChild:layer z:0 tag:100];
     
     return scene;
 }
 
 - (void)draw {
     drawSpaceOptions options = {
-        0, 0, 1, 4.0, 4.0, 2.0
+        0, 0, 1, 1.0f, 0.0f, 1.0f
     };
     
     drawSpace(space, &options);
@@ -170,13 +133,9 @@ AppDelegate *app;
 - (id)init {
     if((self=[super init])) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        screenWidth = [UIScreen mainScreen].bounds.size.width;
-        screenHeight = [UIScreen mainScreen].bounds.size.height;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
-        isScoring = false;
         endSequenceRunning = false;
-        numScabsInCurrentScoreTally = 0;
         
         [self setupSkinBackgroundOffsets];
         
@@ -184,105 +143,80 @@ AppDelegate *app;
         mouse = cpMouseNew(space);
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
+                    
+        [self addChild:app.batchNode];
         
-        NSLog(@"SCREEN: WIDTH %d HEIGHT %d", screenWidth, screenHeight);
-        
-        [self initializeSprites];
-         
-        batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
-        [self addChild:batchNode];
+        NSData *mScabs = [defaults objectForKey:@"scabs"];
+        if (mScabs != nil) {
+            NSMutableArray *oldSavedArray = (NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
+            if (oldSavedArray != nil) {            
+                for (Scab *savedScab in oldSavedArray) {
+                    Scab *scab = [[[Scab alloc] init] autorelease];
+                    scab.scabChunks = savedScab.scabChunks;
+                    scab.wounds = savedScab.wounds;
+                    scab.scabChunkBorders = savedScab.scabChunkBorders;
+                    
+                    [app.scabs addObject:scab];
+                }
+            }
+        }
                  
-        if (![self.allScabChunks count]) {
+        if (![app.scabs count]) {
             NSLog(@"GENERATING NEW BOARD");
             [self updateBackground:nil];
             [self generateScabs];
         } else {
             NSLog(@"USING EXISTING BOARD");
-            [self updateBackground:[defaults valueForKey:@"skinBackground"]];
-            [self displaySavedBoard];
+            [self updateBackground:[defaults stringForKey:@"skinBackground"]];
+            
+            NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
+            for (Scab *scab in app.scabs) {
+                [scab displaySprites];
+            }
         }
         
         [self scheduleUpdate];
-        centerOfAllScabs = [self getCenterOfAllScabs];
-        
-        NSLog(@"CENTER OF ALL SCABS: %@", NSStringFromCGPoint(centerOfAllScabs));
+        centerOfAllScabs = [self getCenterOfAllScabs];        
     }
             
     return self;
 }
 
-- (void)initializeSprites {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+- (void)generateScabs {    
+    int backgroundYOffset = [[skinBackgroundOffsets objectForKey:app.skinBackground] intValue];
+    NSLog(@"BACKGROUND Y OFFSET IS: %d", backgroundYOffset);
+    
+    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
+    NSLog(@"NUMBER OF SCABS TO DRAW: %d", numScabs);
+    
+    for (int x = 0; x < numScabs; x++) {
+        [app.scabs addObject:[[[Scab alloc] createWithYOffset:backgroundYOffset] autorelease]];
+    }
+}
 
-    NSData *mWounds = [defaults objectForKey:@"allWounds"];
-    if (mWounds != nil) {
-        NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mWounds];
-        if (oldSavedArray != nil) {                
-            for (Wound *savedWound in oldSavedArray) {
-                NSString *woundType = [GamePlay woundFrameNameForClean:savedWound.clean isBleeding:savedWound.bleeding scabNo:savedWound.scabNo];
-                Wound *wound = [[[Wound alloc] initWithSpriteFrameName:woundType] autorelease];
-                wound.position = savedWound.savedLocation;
-                wound.savedLocation = savedWound.savedLocation;
-                wound.scabNo = savedWound.scabNo;
-                wound.clean = savedWound.clean;
-                wound.bleeding = savedWound.bleeding;
-                
-                [self.allWounds addObject:wound];
-            }
-        }
+- (CGPoint)getCenterOfAllScabs {
+    NSLog(@"TOTAL NUMBER OF SCABS: %d", [app.scabs count]);
+    int x = 0;
+    int y = 0;
+    for (Scab *scab in app.scabs) {
+        x += scab.center.x;
+        y += scab.center.y;
     }
     
-    NSData *mScabs = [defaults objectForKey:@"allScabChunks"];
-    if (mScabs != nil) {
-        NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
-        if (oldSavedArray != nil) {                
-            for (ScabChunk *savedScab in oldSavedArray) {
-                ScabChunk *scabChunk = [[[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", savedScab.type, savedScab.scabNo]] autorelease];
-                scabChunk.position = savedScab.savedLocation;
-                scabChunk.savedLocation = savedScab.savedLocation;
-                scabChunk.type = savedScab.type;
-                scabChunk.scabNo = savedScab.scabNo;
-                
-                [self.allScabChunks addObject:scabChunk];
-            }
-        }
-    }
+    return CGPointMake(x / [app.scabs count], y / [app.scabs count]);
 }
 
 - (void)setupSkinBackgroundOffsets {
     self.skinBackgroundOffsets = [[NSMutableDictionary alloc] init];
-    [self.skinBackgroundOffsets setObject:@"140" forKey:@"skin_background0.png"];
-    [self.skinBackgroundOffsets setObject:[NSString stringWithFormat:@"%d", screenHeight] forKey:@"skin_background1.png"];
-    [self.skinBackgroundOffsets setObject:@"275" forKey:@"skin_background2.png"];
-    [self.skinBackgroundOffsets setObject:[NSString stringWithFormat:@"%d", screenHeight] forKey:@"skin_background3.png"];
-    [self.skinBackgroundOffsets setObject:[NSString stringWithFormat:@"%d", screenHeight] forKey:@"skin_background4.png"];
-    [self.skinBackgroundOffsets setObject:@"260" forKey:@"skin_background5.png"];
-    [self.skinBackgroundOffsets setObject:@"390" forKey:@"skin_background6.png"];
-    [self.skinBackgroundOffsets setObject:@"205" forKey:@"skin_background7.png"];
-    [self.skinBackgroundOffsets setObject:@"235" forKey:@"skin_background8.png"];
-}
-
-- (CGPoint)getCenterOfAllScabs {
-    NSLog(@"TOTAL NUMBER OF SCAB CHUNKS: %d", [self.allScabChunks count]);
-    int x = 0;
-    int y = 0;
-    for (ScabChunk *scab in self.allScabChunks) {
-        x += scab.savedLocation.x;
-        y += scab.savedLocation.y;
-    }
-    
-    return CGPointMake(x / [self.allScabChunks count], y / [self.allScabChunks count]);
-}
-
-- (cpSpace *)createSpace {    
-    space = cpSpaceNew();
-    space->gravity = ccp(0, -GRAVITY_FACTOR);
-    cpSpaceResizeStaticHash(space, 400, 200);
-    cpSpaceResizeActiveHash(space, 200, 200);
-    space->elasticIterations = 10;
-    self.gravity = space->gravity;
-    
-    return space;
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:140] forKey:@"skin_background0.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:app.screenHeight] forKey:@"skin_background1.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:275] forKey:@"skin_background2.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:app.screenHeight] forKey:@"skin_background3.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:app.screenHeight] forKey:@"skin_background4.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:260] forKey:@"skin_background5.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:390] forKey:@"skin_background6.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:205] forKey:@"skin_background7.png"];
+    [self.skinBackgroundOffsets setObject:[NSNumber numberWithInteger:235] forKey:@"skin_background8.png"];
 }
 
 - (void)updateBackground:(NSString *)newSkinBackground {
@@ -293,115 +227,14 @@ AppDelegate *app;
         newSkinBackground = [NSString stringWithFormat:@"skin_background%d.png", bgIndex];
     }
     
-    NSLog(@"SKIN BACKGROUND %@", newSkinBackground);
+    NSLog(@"NEW SKIN BACKGROUND %@", newSkinBackground);
     
     CCSprite *bg = [CCSprite spriteWithFile:newSkinBackground];
     bg.tag = 777;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
-    self.skinBackground = newSkinBackground;
-}
-
-- (void)displaySavedBoard {    
-    for (ScabChunk *scab in [self allScabChunks]) {
-        [self addChild:scab z:5];        
-    }
-    
-    for (Wound *wound in [self allWounds]) {
-        [self addChild:wound z:-1];        
-    }
-}
-
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)origin scabBoundingRect:(CGRect)scabBoundingRect maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge {
-    CGPoint scabChunkCenter = CGPointMake(
-                                          (int)origin.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
-                                          (int)origin.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
-                                          );
-    
-    if (
-        CGRectContainsPoint([UIScreen mainScreen].bounds, scabChunkCenter) &&  // is inside the screen
-        CGRectContainsPoint(
-            CGRectMake(0, 0, screenWidth, [[skinBackgroundOffsets objectForKey:skinBackground] intValue]), 
-            scabChunkCenter
-        ) && // is inside background offset boundaries
-        CGRectContainsPoint(scabBoundingRect, scabChunkCenter) && // is inside scab boundaries
-        !CGRectContainsPoint(self.homeButton.boundingBox, scabChunkCenter) && // is not inside the home icon
-        !CGRectContainsPoint(self.jarButton.boundingBox, scabChunkCenter) // is not inside the jar icon
-    ) {
-        return scabChunkCenter;
-    }
-
-    return CGPointZero;
-}
-
-- (void)generateScabs {
-    int backgroundYOffset = [[skinBackgroundOffsets objectForKey:skinBackground] intValue];
-    NSLog(@"BACKGROUND Y OFFSET IS: %d", backgroundYOffset);
-
-    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
-    NSLog(@"NUMBER OF SCABS TO DRAW: %d", numScabs);
-    
-    for (int x = 0; x < numScabs; x++) {
-        int scabYOffset = (arc4random() % backgroundYOffset) + 1;
-        
-        CGPoint scabOrigin = CGPointMake(arc4random() % screenWidth, scabYOffset);
-        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, arc4random() % 150, 50 + (arc4random() % scabYOffset));
-        CGPoint scabCenter = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-        int maxDistanceToXEdge = (scabCenter.x - scabOrigin.x) + 1;
-        int maxDistanceToYEdge = (scabCenter.y - scabOrigin.y) + 1;
-        
-        NSLog(@"SCAB ORIGIN: %@", NSStringFromCGPoint(scabOrigin));
-        NSLog(@"CENTER OF SCAB: %@", NSStringFromCGPoint(scabCenter));
-        
-        int numScabChunks = scabBoundary.size.height + scabBoundary.size.width;
-        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", numScabChunks);
-        
-        for (int x = 0; x < numScabChunks; x++) { 
-            int scabChunkIndex = arc4random() % NUM_SHAPE_TYPES;
-            CGPoint scabChunkCenter = [self getScabChunkCenterFrom:scabCenter scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
-                        
-            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero)) {
-                [self createScabChunk:scabChunkCenter type:@"light" scabIndex:(int)scabChunkIndex havingPriority:1];
-            }
-        }
-        
-        int numDarkPatches = (arc4random() % NUM_DARK_PATCHES);
-        for (int x = 0; x < numDarkPatches; x++) {
-            CGPoint patchOrigin = CGPointMake(
-                (int)scabCenter.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
-                (int)scabCenter.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
-            );
-
-            for (int x = 0; x < (numScabChunks / 4); x++) {
-                int scabChunkIndex = arc4random() % NUM_SHAPE_TYPES;
-                CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
-
-                if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero)) {
-                    [self createScabChunk:scabChunkCenter type:@"dark" scabIndex:(int)scabChunkIndex havingPriority:2];
-                }
-            }
-        }
-    }
-}
-
-- (void)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabIndex:(int)scabIndex havingPriority:(int)priority {
-    ScabChunk *scabChunk = [[ScabChunk alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", type, scabIndex]];
-    [scabChunk setPosition:ccp(coordinates.x, coordinates.y)];
-    [scabChunk setSavedLocation:scabChunk.position];
-    [scabChunk setScabNo:scabIndex];
-    [scabChunk setPriority:priority];
-    [scabChunk setType:type];
-    [scabChunk setHealth:priority * 2];
-    [scabChunk setScale:0.8];
-    [batchNode addChild:scabChunk z:5];
-    [self.allScabChunks addObject:scabChunk];
-    [scabChunk release];
-    
-    Wound *scabBorder = [[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"bloody_skin%d.png", scabIndex]];
-    [scabBorder setPosition:ccp(coordinates.x, coordinates.y)];
-    [batchNode addChild:scabBorder z:-2];
-    [self.allWounds addObject:scabBorder];
+    app.skinBackground = newSkinBackground;
 }
 
 - (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location {
@@ -410,17 +243,13 @@ AppDelegate *app;
     CGPoint offsetLocation = CGPointMake(location.x + offsetX, location.y + offsetY);
     cpShape *foundShape = cpSpacePointQueryFirst(space, offsetLocation, GRABABLE_MASK_BIT, 0);
     if (foundShape) {
-        CCSprite *newMoveableScabPiece = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo]];
+        CCSprite *newMoveableScabPiece = [CCSprite spriteWithSpriteFrameName:[scabChunk filename]];
         
         [newMoveableScabPiece setPosition:CGPointMake(arc4random() % sizeOfMoveableScab, arc4random() % sizeOfMoveableScab)];
         [moveableScab addChild:newMoveableScabPiece];
                  
         sizeOfMoveableScab += 1;
     }
-}
-
-- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
-    [self ccTouchEnded:touch withEvent:event]; 
 }
 
 - (void)splatterBlood:(ScabChunk *)scabChunk {
@@ -434,56 +263,26 @@ AppDelegate *app;
     [particles release];
 }
 
-+ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabNo:(int)scabNo {
-    if (isClean) {
-        return [NSString stringWithFormat:@"clean_skin%d.png", scabNo];
-    } else if (!isClean && isBleeding) {
-        return [NSString stringWithFormat:@"bloody_skin%d.png", scabNo];
-    } else {
-        return [NSString stringWithFormat:@"wound%d.png", scabNo];
-    }
-}
+- (void)addScabToJar:(Scab *)scab {
+    NSLog(@"SCORED: %d", [scab pointValue]);
+    [app getCurrentJar].numScabLevels += [scab pointValue];
 
-- (void)createWound:(ScabChunk *)scab cleanSkin:(bool)clean {    
-    [self splatterBlood:scab];
-            
-    bool bleeding = (!clean && (arc4random() % (int)ceil(ccpDistance(centerOfAllScabs, scab.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
-    
-    NSString *woundType = [GamePlay woundFrameNameForClean:clean isBleeding:bleeding scabNo:scab.scabNo];
-
-    Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];
-    [wound setPosition:scab.savedLocation];
-    [wound setSavedLocation:scab.savedLocation];
-    [wound setScabNo:scab.scabNo];
-    [wound setClean:clean];
-    [wound setBleeding:bleeding];
-    [wound setScale:0.8];
-    
-    if (wound.bleeding) {
-        for (Wound *savedWound in self.allWounds) {
-            if (savedWound.bleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 5.0) && (arc4random() % 100 == 1)) {
-                CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
-            
-                streak.position = wound.savedLocation;
-                [self addChild:streak z:10];
-                [allBlood addObject:streak];
-                
-                [streak release];
-            }
-        }
-    }
-    
-    [self.allWounds addObject:wound];
-    [batchNode addChild:wound z:-1];
-
-    [wound release];
+    CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:@"SCAB ADDED TO JAR!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+    [scorePopup setPosition:ccp(200, 35)];
+    [scorePopup setColor:ccBLACK];
+    [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
+    [self addChild:scorePopup z:100];
 }
 
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
-    [self.allScabChunks removeObject:scabChunk];
+    Scab *scab = scabChunk.scab;
     [scabChunk destroy];
-    
-    if (([self.allScabChunks count] == 0) && !initing) {
+
+    if ([scab.scabChunks count] == 0) {
+        [self addScabToJar:scab];
+    }
+
+    if (([self.activeScabChunks count] == 0) && !initing) {
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
@@ -496,17 +295,16 @@ AppDelegate *app;
 }
 
 - (void)resetBoard {
-    for (Wound *wound in [self allWounds]) {
-        [wound destroy];
+    for (Scab *scab in app.scabs) {
+        [scab reset];
     }
-    allWounds = [[NSMutableArray alloc] init];
-
     
     for (CCMotionStreak *streak in [self allBlood]) {
         [streak removeFromParentAndCleanup:NO];
     }
-    allBlood = nil;
-      
+    allBlood = nil;    
+
+    [app.scabs removeAllObjects];
     [self updateBackground:nil];
     [self generateScabs];
     endSequenceRunning = false;
@@ -515,11 +313,19 @@ AppDelegate *app;
 - (void)homeTapped:(CCMenuItem  *)menuItem { 
     [super homeTapped:menuItem];
     [app saveState];
+
+    for (Scab *scab in app.scabs) {
+        [scab reset];
+    }
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem {
     [super jarTapped:menuItem];
     [app saveState];
+    
+    for (Scab *scab in app.scabs) {
+        [scab reset];
+    }
 }
 
 - (void)registerWithTouchDispatcher {
@@ -529,12 +335,13 @@ AppDelegate *app;
 - (BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     sizeOfMoveableScab = 1;
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    CGRect touchRect = CGRectMake(touchLocation.x, touchLocation.y, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL);
     
-    for (ScabChunk *scabChunk in self.allScabChunks) {
-        if (ccpDistance(scabChunk.savedLocation, touchLocation) < MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL) {
-            if (self.moveableScab == nil || self.moveableScab.position.y < 0) {
-                moveableScab = [[IScabSprite alloc] initWithSpace:space location:touchLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo] shapeNo:scabChunk.scabNo];
-                [batchNode addChild:moveableScab];
+    for (ScabChunk *scabChunk in [self activeScabChunks]) {
+        if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
+            if (self.moveableScab == nil || [self.moveableScab isOffscreen]) {
+                moveableScab = [[IScabSprite alloc] initWithSpace:space location:touchLocation filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
+                [app.batchNode addChild:moveableScab];
             }
         }
     }
@@ -546,12 +353,13 @@ AppDelegate *app;
 
 - (void)ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event {
     CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    CGRect touchRect = CGRectMake(touchLocation.x - (MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL / 2), touchLocation.y - (MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL /2), MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL, MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL);
     
     cpMouseMove(mouse, touchLocation);
     
     NSMutableArray *removedScabs = [NSMutableArray array];
-    for (ScabChunk *scabChunk in self.allScabChunks) {
-        if (ccpDistance(scabChunk.savedLocation, touchLocation) < MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL) {
+    for (ScabChunk *scabChunk in [self activeScabChunks]) {
+        if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
             [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
             
             if ([scabChunk health] > 0) {
@@ -565,25 +373,42 @@ AppDelegate *app;
                 [self addScabChunk:scabChunk fromLocation:touchLocation];
                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
-                    IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.savedLocation filename:[NSString stringWithFormat:@"%@_scab%d.png", scabChunk.type, scabChunk.scabNo] shapeNo:scabChunk.scabNo];
+                    IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.position filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
                     
                     [self.looseScabChunks addObject:looseScab];
-                    [batchNode addChild:looseScab];
+                    [app.batchNode addChild:looseScab];
                     [looseScab release];
-                }                
+                }              
             }
         }
     }
     
     for (ScabChunk *removedScabChunk in removedScabs) {
-        [self removeScabChunk:removedScabChunk initing:NO];
+        if (removedScabChunk != nil) {
+            [self removeScabChunk:removedScabChunk initing:NO];
+        }
     }
-    [removedScabs removeAllObjects];    
+    [removedScabs removeAllObjects];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
     NSLog(@"TOUCH ENDED");
     cpMouseRelease(mouse);
+}
+
+- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
+    [self ccTouchEnded:touch withEvent:event]; 
+}
+
+- (cpSpace *)createSpace {    
+    space = cpSpaceNew();
+    space->gravity = ccp(0, -GRAVITY_FACTOR);
+    cpSpaceResizeStaticHash(space, 400, 200);
+    cpSpaceResizeActiveHash(space, 200, 200);
+    space->elasticIterations = 10;
+    self.gravity = space->gravity;
+    
+    return space;
 }
 
 - (void)dealloc {

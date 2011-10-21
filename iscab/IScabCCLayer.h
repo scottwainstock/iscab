@@ -12,7 +12,6 @@
 @interface IScabCCLayer : CCLayer {
     CCMenuItem *homeButton;
     CCMenuItem *jarButton;
-
 }
 
 @property (nonatomic, retain) CCMenuItem *homeButton;

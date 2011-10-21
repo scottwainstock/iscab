@@ -19,16 +19,19 @@
     cpShape *shape;
     cpSpace *space;    
     CGPoint savedLocation;
+    int scabChunkNo;
     
     @public
         cpBody *body;
 }
 
+@property (nonatomic, assign) int scabChunkNo;
 @property (nonatomic, assign) cpShape *shape;
 @property (nonatomic, assign) CGPoint savedLocation;
 
 - (void)update;
 - (void)destroy;
+- (bool)isOffscreen;
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo;
 - (void)addBodyWithVerts:(CGPoint[])verts atLocation:(CGPoint)location numVerts:(int)numVerts collisionType:(int)collisionType;
 - (id)initWithLocation:(CGPoint)location filename:(NSString *)filename shapeNo:(int)shapeNo;

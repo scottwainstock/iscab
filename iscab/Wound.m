@@ -10,14 +10,14 @@
 
 @implementation Wound
 
-@synthesize scabNo, bleeding, clean;
+@synthesize isBleeding, isClean;
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeInt:self.position.x forKey:@"xPos"]; 
     [coder encodeInt:self.position.y forKey:@"yPos"]; 
-    [coder encodeInt:self.scabNo forKey:@"scabNo"];
-    [coder encodeBool:self.bleeding forKey:@"bleeding"];
-    [coder encodeBool:self.clean forKey:@"clean"];
+    [coder encodeBool:self.isBleeding forKey:@"isBleeding"];
+    [coder encodeBool:self.isClean forKey:@"isClean"];
+    [coder encodeInt:self.scabChunkNo forKey:@"scabChunkNo"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {    
@@ -25,12 +25,22 @@
     
     if (self != nil) {
         self.savedLocation = ccp([coder decodeIntForKey:@"xPos"], [coder decodeIntForKey:@"yPos"]);
-        self.scabNo = [coder decodeIntForKey:@"scabNo"];
-        self.bleeding = [coder decodeBoolForKey:@"bleeding"];
-        self.clean = [coder decodeBoolForKey:@"clean"];
+        self.scabChunkNo = [coder decodeIntForKey:@"scabChunkNo"];
+        self.isBleeding = [coder decodeBoolForKey:@"isBleeding"];
+        self.isClean = [coder decodeBoolForKey:@"isClean"];
     }
     
     return self; 
+}
+
++ (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabChunkNo:(int)scabChunkNo {
+    if (isClean) {
+        return [NSString stringWithFormat:@"clean_skin%d.png", scabChunkNo];
+    } else if (!isClean && isBleeding) {
+        return [NSString stringWithFormat:@"bloody_skin%d.png", scabChunkNo];
+    } else {
+        return [NSString stringWithFormat:@"wound%d.png", scabChunkNo];
+    }
 }
 
 @end

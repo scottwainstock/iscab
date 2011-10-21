@@ -91,7 +91,7 @@ void cpMouseMove(cpMouse *mouse, const cpVect position) {
 static cpConstraint* addMouseJoint(cpMouse *mouse, cpBody *body, cpVect offset) {
 	cpConstraint *joint = cpPivotJointNew(mouse->body, body, cpvadd(mouse->body->p, offset));
 	joint->maxForce = 20000;
-//	joint->biasCoef = 0.5f;
+	joint->biasCoef = 0.5f;
 	cpSpaceAddConstraint(mouse->space, joint);
 	return joint;
 }
