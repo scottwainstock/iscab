@@ -197,9 +197,7 @@
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-    
-    [self.scabs removeAllObjects];
-    
+        
     [defaults synchronize]; 
 }
 

@@ -80,9 +80,7 @@
         NSLog(@"SCAB ORIGIN: %@", NSStringFromCGPoint(scabOrigin));
         NSLog(@"CENTER OF SCAB: %@", NSStringFromCGPoint(center));
          
-        int numScabChunks = scabBoundary.size.height + scabBoundary.size.width;
-        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", numScabChunks);
-         
+        int numScabChunks = scabBoundary.size.height + scabBoundary.size.width;         
         for (int x = 0; x < numScabChunks; x++) { 
             int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
             CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundYOffset:backgroundYOffset scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
@@ -108,6 +106,7 @@
                 }
             }
         }
+        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self.scabChunks count]);
     }
     
     return self;
@@ -233,15 +232,25 @@
 }
    
 - (void)reset {
+   NSMutableArray *removedScabs = [NSMutableArray array];
+   for (ScabChunk *scabChunk in [self scabChunks]) {
+       [removedScabs addObject:scabChunk];
+   }
+   for (ScabChunk *removedScabChunk in removedScabs) {
+       [removedScabChunk destroy];
+   }
+   [removedScabs removeAllObjects];
+   scabChunks = nil;
+    
    for (Wound *wound in [self wounds]) {
        [wound destroy];
    }
-   wounds = [[NSMutableArray alloc] init];
+   wounds = nil;
 
    for (Wound *scabChunkBorder in [self scabChunkBorders]) {
        [scabChunkBorder destroy];
    }
-   scabChunkBorders = [[NSMutableArray alloc] init];    
+   scabChunkBorders = nil;    
 }
  
 @end

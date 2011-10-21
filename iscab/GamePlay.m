@@ -154,6 +154,7 @@ AppDelegate *app;
             if (oldSavedArray != nil) {            
                 for (Scab *savedScab in oldSavedArray) {
                     Scab *scab = [[[Scab alloc] init] autorelease];
+                    NSLog(@"BAWB: %d", [savedScab.scabChunks count]);
                     scab.scabChunks = savedScab.scabChunks;
                     scab.wounds = savedScab.wounds;
                     scab.scabChunkBorders = savedScab.scabChunkBorders;
@@ -184,9 +185,7 @@ AppDelegate *app;
     return self;
 }
 
-- (void)generateScabs {
-    [app.scabs removeAllObjects];
-    
+- (void)generateScabs {    
     int backgroundYOffset = [[skinBackgroundOffsets objectForKey:app.skinBackground] intValue];
     NSLog(@"BACKGROUND Y OFFSET IS: %d", backgroundYOffset);
     
@@ -292,6 +291,7 @@ AppDelegate *app;
     }
     allBlood = nil;    
 
+    [app.scabs removeAllObjects];
     [self updateBackground:nil];
     [self generateScabs];
     endSequenceRunning = false;
@@ -300,11 +300,19 @@ AppDelegate *app;
 - (void)homeTapped:(CCMenuItem  *)menuItem { 
     [super homeTapped:menuItem];
     [app saveState];
+
+    for (Scab *scab in app.scabs) {
+        [scab reset];
+    }
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem {
     [super jarTapped:menuItem];
     [app saveState];
+    
+    for (Scab *scab in app.scabs) {
+        [scab reset];
+    }
 }
 
 - (void)registerWithTouchDispatcher {
