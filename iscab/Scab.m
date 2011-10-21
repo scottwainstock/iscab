@@ -64,6 +64,18 @@
     return self; 
 }
 
+- (int)pointValue {
+    if ([self.wounds count] >= XL_SCAB_SIZE) {
+        return 4;
+    } else if ([self.wounds count] >= LARGE_SCAB_SIZE) {
+        return 3;
+    } else if ([self.wounds count] >= MEDIUM_SCAB_SIZE) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
 - (id)createWithYOffset:(int)backgroundYOffset {
     NSLog(@"BACKGROUND OFFSET: %d", backgroundYOffset);
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;

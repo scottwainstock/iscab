@@ -10,25 +10,25 @@
 
 @implementation Jar
 
-@synthesize numScabChunks;
+@synthesize numScabLevels;
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeInt:self.numScabChunks forKey:@"numScabChunks"]; 
+    [coder encodeInt:self.numScabLevels forKey:@"numScabLevels"]; 
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
     self = [[Jar alloc] init];
     
     if (self != nil) {
-        self.numScabChunks = [coder decodeIntForKey:@"numScabChunks"];
+        self.numScabLevels = [coder decodeIntForKey:@"numScabLevels"];
     }
     
     return self; 
 }
 
-- (id)initWithNumScabChunks:(int)mNumScabChunks {
+- (id)initWithNumScabLevels:(int)mNumScabLevels {
     if ((self = [super init])) {
-        self.numScabChunks = mNumScabChunks;
+        self.numScabLevels = mNumScabLevels;
     }
     
     return self;

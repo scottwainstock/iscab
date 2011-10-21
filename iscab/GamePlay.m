@@ -66,8 +66,6 @@ AppDelegate *app;
 
             if ([sprite isOffscreen]) {
                 [spritesToDelete addObject:sprite];
-                
-                [app getCurrentJar].numScabChunks += 1;
             }
         }
         
@@ -154,7 +152,6 @@ AppDelegate *app;
             if (oldSavedArray != nil) {            
                 for (Scab *savedScab in oldSavedArray) {
                     Scab *scab = [[[Scab alloc] init] autorelease];
-                    NSLog(@"BAWB: %d", [savedScab.scabChunks count]);
                     scab.scabChunks = savedScab.scabChunks;
                     scab.wounds = savedScab.wounds;
                     scab.scabChunkBorders = savedScab.scabChunkBorders;
@@ -267,6 +264,9 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
+    NSLog(@"SCORED: %d", [scab pointValue]);
+    [app getCurrentJar].numScabLevels += [scab pointValue];
+
     CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:@"SCAB ADDED TO JAR!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
     [scorePopup setPosition:ccp(200, 35)];
     [scorePopup setColor:ccBLACK];

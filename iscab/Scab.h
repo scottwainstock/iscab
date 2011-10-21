@@ -10,6 +10,9 @@
 
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
+#define MEDIUM_SCAB_SIZE 200
+#define LARGE_SCAB_SIZE 300
+#define XL_SCAB_SIZE 301
 
 @interface Scab : NSObject <NSCoding> {
     CGPoint center;
@@ -24,6 +27,7 @@
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
 - (id)createWithYOffset:(int)backgroundYOffset;
+- (int)pointValue;
 - (void)reset;
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;

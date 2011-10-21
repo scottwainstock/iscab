@@ -167,7 +167,7 @@
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
         if (oldSavedArray != nil) {                
             for (Jar *savedJar in oldSavedArray) {
-                Jar *jar = [[[Jar alloc] initWithNumScabChunks:savedJar.numScabChunks] autorelease];
+                Jar *jar = [[[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels] autorelease];
                                 
                 [self.jars addObject:jar];
             }
@@ -175,12 +175,12 @@
     } else {
         NSLog(@"CREATING NEW JARS");
         for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
-            [self.jars addObject:[[[Jar alloc] initWithNumScabChunks:0] autorelease]];
+            [self.jars addObject:[[[Jar alloc] initWithNumScabLevels:0] autorelease]];
         }
     }
     
     for (int i = 0; i < [self.jars count]; i++) {
-        NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabChunks]);
+        NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabLevels]);
     }
     
     screenWidth = [UIScreen mainScreen].bounds.size.width;
@@ -203,7 +203,7 @@
 
 - (Jar *)getCurrentJar {
     for (Jar *jar in self.jars) {
-        if (jar.numScabChunks > 0 && jar.numScabChunks != NUM_SCABS_TO_FILL_JAR) {
+        if (jar.numScabLevels > 0 && jar.numScabLevels != MAX_NUM_SCAB_LEVELS) {
             return jar;
         }
     }

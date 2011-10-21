@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-#define NUM_SCABS_TO_FILL_JAR 1000
+#define MAX_NUM_SCAB_LEVELS 25
 
 @interface Jar : NSObject <NSCoding> {
-    int numScabChunks;
+    int numScabLevels;
 }
 
-@property (nonatomic, assign) int numScabChunks;
+@property (nonatomic, assign) int numScabLevels;
 
-- (id)initWithNumScabChunks:(int)numScabChunks;
+- (id)initWithNumScabLevels:(int)mNumScabLevels;
 
 @end
