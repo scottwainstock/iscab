@@ -84,7 +84,12 @@
         int scabYOffset = (arc4random() % backgroundYOffset) + 1;
  
         CGPoint scabOrigin = CGPointMake(arc4random() % app.screenWidth, scabYOffset);
-        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, arc4random() % 150, 50 + (arc4random() % scabYOffset));
+
+        int scabYSize = arc4random() % scabYOffset;
+        if (scabYSize > 200)
+            scabYSize = 200;
+        
+        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, arc4random() % 100, scabYSize);
         center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
         int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
         int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
@@ -92,7 +97,7 @@
         NSLog(@"SCAB ORIGIN: %@", NSStringFromCGPoint(scabOrigin));
         NSLog(@"CENTER OF SCAB: %@", NSStringFromCGPoint(center));
          
-        int numScabChunks = scabBoundary.size.height + scabBoundary.size.width;         
+        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;         
         for (int x = 0; x < numScabChunks; x++) { 
             int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
             CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundYOffset:backgroundYOffset scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
