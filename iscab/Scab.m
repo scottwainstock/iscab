@@ -137,10 +137,10 @@
         CGRectContainsPoint(
             CGRectMake(0, 0, app.screenWidth, backgroundYOffset), 
             scabChunkCenter
-        ) && // is inside background offset boundaries
-        CGRectContainsPoint(scabBoundingRect, scabChunkCenter) && // is inside scab boundaries
-        !CGRectContainsPoint([(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] homeButton].boundingBox, scabChunkCenter) && // is not inside the home icon
-        !CGRectContainsPoint([(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] jarButton].boundingBox, scabChunkCenter) // is not inside the jar icon
+        ) &&                                                                   // is inside background offset boundaries
+        CGRectContainsPoint(scabBoundingRect, scabChunkCenter) &&              // is inside scab boundaries
+        !CGRectContainsPoint(app.homeButton.boundingBox, scabChunkCenter) &&   // is not inside the home icon
+        !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)       // is not inside the jar icon
     ) {
         return scabChunkCenter;
     }

@@ -13,6 +13,7 @@
 #import "Leaderboard.h"
 #import "SkinColorPicker.h"
 #import "SimpleAudioEngine.h"
+#import "AppDelegate.h"
 
 @implementation MainMenu
 
@@ -54,13 +55,15 @@
 }
 
 - (void)setupNavigationIcons {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
     CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
-    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(280, 40);
+    app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    app.jarButton.position = ccp(280, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
+    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, app.jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }

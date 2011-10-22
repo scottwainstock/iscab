@@ -11,10 +11,9 @@
 #import "JarScene.h"
 #import "About.h"
 #import "SimpleAudioEngine.h"
+#import "AppDelegate.h"
 
 @implementation IScabCCLayer
-
-@synthesize homeButton, jarButton;
 
 - (id)init {
     if((self=[super init] )) {  
@@ -37,13 +36,15 @@
 }
 
 - (void)setupNavigationIcons {
-    homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
-    homeButton.position = ccp(40, 40);
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    app.homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
+    app.homeButton.position = ccp(40, 40);
     
-    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(280, 40);
+    app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    app.jarButton.position = ccp(280, 40);
     
-    CCMenu *menu = [CCMenu menuWithItems:homeButton, jarButton, nil];
+    CCMenu *menu = [CCMenu menuWithItems:app.homeButton, app.jarButton, nil];
     menu.position = CGPointZero;
     [self addChild:menu z:2];
 }
