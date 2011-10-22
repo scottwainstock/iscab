@@ -21,6 +21,7 @@
 #define GRAVITY_FACTOR 750
 #define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
 #define NUM_INDIVIDUAL_SCABS 6
+#define BACKGROUND_IMAGE_TAG_ID 777
 
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    

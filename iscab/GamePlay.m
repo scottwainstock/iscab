@@ -64,15 +64,13 @@ AppDelegate *app;
         for (IScabSprite *sprite in app.batchNode.children) {
             [sprite update];
 
-            if ([sprite isOffscreen]) {
+            if ([sprite isOffscreen])
                 [spritesToDelete addObject:sprite];
-            }
         }
         
         for (IScabSprite *deleteSprite in spritesToDelete) {
-            if (deleteSprite->body) {
+            if (deleteSprite->body)
                 [looseScabChunks removeObject:deleteSprite];
-            }
             
             [app.batchNode removeChild:deleteSprite cleanup:YES];
             [deleteSprite destroy];
@@ -220,21 +218,19 @@ AppDelegate *app;
 }
 
 - (void)updateBackground:(NSString *)newSkinBackground {
-    [(CCSprite *)[self getChildByTag:777] removeFromParentAndCleanup:YES];
+    [(CCSprite *)[self getChildByTag:BACKGROUND_IMAGE_TAG_ID] removeFromParentAndCleanup:YES];
     
-    if (newSkinBackground == nil) {
-        int bgIndex = arc4random() % NUM_BACKGROUNDS;
-        newSkinBackground = [NSString stringWithFormat:@"skin_background%d.png", bgIndex];
-    }
+    if (newSkinBackground == nil)
+        newSkinBackground = [NSMutableString stringWithFormat:@"skin_background%d.png", arc4random() % NUM_BACKGROUNDS];
     
     NSLog(@"NEW SKIN BACKGROUND %@", newSkinBackground);
     
     CCSprite *bg = [CCSprite spriteWithFile:newSkinBackground];
-    bg.tag = 777;
+    bg.tag = BACKGROUND_IMAGE_TAG_ID;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
-    app.skinBackground = newSkinBackground;
+    app.skinBackground = [newSkinBackground copy];
 }
 
 - (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location {
@@ -263,9 +259,11 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)addScabToJar:(Scab *)scab {
-    NSLog(@"SCORED: %d", [scab pointValue]);
-    [app getCurrentJar].numScabLevels += [scab pointValue];
+- (void)addScabToJar:(Scab *)scab {    
+    Jar *currentJar = [app getCurrentJar];
+    currentJar.numScabLevels += [scab pointValue];
+    if (currentJar.numScabLevels > MAX_NUM_SCAB_LEVELS)
+        currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
 
     CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:@"SCAB ADDED TO JAR!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
     [scorePopup setPosition:ccp(200, 35)];
@@ -278,9 +276,8 @@ AppDelegate *app;
     Scab *scab = scabChunk.scab;
     [scabChunk destroy];
 
-    if ([scab.scabChunks count] == 0) {
+    if ([scab.scabChunks count] == 0)
         [self addScabToJar:scab];
-    }
 
     if (([self.activeScabChunks count] == 0) && !initing) {
         endSequenceRunning = true;
@@ -362,9 +359,8 @@ AppDelegate *app;
         if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
             [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
             
-            if ([scabChunk health] > 0) {
+            if ([scabChunk health] > 0)
                 scabChunk.health -= 1;
-            }
             
             if (([scabChunk health] <= 0)) {
                 [removedScabs addObject:scabChunk];

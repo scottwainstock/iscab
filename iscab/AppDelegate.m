@@ -53,7 +53,7 @@
 - (NSString *)skinBackground {    
     @synchronized(skinBackground) {
         if (skinBackground == nil)
-            skinBackground = [[NSString alloc] init];
+            skinBackground = [[NSMutableString alloc] init];
         
         return skinBackground;
     }
@@ -193,7 +193,7 @@
 - (void)saveState {    
     NSLog(@"SAVING");
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-    
+        
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
@@ -203,10 +203,14 @@
 
 - (Jar *)getCurrentJar {
     for (Jar *jar in self.jars) {
-        if (jar.numScabLevels > 0 && jar.numScabLevels != MAX_NUM_SCAB_LEVELS) {
+        if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
-        }
     }
+    
+    for (Jar *jar in self.jars) {
+        if (jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
+            return jar;
+    }    
     
     return [self.jars objectAtIndex:0];
 }
