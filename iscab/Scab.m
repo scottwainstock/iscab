@@ -235,7 +235,7 @@
     }
     
     for (Wound *wound in savedWounds) {
-        [self createWoundFromIScabSprite:wound isClean:YES];
+        [self createWoundFromIScabSprite:wound isClean:wound.isClean];
     }
     
     [savedWounds release];
