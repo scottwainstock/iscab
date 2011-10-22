@@ -265,9 +265,8 @@ AppDelegate *app;
     if (currentJar.numScabLevels > MAX_NUM_SCAB_LEVELS)
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
 
-    CCLabelTTF *scorePopup = [CCLabelTTF labelWithString:@"SCAB ADDED TO JAR!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
-    [scorePopup setPosition:ccp(200, 35)];
-    [scorePopup setColor:ccBLACK];
+    CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
+    [scorePopup setPosition:ccp(195, 40)];
     [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
     [self addChild:scorePopup z:100];
 }
