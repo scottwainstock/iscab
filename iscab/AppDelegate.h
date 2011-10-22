@@ -25,12 +25,12 @@
     int screenHeight;
     CCSpriteBatchNode *batchNode;
     NSMutableArray *scabs;
-    NSString *skinBackground;
+    NSMutableString *skinBackground;
 }
 
 @property (nonatomic) int screenWidth;
 @property (nonatomic) int screenHeight;
-@property (nonatomic, assign) NSString *skinBackground;
+@property (nonatomic, assign) NSMutableString *skinBackground;
 @property (nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;

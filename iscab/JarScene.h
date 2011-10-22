@@ -15,4 +15,6 @@
 
 + (id)scene;
 
+- (NSString *)jarBackgroundImage;
+
 @end

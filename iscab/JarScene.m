@@ -7,9 +7,11 @@
 //
 
 #import "JarScene.h"
-
+#import "AppDelegate.h"
 
 @implementation JarScene
+
+AppDelegate *app;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
@@ -20,12 +22,46 @@
 }
 
 - (id)init {
-    if( (self=[super init] )) {
-        CCSprite *bg = [CCSprite spriteWithFile:@"jar-background.png"];
-        bg.position = ccp(175, 250);
+    app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    if ((self=[super init])) {
+        CCSprite *bg = [CCSprite spriteWithFile:[self jarBackgroundImage]];
+        bg.position = ccp(160, 240);
         [self addChild:bg z:0];
+        
+        int numScabLevels = [app.getCurrentJar numScabLevels];
+        
+        if (numScabLevels > 0) {
+            CCSprite *scabLevel = [CCSprite spriteWithFile:[NSString stringWithFormat:@"jarlayer%d.png", numScabLevels]];
+            scabLevel.position = ccp(160, 240);
+            [self addChild:scabLevel z:4];
+        }
+            
+        CCSprite *jarCover = [CCSprite spriteWithFile:@"jar_front.png"];
+        jarCover.position = ccp(160, 240);
+        [self addChild:jarCover z:4];
     }
+                               
     return self;
+}
+
+- (NSString *)jarBackgroundImage {    
+    int numFilledJars = 0;
+    for (Jar *jar in [app jars]) {
+        if (jar.numScabLevels == MAX_NUM_SCAB_LEVELS)
+            numFilledJars++;
+    }
+    
+    switch (numFilledJars) {
+        case 0:
+            return @"single_jar.png";
+        case 1:
+            return @"one_jar_full.png";
+        case 2:
+            return @"two_jars_full.png";
+        default:
+            return @"two_jars_full.png";
+    }
 }
 
 @end
