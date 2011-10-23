@@ -76,21 +76,16 @@
     }
 }
 
-- (id)createWithYOffset:(int)backgroundYOffset {
-    NSLog(@"BACKGROUND OFFSET: %d", backgroundYOffset);
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    
+- (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
-        int scabYOffset = (arc4random() % backgroundYOffset) + 1;
- 
-        CGPoint scabOrigin = CGPointMake(arc4random() % app.screenWidth, scabYOffset);
+        int scabXOffset = (arc4random() % (int)backgroundBoundary.size.width) + backgroundBoundary.origin.x;
+        int scabYOffset = (arc4random() % (int)backgroundBoundary.size.height) + backgroundBoundary.origin.y;
 
-        int scabYSize = arc4random() % scabYOffset;
-        if (scabYSize > 200)
-            scabYSize = 200;
+        CGPoint scabOrigin = CGPointMake(scabXOffset, scabYOffset);
+        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, (arc4random() % MAX_SCAB_WIDTH) + 1, (arc4random() % MAX_SCAB_HEIGHT) + 1);
         
-        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, arc4random() % 100, scabYSize);
         center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
+        
         int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
         int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
          
@@ -100,7 +95,7 @@
         int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;         
         for (int x = 0; x < numScabChunks; x++) { 
             int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
-            CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundYOffset:backgroundYOffset scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
+            CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
          
             if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero)) {
                 [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
@@ -116,7 +111,7 @@
          
             for (int x = 0; x < (numScabChunks / 4); x++) {
                 int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
-                CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundYOffset:backgroundYOffset scabBoundingRect:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
+                CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
              
                 if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero)) {
                     [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"dark" scabChunkNo:scabChunkNo priority:2];
@@ -129,27 +124,23 @@
     return self;
 }
     
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)origin backgroundYOffset:(int)backgroundYOffset scabBoundingRect:(CGRect)scabBoundingRect maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge {
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     CGPoint scabChunkCenter = CGPointMake(
-        (int)origin.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
-        (int)origin.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
+        (int)scabCenter.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
+        (int)scabCenter.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
     );
     
     if (
-        CGRectContainsPoint([UIScreen mainScreen].bounds, scabChunkCenter) &&  // is inside the screen
-        CGRectContainsPoint(
-            CGRectMake(0, 0, app.screenWidth, backgroundYOffset), 
-            scabChunkCenter
-        ) &&                                                                   // is inside background offset boundaries
-        CGRectContainsPoint(scabBoundingRect, scabChunkCenter) &&              // is inside scab boundaries
-        !CGRectContainsPoint(app.homeButton.boundingBox, scabChunkCenter) &&   // is not inside the home icon
-        !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)       // is not inside the jar icon
+        CGRectContainsPoint(backgroundBoundary, scabChunkCenter)          && // is inside background boundaries
+        CGRectContainsPoint(scabBoundary, scabChunkCenter)                && // is inside scab boundaries
+        !CGRectContainsPoint(app.homeButton.boundingBox, scabChunkCenter) && // is not inside the home icon
+        !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)     // is not inside the jar icon
     ) {
         return scabChunkCenter;
     }
-                              
+     
     return CGPointZero;
 }
     

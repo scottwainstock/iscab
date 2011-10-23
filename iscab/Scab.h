@@ -13,6 +13,8 @@
 #define MEDIUM_SCAB_SIZE 200
 #define LARGE_SCAB_SIZE 300
 #define XL_SCAB_SIZE 301
+#define MAX_SCAB_WIDTH 100
+#define MAX_SCAB_HEIGHT 100
 
 @interface Scab : NSObject <NSCoding> {
     CGPoint center;
@@ -26,13 +28,13 @@
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
-- (id)createWithYOffset:(int)backgroundYOffset;
+- (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (int)pointValue;
 - (void)reset;
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)origin backgroundYOffset:(int)backgroundYOffset scabBoundingRect:(CGRect)scabBoundingRect maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge;
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge;
 
 @end

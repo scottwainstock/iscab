@@ -15,13 +15,15 @@
 #import "cpMouse.h"
 #import "cpShape.h"
 
-#define NUM_BACKGROUNDS 8
+#define NUM_BACKGROUNDS 7
 #define NUM_SCRATCH_SOUNDS 3
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
 #define GRAVITY_FACTOR 750
 #define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
 #define NUM_INDIVIDUAL_SCABS 6
 #define BACKGROUND_IMAGE_TAG_ID 777
+#define X_SCAB_BORDER_BOUNDARY 10
+#define Y_SCAB_BORDER_BOUNDARY 10
 
 @interface GamePlay : IScabCCLayer {
     cpMouse *mouse;    
@@ -33,7 +35,7 @@
     CGPoint centerOfAllScabs;
     NSMutableArray *allBlood;
     NSMutableArray *looseScabChunks;
-    NSMutableDictionary *skinBackgroundOffsets;
+    NSMutableDictionary *skinBackgroundBoundaries;
 }
 
 @property (nonatomic) bool endSequenceRunning;
@@ -43,13 +45,13 @@
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, retain) NSMutableArray *allBlood;
 @property (nonatomic, retain) NSMutableArray *looseScabChunks;
-@property (nonatomic, retain) NSMutableDictionary *skinBackgroundOffsets;
+@property (nonatomic, retain) NSMutableDictionary *skinBackgroundBoundaries;
 
 + (id)scene;
 
 - (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
 - (CGPoint)getCenterOfAllScabs;
-- (void)setupSkinBackgroundOffsets;
+- (void)setupSkinBackgroundBoundaries;
 - (void)generateScabs;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)updateBackground:(NSString *)skinBackground;
