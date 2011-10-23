@@ -41,6 +41,7 @@
 @property (nonatomic, retain) CCMenuItem *jarButton;
 
 - (void)saveState;
-- (Jar *)getCurrentJar;
+- (Jar *)currentJar;
+- (CGPoint)centerOfAllScabs;
 
 @end

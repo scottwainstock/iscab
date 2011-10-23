@@ -32,7 +32,6 @@
     int sizeOfMoveableScab;
     bool endSequenceRunning;
     IScabSprite *moveableScab;
-    CGPoint centerOfAllScabs;
     NSMutableArray *allBlood;
     NSMutableArray *looseScabChunks;
     NSMutableDictionary *skinBackgroundBoundaries;
@@ -40,7 +39,6 @@
 
 @property (nonatomic) bool endSequenceRunning;
 @property (nonatomic) int sizeOfMoveableScab;
-@property (nonatomic) CGPoint centerOfAllScabs;
 @property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, retain) NSMutableArray *allBlood;
@@ -50,7 +48,6 @@
 + (id)scene;
 
 - (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
-- (CGPoint)getCenterOfAllScabs;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScabs;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;

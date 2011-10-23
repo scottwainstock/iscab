@@ -201,7 +201,7 @@
     [defaults synchronize]; 
 }
 
-- (Jar *)getCurrentJar {
+- (Jar *)currentJar {
     for (Jar *jar in self.jars) {
         if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
@@ -213,6 +213,17 @@
     }    
     
     return [self.jars objectAtIndex:0];
+}
+
+- (CGPoint)centerOfAllScabs {
+    int x = 0;
+    int y = 0;
+    for (Scab *scab in self.scabs) {
+        x += scab.center.x;
+        y += scab.center.y;
+    }
+    
+    return CGPointMake(x / [self.scabs count], y / [self.scabs count]);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

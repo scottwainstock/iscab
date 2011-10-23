@@ -23,7 +23,7 @@ static const ccColor3B ccSCABGLOW={255,105,180};
 
 @implementation GamePlay
 
-@synthesize allBlood, looseScabChunks, gravity, centerOfAllScabs, skinBackgroundBoundaries, sizeOfMoveableScab, moveableScab, endSequenceRunning;
+@synthesize allBlood, looseScabChunks, gravity, skinBackgroundBoundaries, sizeOfMoveableScab, moveableScab, endSequenceRunning;
 
 AppDelegate *app;
 
@@ -174,7 +174,6 @@ AppDelegate *app;
         }
         
         [self scheduleUpdate];
-        centerOfAllScabs = [self getCenterOfAllScabs];        
     }
             
     return self;
@@ -190,18 +189,6 @@ AppDelegate *app;
     for (int x = 0; x < numScabs; x++) {
         [app.scabs addObject:[[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary] autorelease]];
     }
-}
-
-- (CGPoint)getCenterOfAllScabs {
-    NSLog(@"TOTAL NUMBER OF SCABS: %d", [app.scabs count]);
-    int x = 0;
-    int y = 0;
-    for (Scab *scab in app.scabs) {
-        x += scab.center.x;
-        y += scab.center.y;
-    }
-    
-    return CGPointMake(x / [app.scabs count], y / [app.scabs count]);
 }
 
 - (void)setupSkinBackgroundBoundaries {
@@ -260,7 +247,7 @@ AppDelegate *app;
 
 - (void)addScabToJar:(Scab *)scab {
     NSLog(@"SCORE: %d", [scab pointValue]);
-    Jar *currentJar = [app getCurrentJar];
+    Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels > MAX_NUM_SCAB_LEVELS)
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;

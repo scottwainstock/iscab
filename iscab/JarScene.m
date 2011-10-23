@@ -29,7 +29,7 @@ AppDelegate *app;
         bg.position = ccp(160, 240);
         [self addChild:bg z:0];
         
-        int numScabLevels = [app.getCurrentJar numScabLevels];
+        int numScabLevels = [app.currentJar numScabLevels];
         
         if (numScabLevels > 0) {
             CCSprite *scabLevel = [CCSprite spriteWithFile:[NSString stringWithFormat:@"jarlayer%d.png", numScabLevels]];
