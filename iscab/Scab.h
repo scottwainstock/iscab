@@ -10,6 +10,7 @@
 
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
+#define OVERPICKED_THRESHOLD 0.5
 
 #define MEDIUM_SCAB_SIZE 200
 #define LARGE_SCAB_SIZE 300
@@ -41,17 +42,24 @@
     NSMutableArray *wounds;
     NSMutableArray *scabChunkBorders;
     NSDate *birthday;
+    NSDate *healDate;
     int sizeAtCreation;
+    bool isAged;
+    bool isOverpickWarningIssued;
 }
 
+@property (nonatomic, assign) bool isOverpickWarningIssued;
+@property (nonatomic, assign) bool isAged;
 @property (nonatomic, assign) int sizeAtCreation;
 @property (nonatomic, assign) CGPoint center;
 @property (nonatomic, retain) NSDate *birthday;
+@property (nonatomic, retain) NSDate *healDate;
 @property (nonatomic, retain) NSMutableArray *wounds;
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
-- (bool)isScabComplete;
+- (bool)isOverpicked;
+- (bool)isComplete;
 - (NSTimeInterval)healingInterval;
 - (int)scabSize;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;

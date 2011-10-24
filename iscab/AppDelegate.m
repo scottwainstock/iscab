@@ -167,7 +167,7 @@
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
         if (oldSavedArray != nil) {                
             for (Jar *savedJar in oldSavedArray) {
-                Jar *jar = [[[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels] autorelease];
+                Jar *jar = [[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels];
                                 
                 [self.jars addObject:jar];
             }
@@ -175,7 +175,7 @@
     } else {
         NSLog(@"CREATING NEW JARS");
         for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
-            [self.jars addObject:[[[Jar alloc] initWithNumScabLevels:0] autorelease]];
+            [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
         }
     }
     
@@ -192,6 +192,10 @@
 
 - (void)saveState {    
     NSLog(@"SAVING");
+    for (Scab *scab in self.scabs) {
+        [scab setIsAged:YES];
+    }
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
         
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];

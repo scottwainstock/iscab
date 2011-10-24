@@ -145,21 +145,8 @@ AppDelegate *app;
         [self addChild:app.batchNode];
         
         NSData *mScabs = [defaults objectForKey:@"scabs"];
-        if (mScabs != nil) {
-            NSMutableArray *oldSavedArray = (NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:mScabs];
-            if (oldSavedArray != nil) {            
-                for (Scab *savedScab in oldSavedArray) {
-                    Scab *scab = [[[Scab alloc] init] autorelease];
-                    scab.scabChunks = savedScab.scabChunks;
-                    scab.wounds = savedScab.wounds;
-                    scab.scabChunkBorders = savedScab.scabChunkBorders;
-                    scab.birthday = savedScab.birthday;
-                    scab.sizeAtCreation = savedScab.sizeAtCreation;
-                    
-                    [app.scabs addObject:scab];
-                }
-            }
-        }
+        if (mScabs != nil)
+            [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:mScabs]];
                  
         if (![app.scabs count]) {
             NSLog(@"GENERATING NEW BOARD");
@@ -184,9 +171,9 @@ AppDelegate *app;
 - (void)generateScabs {    
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:app.skinBackground] CGRectValue];
     
-    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;    
+    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
     for (int x = 0; x < numScabs; x++) {
-        [app.scabs addObject:[[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary] autorelease]];
+        [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
     }
 }
 
@@ -218,7 +205,7 @@ AppDelegate *app;
     app.skinBackground = [newSkinBackground copy];
 }
 
-- (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location {
+- (void)addToLooseScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location {
     float offsetX = -sizeOfMoveableScab + (arc4random() % (sizeOfMoveableScab * 2));
     float offsetY = -sizeOfMoveableScab + (arc4random() % (sizeOfMoveableScab * 2));
     CGPoint offsetLocation = CGPointMake(location.x + offsetX, location.y + offsetY);
@@ -261,7 +248,7 @@ AppDelegate *app;
     Scab *scab = scabChunk.scab;
     [scabChunk destroy];
 
-    if ([scab.scabChunks count] == 0)
+    if ([scab isComplete])
         [self addScabToJar:scab];
 
     if ([self isBoardCompleted] && !initing) {
@@ -278,7 +265,7 @@ AppDelegate *app;
 
 - (bool)isBoardCompleted {
     for (Scab *scab in app.scabs) {
-        if (![scab isScabComplete])
+        if (![scab isComplete])
             return false;
     }
     
@@ -363,7 +350,10 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                [self addScabChunk:scabChunk fromLocation:touchLocation];
+                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued])
+                    [self warnAboutOverpicking:scabChunk.scab];
+                
+                [self addToLooseScabChunk:scabChunk fromLocation:touchLocation];
                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
                     IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.position filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
@@ -382,6 +372,15 @@ AppDelegate *app;
         }
     }
     [removedScabs removeAllObjects];
+}
+
+- (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
+    CCLabelTTF *overpickWarning = [CCLabelTTF labelWithString:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" dimensions:CGSizeMake(200.0f, 35.0f) alignment:UITextAlignmentCenter fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
+    [overpickWarning setColor:ccBLACK];
+    [overpickWarning setPosition:ccp(195, 400)];
+    [overpickWarning runAction:[CCFadeOut actionWithDuration:8]]; 
+    [self addChild:overpickWarning z:100];
+    [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {

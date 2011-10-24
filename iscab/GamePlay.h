@@ -47,8 +47,9 @@
 
 + (id)scene;
 
+- (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
 - (bool)isBoardCompleted;
-- (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
+- (void)addToLooseScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScabs;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;

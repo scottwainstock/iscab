@@ -13,7 +13,7 @@
 
 @implementation Scab
 
-@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation;
+@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation, healDate, isAged, isOverpickWarningIssued;
 
 - (NSMutableArray *)scabChunks { 
     @synchronized(scabChunks) {
@@ -47,7 +47,10 @@
     [coder encodeObject:self.scabChunkBorders forKey:@"scabChunkBorders"];
     [coder encodeObject:self.wounds forKey:@"wounds"];
     [coder encodeObject:self.birthday forKey:@"birthday"];
+    [coder encodeObject:self.healDate forKey:@"healDate"];
     [coder encodeInt:self.sizeAtCreation forKey:@"sizeAtCreation"];
+    [coder encodeBool:self.isAged forKey:@"isAged"];
+    [coder encodeBool:self.isOverpickWarningIssued forKey:@"isOverpickWarningIssued"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -58,7 +61,10 @@
         self.scabChunkBorders = (NSMutableArray *)[coder decodeObjectForKey:@"scabChunkBorders"];
         self.wounds = (NSMutableArray *)[coder decodeObjectForKey:@"wounds"];
         self.birthday = (NSDate *)[coder decodeObjectForKey:@"birthday"];
+        self.healDate = (NSDate *)[coder decodeObjectForKey:@"healDate"];
         self.sizeAtCreation = [coder decodeIntForKey:@"sizeAtCreation"];
+        self.isAged = [coder decodeBoolForKey:@"isAged"];
+        self.isOverpickWarningIssued = [coder decodeBoolForKey:@"isOverpickWarningIssued"];
     }
     
     NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
@@ -66,6 +72,8 @@
     NSLog(@"LOADED NUMBER OF SCAB WOUNDS: %d", [self.wounds count]);
     NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
     NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
+    NSLog(@"LOADED SCAB HEAL DATE: %@", [self healDate]);
+    NSLog(@"IS AGED: %d", (int)[self isAged]);
 
     return self; 
 }
@@ -126,12 +134,15 @@
                 }
             }
         }
+        
+        [self setIsOverpickWarningIssued:NO];
         [self setSizeAtCreation:[self.scabChunks count]];
         NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
-        
+
         [self setBirthday:[NSDate date]];
         
         NSDate *notificationDate = [self.birthday dateByAddingTimeInterval:[self healingInterval]];        
+        [self setHealDate:notificationDate];
         [app scheduleNotification:notificationDate];
     }
     
@@ -189,7 +200,7 @@
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
    // [self splatterBlood:scab];
     
-    bool isBleeding = (!isClean && (arc4random() % (int)ceil(ccpDistance([app centerOfAllScabs], iscabSprite.savedLocation) * 0.10) == 1)) ? TRUE : FALSE;
+    bool isBleeding = (!isClean && (arc4random() % (int)ceil(ccpDistance([app centerOfAllScabs], iscabSprite.savedLocation) * 0.10) + 1 == 2)) ? TRUE : FALSE;
     NSString *woundType = [Wound woundFrameNameForClean:isClean isBleeding:isBleeding scabChunkNo:iscabSprite.scabChunkNo];
     
     Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];
@@ -281,7 +292,7 @@
     }
 }
 
-- (bool)isScabComplete {
+- (bool)isComplete {
     if ([self.wounds count] != self.sizeAtCreation)
         return false;
     
@@ -291,6 +302,16 @@
     }
     
     return true;
+}
+
+- (bool)isOverpicked {
+    if (isAged) {
+        return false;
+    } else if (((float)[self.wounds count] / (float)self.sizeAtCreation) >= OVERPICKED_THRESHOLD) {
+        return true;
+    } else {
+        return false;
+    }
 }
    
 - (void)reset {
