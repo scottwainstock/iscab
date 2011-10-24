@@ -226,6 +226,22 @@
     return CGPointMake(x / [self.scabs count], y / [self.scabs count]);
 }
 
+- (void)scheduleNotification:(NSDate *)date {    
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = date;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    
+    notification.alertBody = @"You've got an itchy scab.";
+    notification.alertAction = @"Take me to it.";
+    notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    [notification release];
+    
+    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];
 }

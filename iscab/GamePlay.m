@@ -153,6 +153,8 @@ AppDelegate *app;
                     scab.scabChunks = savedScab.scabChunks;
                     scab.wounds = savedScab.wounds;
                     scab.scabChunkBorders = savedScab.scabChunkBorders;
+                    scab.birthday = savedScab.birthday;
+                    scab.sizeAtCreation = savedScab.sizeAtCreation;
                     
                     [app.scabs addObject:scab];
                 }
@@ -181,11 +183,8 @@ AppDelegate *app;
 
 - (void)generateScabs {    
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:app.skinBackground] CGRectValue];
-    NSLog(@"BACKGROUND BOUNDARY IS: %@", NSStringFromCGRect(backgroundBoundary));
     
-    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
-    NSLog(@"NUMBER OF SCABS TO DRAW: %d", numScabs);
-    
+    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;    
     for (int x = 0; x < numScabs; x++) {
         [app.scabs addObject:[[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary] autorelease]];
     }
@@ -265,7 +264,7 @@ AppDelegate *app;
     if ([scab.scabChunks count] == 0)
         [self addScabToJar:scab];
 
-    if (([self.activeScabChunks count] == 0) && !initing) {
+    if ([self isBoardCompleted] && !initing) {
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
@@ -277,6 +276,15 @@ AppDelegate *app;
     }
 }
 
+- (bool)isBoardCompleted {
+    for (Scab *scab in app.scabs) {
+        if (![scab isScabComplete])
+            return false;
+    }
+    
+    return true;
+}
+
 - (void)resetBoard {
     for (Scab *scab in app.scabs) {
         [scab reset];
@@ -285,9 +293,12 @@ AppDelegate *app;
     for (CCMotionStreak *streak in [self allBlood]) {
         [streak removeFromParentAndCleanup:NO];
     }
-    allBlood = nil;    
-
+    allBlood = nil;
+    
     [app.scabs removeAllObjects];
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
     [self updateBackground:nil];
     [self generateScabs];
     endSequenceRunning = false;

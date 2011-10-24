@@ -10,24 +10,50 @@
 
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
+
 #define MEDIUM_SCAB_SIZE 200
 #define LARGE_SCAB_SIZE 300
 #define XL_SCAB_SIZE 301
+
 #define MAX_SCAB_WIDTH 100
 #define MAX_SCAB_HEIGHT 100
+
+/*
+#define SMALL_HEALING_TIME 1
+#define MEDIUM_HEALING_TIME 7200
+#define LARGE_HEALING_TIME 18000
+#define XL_HEALING_TIME 28800
+*/
+
+#define SMALL_HEALING_TIME 10
+#define MEDIUM_HEALING_TIME 20
+#define LARGE_HEALING_TIME 30
+#define XL_HEALING_TIME 40
+
+#define SMALL_SCAB 0
+#define MEDIUM_SCAB 1
+#define LARGE_SCAB 2
+#define XL_SCAB 3
 
 @interface Scab : NSObject <NSCoding> {
     CGPoint center;
     NSMutableArray *scabChunks;
     NSMutableArray *wounds;
     NSMutableArray *scabChunkBorders;
+    NSDate *birthday;
+    int sizeAtCreation;
 }
 
+@property (nonatomic, assign) int sizeAtCreation;
 @property (nonatomic, assign) CGPoint center;
+@property (nonatomic, retain) NSDate *birthday;
 @property (nonatomic, retain) NSMutableArray *wounds;
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
+- (bool)isScabComplete;
+- (NSTimeInterval)healingInterval;
+- (int)scabSize;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (int)pointValue;
 - (void)reset;

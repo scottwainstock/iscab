@@ -13,7 +13,7 @@
 
 @implementation Scab
 
-@synthesize scabChunks, wounds, center, scabChunkBorders;
+@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation;
 
 - (NSMutableArray *)scabChunks { 
     @synchronized(scabChunks) {
@@ -46,6 +46,8 @@
     [coder encodeObject:self.scabChunks forKey:@"scabChunks"];
     [coder encodeObject:self.scabChunkBorders forKey:@"scabChunkBorders"];
     [coder encodeObject:self.wounds forKey:@"wounds"];
+    [coder encodeObject:self.birthday forKey:@"birthday"];
+    [coder encodeInt:self.sizeAtCreation forKey:@"sizeAtCreation"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -55,29 +57,38 @@
         self.scabChunks = (NSMutableArray *)[coder decodeObjectForKey:@"scabChunks"];
         self.scabChunkBorders = (NSMutableArray *)[coder decodeObjectForKey:@"scabChunkBorders"];
         self.wounds = (NSMutableArray *)[coder decodeObjectForKey:@"wounds"];
+        self.birthday = (NSDate *)[coder decodeObjectForKey:@"birthday"];
+        self.sizeAtCreation = [coder decodeIntForKey:@"sizeAtCreation"];
     }
     
     NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
     NSLog(@"LOADED NUMBER OF SCAB BORDERS: %d", [self.scabChunkBorders count]);
     NSLog(@"LOADED NUMBER OF SCAB WOUNDS: %d", [self.wounds count]);
+    NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
+    NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
 
     return self; 
 }
 
 - (int)pointValue {
-    if ([self.wounds count] >= XL_SCAB_SIZE) {
-        return 4;
-    } else if ([self.wounds count] >= LARGE_SCAB_SIZE) {
-        return 3;
-    } else if ([self.wounds count] >= MEDIUM_SCAB_SIZE) {
-        return 2;
-    } else {
-        return 1;
+    switch ([self scabSize]) {
+        case XL_SCAB:
+            return 4;
+        case LARGE_SCAB:
+            return 3;
+        case MEDIUM_SCAB:
+            return 2;
+        case SMALL_SCAB:
+            return 1;
+        default:
+            return 1;
     }
 }
 
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
         int scabXOffset = (arc4random() % (int)backgroundBoundary.size.width) + backgroundBoundary.origin.x;
         int scabYOffset = (arc4random() % (int)backgroundBoundary.size.height) + backgroundBoundary.origin.y;
 
@@ -88,9 +99,6 @@
         
         int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
         int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
-         
-        NSLog(@"SCAB ORIGIN: %@", NSStringFromCGPoint(scabOrigin));
-        NSLog(@"CENTER OF SCAB: %@", NSStringFromCGPoint(center));
          
         int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;         
         for (int x = 0; x < numScabChunks; x++) { 
@@ -118,7 +126,13 @@
                 }
             }
         }
-        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self.scabChunks count]);
+        [self setSizeAtCreation:[self.scabChunks count]];
+        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
+        
+        [self setBirthday:[NSDate date]];
+        
+        NSDate *notificationDate = [self.birthday dateByAddingTimeInterval:[self healingInterval]];        
+        [app scheduleNotification:notificationDate];
     }
     
     return self;
@@ -237,6 +251,46 @@
     [savedWounds release];
     [savedScabChunks release];
     [savedScabChunkBorders release];
+}
+
+- (int)scabSize {
+    if (self.sizeAtCreation >= XL_SCAB_SIZE) {
+        return XL_SCAB;
+    } else if (self.sizeAtCreation >= LARGE_SCAB_SIZE) {
+        return LARGE_SCAB;
+    } else if (self.sizeAtCreation >= MEDIUM_SCAB_SIZE) {
+        return MEDIUM_SCAB;
+    } else {
+        return SMALL_SCAB;
+    }
+}
+         
+- (NSTimeInterval)healingInterval {
+    NSLog(@"HEALING FOR: %d", [self scabSize]);
+    switch ([self scabSize]) {
+        case XL_SCAB:
+            return XL_HEALING_TIME + (arc4random() % XL_HEALING_TIME);
+        case LARGE_SCAB:
+            return LARGE_HEALING_TIME + (arc4random() % LARGE_HEALING_TIME);
+        case MEDIUM_SCAB:
+            return MEDIUM_HEALING_TIME + (arc4random() % MEDIUM_HEALING_TIME);
+        case SMALL_SCAB:
+            return SMALL_HEALING_TIME + (arc4random() % SMALL_HEALING_TIME);
+        default:
+            return XL_HEALING_TIME + (arc4random() % XL_HEALING_TIME);
+    }
+}
+
+- (bool)isScabComplete {
+    if ([self.wounds count] != self.sizeAtCreation)
+        return false;
+    
+    for (Wound *wound in self.wounds) {
+        if (!wound.isClean)
+            return false;
+    }
+    
+    return true;
 }
    
 - (void)reset {

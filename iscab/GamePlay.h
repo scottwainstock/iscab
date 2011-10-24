@@ -47,6 +47,7 @@
 
 + (id)scene;
 
+- (bool)isBoardCompleted;
 - (void)addScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScabs;

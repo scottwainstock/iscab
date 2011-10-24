@@ -43,5 +43,6 @@
 - (void)saveState;
 - (Jar *)currentJar;
 - (CGPoint)centerOfAllScabs;
+- (void)scheduleNotification:(NSDate *)date;
 
 @end
