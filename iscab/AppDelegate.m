@@ -153,6 +153,8 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
+    
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
     
@@ -194,6 +196,9 @@
     NSLog(@"SAVING");
     for (Scab *scab in self.scabs) {
         [scab setIsAged:YES];
+        NSLog(@"HEALING INTERVAL OF: %f", [scab healingInterval]);
+        NSDate *notificationDate = [[NSDate date] dateByAddingTimeInterval:[scab healingInterval]];        
+        [self scheduleNotification:notificationDate];
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
@@ -230,20 +235,24 @@
     return CGPointMake(x / [self.scabs count], y / [self.scabs count]);
 }
 
-- (void)scheduleNotification:(NSDate *)date {    
-    UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.fireDate = date;
-    notification.timeZone = [NSTimeZone defaultTimeZone];
-    
-    notification.alertBody = @"You've got an itchy scab.";
-    notification.alertAction = @"Take me to it.";
-    notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
-    
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-    [notification release];
-    
-    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+- (void)scheduleNotification:(NSDate *)date {
+    NSLog(@"NUMBER OF LOCAL NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
+
+    if (![[[UIApplication sharedApplication] scheduledLocalNotifications] count] > 0) {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.fireDate = date;
+        notification.timeZone = [NSTimeZone defaultTimeZone];
+        
+        notification.alertBody = @"You've got an itchy scab.";
+        notification.alertAction = @"Take me to it.";
+        notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
+        
+        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+        [notification release];
+        
+        NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -252,6 +261,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
+    NSLog(@"ACTIVE");
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

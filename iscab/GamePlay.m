@@ -76,7 +76,7 @@ AppDelegate *app;
             [deleteSprite destroy];
         }
         
-        [spritesToDelete release];
+        //[spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
@@ -162,6 +162,7 @@ AppDelegate *app;
             }
         }
         
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
     }
             
@@ -360,7 +361,7 @@ AppDelegate *app;
                     
                     [self.looseScabChunks addObject:looseScab];
                     [app.batchNode addChild:looseScab];
-                    [looseScab release];
+                    //[looseScab release];
                 }              
             }
         }

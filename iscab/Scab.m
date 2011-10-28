@@ -95,8 +95,6 @@
 
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
-        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
         int scabXOffset = (arc4random() % (int)backgroundBoundary.size.width) + backgroundBoundary.origin.x;
         int scabYOffset = (arc4random() % (int)backgroundBoundary.size.height) + backgroundBoundary.origin.y;
 
@@ -140,10 +138,7 @@
         NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
 
         [self setBirthday:[NSDate date]];
-        
-        NSDate *notificationDate = [self.birthday dateByAddingTimeInterval:[self healingInterval]];        
-        [self setHealDate:notificationDate];
-        [app scheduleNotification:notificationDate];
+        [self setHealDate:[[NSDate date] dateByAddingTimeInterval:[self healingInterval]]];
     }
     
     return self;
@@ -239,6 +234,7 @@
 }
 
 - (void)displaySprites {
+    NSLog(@"DISPLAYING SPRITES");
     NSMutableArray *savedScabChunks = [self.scabChunks copy];
     NSMutableArray *savedScabChunkBorders = [self.scabChunkBorders copy];
     NSMutableArray *savedWounds = [self.wounds copy];
@@ -255,8 +251,15 @@
         [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
     }
     
+    bool shouldHealUncleanWounds = [[self healDate] compare:[NSDate date]] == NSOrderedAscending ? TRUE : FALSE;
     for (Wound *wound in savedWounds) {
-        [self createWoundFromIScabSprite:wound isClean:wound.isClean];
+        if (shouldHealUncleanWounds) {
+            if (!wound.isClean)
+                [self createScabChunk:wound.savedLocation type:@"light" scabChunkNo:wound.scabChunkNo priority:1];
+            [self createWoundFromIScabSprite:wound isClean:TRUE];
+        } else {
+            [self createWoundFromIScabSprite:wound isClean:wound.isClean];
+        }
     }
     
     [savedWounds release];
@@ -277,7 +280,6 @@
 }
          
 - (NSTimeInterval)healingInterval {
-    NSLog(@"HEALING FOR: %d", [self scabSize]);
     switch ([self scabSize]) {
         case XL_SCAB:
             return XL_HEALING_TIME + (arc4random() % XL_HEALING_TIME);
@@ -293,7 +295,7 @@
 }
 
 - (bool)isComplete {
-    if ([self.wounds count] != self.sizeAtCreation)
+    if ([self.scabChunks count])
         return false;
     
     for (Wound *wound in self.wounds) {
