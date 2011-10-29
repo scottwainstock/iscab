@@ -206,6 +206,7 @@
     [wound setIsBleeding:isBleeding];
     [wound setScale:0.8];
     
+    /*
     if (wound.isBleeding) {
         for (Wound *savedWound in self.wounds) {
             if (savedWound.isBleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 5.0) && (arc4random() % 100 == 1)) {
@@ -218,7 +219,7 @@
                 [streak release];
             }
         }
-    }
+    }*/
     
     [self.wounds addObject:wound];
     [app.batchNode addChild:wound z:-1];
@@ -278,20 +279,28 @@
         return SMALL_SCAB;
     }
 }
-         
-- (NSTimeInterval)healingInterval {
+
+- (int)baseHealingInterval {
     switch ([self scabSize]) {
         case XL_SCAB:
-            return XL_HEALING_TIME + (arc4random() % XL_HEALING_TIME);
+            return XL_HEALING_TIME;
         case LARGE_SCAB:
-            return LARGE_HEALING_TIME + (arc4random() % LARGE_HEALING_TIME);
+            return LARGE_HEALING_TIME;
         case MEDIUM_SCAB:
-            return MEDIUM_HEALING_TIME + (arc4random() % MEDIUM_HEALING_TIME);
+            return MEDIUM_HEALING_TIME;
         case SMALL_SCAB:
-            return SMALL_HEALING_TIME + (arc4random() % SMALL_HEALING_TIME);
+            return SMALL_HEALING_TIME;
         default:
-            return XL_HEALING_TIME + (arc4random() % XL_HEALING_TIME);
+            return XL_HEALING_TIME;
     }
+}
+
+- (NSTimeInterval)maximumHealingInterval {
+    return [self baseHealingInterval] * 2;
+}
+         
+- (NSTimeInterval)healingInterval {
+    return [self baseHealingInterval] + (arc4random() % [self baseHealingInterval]);
 }
 
 - (bool)isComplete {

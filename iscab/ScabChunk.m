@@ -23,10 +23,10 @@
 - (void)ripOffScab {
     //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
         
-    if (ccpDistance(self.savedLocation, self.scab.center) < DISTANCE_FROM_CENTER_TO_REMAIN_UNCLEAN) {
-        [scab createWoundFromIScabSprite:self isClean:NO];
+    if (ccpDistance(self.savedLocation, self.scab.center) < DISTANCE_FROM_CENTER_TO_REMAIN_CLEAN) {
+        [self.scab createWoundFromIScabSprite:self isClean:NO];
     } else {
-        [scab createWoundFromIScabSprite:self isClean:YES];
+        [self.scab createWoundFromIScabSprite:self isClean:YES];
     }
 }
 

@@ -11,7 +11,7 @@
 #import "Scab.h"
 #import "IScabSprite.h"
 
-#define DISTANCE_FROM_CENTER_TO_REMAIN_UNCLEAN 25.0
+#define DISTANCE_FROM_CENTER_TO_REMAIN_CLEAN 25.0
 
 @interface ScabChunk : IScabSprite <NSCoding> {
     int priority;

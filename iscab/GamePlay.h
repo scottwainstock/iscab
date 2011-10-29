@@ -12,7 +12,6 @@
 #import "ScabChunk.h"
 #import "cocos2d.h"
 #import "chipmunk.h"
-#import "cpMouse.h"
 #import "cpShape.h"
 
 #define NUM_BACKGROUNDS 7
@@ -26,20 +25,15 @@
 #define Y_SCAB_BORDER_BOUNDARY 10
 
 @interface GamePlay : IScabCCLayer {
-    cpMouse *mouse;    
     cpSpace *space;
     cpVect gravity;
-    int sizeOfMoveableScab;
     bool endSequenceRunning;
-    IScabSprite *moveableScab;
     NSMutableArray *allBlood;
     NSMutableArray *looseScabChunks;
     NSMutableDictionary *skinBackgroundBoundaries;
 }
 
 @property (nonatomic) bool endSequenceRunning;
-@property (nonatomic) int sizeOfMoveableScab;
-@property (nonatomic, assign) IScabSprite *moveableScab;
 @property (nonatomic, assign) cpVect gravity;
 @property (nonatomic, retain) NSMutableArray *allBlood;
 @property (nonatomic, retain) NSMutableArray *looseScabChunks;
@@ -49,7 +43,6 @@
 
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
 - (bool)isBoardCompleted;
-- (void)addToLooseScabChunk:(ScabChunk *)scabChunk fromLocation:(CGPoint)location;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScabs;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;

@@ -84,6 +84,7 @@
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
+    NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -153,7 +154,6 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
@@ -192,22 +192,33 @@
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
 }
 
-- (void)saveState {    
+- (void)saveState {
     NSLog(@"SAVING");
     for (Scab *scab in self.scabs) {
         [scab setIsAged:YES];
-        NSLog(@"HEALING INTERVAL OF: %f", [scab healingInterval]);
-        NSDate *notificationDate = [[NSDate date] dateByAddingTimeInterval:[scab healingInterval]];        
-        [self scheduleNotification:notificationDate];
+        
+        bool alreadyScheduled = FALSE;
+        for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+            if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
+                alreadyScheduled = TRUE;
+        }
+        
+        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending))
+            [self scheduleNotification:[scab healDate]];
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-        
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-        
-    [defaults synchronize]; 
+    [defaults synchronize];
+    
+    for (Scab *scab in self.scabs) {
+        [scab reset];
+    }
+    
+    self.scabs = nil;
+    [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
 - (Jar *)currentJar {
@@ -236,23 +247,21 @@
 }
 
 - (void)scheduleNotification:(NSDate *)date {
-    NSLog(@"NUMBER OF LOCAL NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
-
-    if (![[[UIApplication sharedApplication] scheduledLocalNotifications] count] > 0) {
-        UILocalNotification *notification = [[UILocalNotification alloc] init];
-        notification.fireDate = date;
-        notification.timeZone = [NSTimeZone defaultTimeZone];
-        
-        notification.alertBody = @"You've got an itchy scab.";
-        notification.alertAction = @"Take me to it.";
-        notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
-        
-        [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-        [notification release];
-        
-        NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
-    }
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = date;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    
+    notification.alertBody = @"You've got an itchy scab.";
+    notification.alertAction = @"Take me to it.";
+    notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    [notification release];
+    
+    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+    
+    NSLog(@"NUMBER OF NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -261,7 +270,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
-    NSLog(@"ACTIVE");
+    NSLog(@"APPLICATION WENT ACTIVE");
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

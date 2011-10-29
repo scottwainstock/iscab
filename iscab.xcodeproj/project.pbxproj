@@ -119,7 +119,6 @@
 		8E9BE72214536B59006D8F7D /* skin_background6.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E9BE71214536B58006D8F7D /* skin_background6.png */; };
 		8E9BE72314536B59006D8F7D /* skin_background7-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E9BE71314536B58006D8F7D /* skin_background7-hd.png */; };
 		8E9BE72414536B59006D8F7D /* skin_background7.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E9BE71414536B58006D8F7D /* skin_background7.png */; };
-		8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB63F5B13F9F54B0087CEAB /* cpMouse.c */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
 		8EB71A9A13F399C200072593 /* ScabChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8D13F399C200072593 /* ScabChunk.m */; };
@@ -462,8 +461,6 @@
 		8E9BE71214536B58006D8F7D /* skin_background6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skin_background6.png; sourceTree = "<group>"; };
 		8E9BE71314536B58006D8F7D /* skin_background7-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skin_background7-hd.png"; sourceTree = "<group>"; };
 		8E9BE71414536B58006D8F7D /* skin_background7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skin_background7.png; sourceTree = "<group>"; };
-		8EB63F5B13F9F54B0087CEAB /* cpMouse.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = cpMouse.c; sourceTree = "<group>"; };
-		8EB63F5C13F9F54B0087CEAB /* cpMouse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpMouse.h; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
 		8EB71A7F13F399C200072593 /* SkinColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinColorPicker.h; sourceTree = "<group>"; };
 		8EB71A8013F399C200072593 /* ScabChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScabChunk.h; sourceTree = "<group>"; };
@@ -1082,8 +1079,6 @@
 		8ECA192613F397AC006597EA /* iscab */ = {
 			isa = PBXGroup;
 			children = (
-				8EB63F5B13F9F54B0087CEAB /* cpMouse.c */,
-				8EB63F5C13F9F54B0087CEAB /* cpMouse.h */,
 				8EB71AE213F39E1200072593 /* drawSpace.c */,
 				8EB71AE313F39E1200072593 /* drawSpace.h */,
 				8EB71A7E13F399C200072593 /* Wound.h */,
@@ -2017,7 +2012,6 @@
 				8EB71AA313F399C200072593 /* CCParticleMyBlood.m in Sources */,
 				8EB71AA413F399C200072593 /* About.m in Sources */,
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
-				8EB63F5D13F9F54B0087CEAB /* cpMouse.c in Sources */,
 				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,
 				8E84548A144E1181002F5424 /* Scab.m in Sources */,
 			);

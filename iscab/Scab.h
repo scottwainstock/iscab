@@ -26,10 +26,10 @@
 #define XL_HEALING_TIME 28800
 */
 
-#define SMALL_HEALING_TIME 10
-#define MEDIUM_HEALING_TIME 20
-#define LARGE_HEALING_TIME 30
-#define XL_HEALING_TIME 40
+#define SMALL_HEALING_TIME 60
+#define MEDIUM_HEALING_TIME 120
+#define LARGE_HEALING_TIME 180
+#define XL_HEALING_TIME 240
 
 #define SMALL_SCAB 0
 #define MEDIUM_SCAB 1
@@ -60,6 +60,7 @@
 
 - (bool)isOverpicked;
 - (bool)isComplete;
+- (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
 - (int)scabSize;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
