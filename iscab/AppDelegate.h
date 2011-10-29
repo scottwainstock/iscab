@@ -26,7 +26,7 @@
     CCSpriteBatchNode *batchNode;
     NSMutableArray *scabs;
     NSMutableString *skinBackground;
-    CCMenuItem *homeButton;
+    CCMenuItem *backButton;
     CCMenuItem *jarButton;
 }
 
@@ -37,7 +37,7 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;
 @property (nonatomic, retain) NSMutableArray *scabs;
-@property (nonatomic, retain) CCMenuItem *homeButton;
+@property (nonatomic, retain) CCMenuItem *backButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
 
 - (void)saveState;

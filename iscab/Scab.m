@@ -155,7 +155,7 @@
     if (
         CGRectContainsPoint(backgroundBoundary, scabChunkCenter)          && // is inside background boundaries
         CGRectContainsPoint(scabBoundary, scabChunkCenter)                && // is inside scab boundaries
-        !CGRectContainsPoint(app.homeButton.boundingBox, scabChunkCenter) && // is not inside the home icon
+        !CGRectContainsPoint(app.backButton.boundingBox, scabChunkCenter) && // is not inside the back icon
         !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)     // is not inside the jar icon
     ) {
         return scabChunkCenter;

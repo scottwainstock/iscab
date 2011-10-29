@@ -20,7 +20,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground, homeButton, jarButton;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground, backButton, jarButton;
 
 - (NSMutableArray *)scabs { 
     @synchronized(scabs) {

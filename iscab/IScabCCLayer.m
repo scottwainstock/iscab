@@ -33,15 +33,19 @@
 - (void)setupNavigationIcons {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    app.homeButton = [CCMenuItemImage itemFromNormalImage:@"Home.png" selectedImage:@"Home-Over.png" target:self selector:@selector(homeTapped:)];
-    app.homeButton.position = ccp(40, 40);
+    app.backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
+    app.backButton.position = ccp(40, 40);
     
     app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     app.jarButton.position = ccp(280, 40);
     
-    CCMenu *menu = [CCMenu menuWithItems:app.homeButton, app.jarButton, nil];
+    CCMenu *menu = [CCMenu menuWithItems:app.backButton, app.jarButton, nil];
     menu.position = CGPointZero;
     [self addChild:menu z:2];
+}
+
+- (void)backTapped:(CCMenuItem  *)menuItem {
+    [[CCDirector sharedDirector] popScene];
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
