@@ -21,13 +21,9 @@
 
 - (id)init {
     if( (self=[super init] )) {
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"HELP" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 6];
-        title.position =  ccp(160, 380);
-        [self addChild: title];
-        
-        CCLabelTTF *helpText = [CCLabelTTF labelWithString:@"This is where the help text will go." fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
-        helpText.position =  ccp(160, 300);
-        [self addChild: helpText];
+        CCSprite *helpText = [CCSprite spriteWithFile:@"help-text.png"];
+        helpText.position = ccp(160, 240);
+        [self addChild:helpText z:-1];
     }
     
     return self;
