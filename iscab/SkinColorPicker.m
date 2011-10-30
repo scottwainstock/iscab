@@ -19,15 +19,22 @@
     return scene;
 }
 
+- (IBAction)changeSkinColor:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
+        [defaults setObject:@"dark" forKey:@"skinColor"];
+    } else {
+        [defaults setObject:@"light" forKey:@"skinColor"];        
+    }
+}
+
 - (id)init {
-    if( (self=[super init] )) {
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"CHOOSE YOUR SKIN" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 3];
-        title.position =  ccp(160, 380);
-        [self addChild: title];
+    if( (self=[super init] )) {        
+        CCMenuItemImage *pickerText = [CCMenuItemImage itemFromNormalImage:@"choose-skin-text.png" selectedImage: @"choose-skin-text.png" target:self selector:@selector(changeSkinColor:)];
         
-        CCLabelTTF *skinText = [CCLabelTTF labelWithString:@"This is where the skin picking will go." fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
-        skinText.position =  ccp(160, 300);
-        [self addChild:skinText];
+        CCMenu *menu = [CCMenu menuWithItems:pickerText, nil];       
+        menu.position = ccp(160, 240);
+        [self addChild:menu];        
     }
     
     return self;

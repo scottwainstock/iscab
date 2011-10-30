@@ -157,6 +157,13 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
+        
+    if ([defaults stringForKey:@"skinColor"] == NULL) {
+        [defaults setObject:@"light" forKey:@"skinColor"];
+    }
+    [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
+    [defaults synchronize];
+
     
     [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
@@ -203,11 +210,11 @@
                 alreadyScheduled = TRUE;
         }
         
-        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending))
+        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
             [self scheduleNotification:[scab healDate]];
     }
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
@@ -260,7 +267,6 @@
     [notification release];
     
     NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
-    
     NSLog(@"NUMBER OF NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
 }
 
