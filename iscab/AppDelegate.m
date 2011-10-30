@@ -20,7 +20,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground, backButton, jarButton;
 
 - (NSMutableArray *)scabs { 
     @synchronized(scabs) {
@@ -84,6 +84,7 @@
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
+    NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -153,8 +154,16 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
+        
+    if ([defaults stringForKey:@"skinColor"] == NULL) {
+        [defaults setObject:@"light" forKey:@"skinColor"];
+    }
+    [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
+    [defaults synchronize];
+
     
     [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
@@ -167,7 +176,7 @@
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
         if (oldSavedArray != nil) {                
             for (Jar *savedJar in oldSavedArray) {
-                Jar *jar = [[[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels] autorelease];
+                Jar *jar = [[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels];
                                 
                 [self.jars addObject:jar];
             }
@@ -175,7 +184,7 @@
     } else {
         NSLog(@"CREATING NEW JARS");
         for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
-            [self.jars addObject:[[[Jar alloc] initWithNumScabLevels:0] autorelease]];
+            [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
         }
     }
     
@@ -190,18 +199,36 @@
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
 }
 
-- (void)saveState {    
+- (void)saveState {
     NSLog(@"SAVING");
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
+    for (Scab *scab in self.scabs) {
+        [scab setIsAged:YES];
         
+        bool alreadyScheduled = FALSE;
+        for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+            if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
+                alreadyScheduled = TRUE;
+        }
+        
+        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
+            [self scheduleNotification:[scab healDate]];
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-        
-    [defaults synchronize]; 
+    [defaults synchronize];
+    
+    for (Scab *scab in self.scabs) {
+        [scab reset];
+    }
+    
+    self.scabs = nil;
+    //[[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
-- (Jar *)getCurrentJar {
+- (Jar *)currentJar {
     for (Jar *jar in self.jars) {
         if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
@@ -215,12 +242,41 @@
     return [self.jars objectAtIndex:0];
 }
 
+- (CGPoint)centerOfAllScabs {
+    int x = 0;
+    int y = 0;
+    for (Scab *scab in self.scabs) {
+        x += scab.center.x;
+        y += scab.center.y;
+    }
+    
+    return CGPointMake(x / [self.scabs count], y / [self.scabs count]);
+}
+
+- (void)scheduleNotification:(NSDate *)date {
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.fireDate = date;
+    notification.timeZone = [NSTimeZone defaultTimeZone];
+    
+    notification.alertBody = @"You've got an itchy scab.";
+    notification.alertAction = @"Take me to it.";
+    notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    [notification release];
+    
+    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+    NSLog(@"NUMBER OF NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
+    NSLog(@"APPLICATION WENT ACTIVE");
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

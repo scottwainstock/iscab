@@ -13,10 +13,11 @@
 #import "Leaderboard.h"
 #import "SkinColorPicker.h"
 #import "SimpleAudioEngine.h"
+#import "AppDelegate.h"
 
 @implementation MainMenu
 
-@synthesize menu, start, leaderboard, chooseSkin, sound, help;
+@synthesize menu, start, leaderboard, chooseSkin, sound, help, iconMenu, aboutButton;
 
 +(id) scene {
     CCScene *scene = [CCScene node];
@@ -25,8 +26,8 @@
     return scene;
 }
 
--(id) init {
-    if( (self=[super init] )) {
+- (id)init {
+    if ((self = [super init])) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
         CCSprite *bg = [CCSprite spriteWithFile:@"menu-background.png"];
@@ -54,13 +55,15 @@
 }
 
 - (void)setupNavigationIcons {
-    CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
-    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(280, 40);
+    app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    app.jarButton.position = ccp(280, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
+    iconMenu = [CCMenu menuWithItems:aboutButton, app.jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }
@@ -116,6 +119,8 @@
 
 - (void) dealloc { 
     [super dealloc];
+    [iconMenu release];
+    [aboutButton release];
     /*
     [start release];
     [leaderboard release];

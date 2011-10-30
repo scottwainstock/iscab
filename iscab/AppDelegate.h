@@ -26,6 +26,8 @@
     CCSpriteBatchNode *batchNode;
     NSMutableArray *scabs;
     NSMutableString *skinBackground;
+    CCMenuItem *backButton;
+    CCMenuItem *jarButton;
 }
 
 @property (nonatomic) int screenWidth;
@@ -35,8 +37,12 @@
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;
 @property (nonatomic, retain) NSMutableArray *scabs;
+@property (nonatomic, retain) CCMenuItem *backButton;
+@property (nonatomic, retain) CCMenuItem *jarButton;
 
 - (void)saveState;
-- (Jar *)getCurrentJar;
+- (Jar *)currentJar;
+- (CGPoint)centerOfAllScabs;
+- (void)scheduleNotification:(NSDate *)date;
 
 @end
