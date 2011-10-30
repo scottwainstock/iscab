@@ -276,8 +276,8 @@ AppDelegate *app;
     endSequenceRunning = false;
 }
 
-- (void)homeTapped:(CCMenuItem  *)menuItem { 
-    [super homeTapped:menuItem];
+- (void)backTapped:(CCMenuItem  *)menuItem { 
+    [super backTapped:menuItem];
     [app saveState];
 
     for (Scab *scab in app.scabs) {

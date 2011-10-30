@@ -218,7 +218,7 @@
     }
     
     self.scabs = nil;
-    [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
+    //[[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
 - (Jar *)currentJar {

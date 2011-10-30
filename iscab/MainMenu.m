@@ -17,7 +17,7 @@
 
 @implementation MainMenu
 
-@synthesize menu, start, leaderboard, chooseSkin, sound, help;
+@synthesize menu, start, leaderboard, chooseSkin, sound, help, iconMenu, aboutButton;
 
 +(id) scene {
     CCScene *scene = [CCScene node];
@@ -57,13 +57,13 @@
 - (void)setupNavigationIcons {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    CCMenuItem *aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
+    aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
     app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     app.jarButton.position = ccp(280, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, app.jarButton, nil];
+    iconMenu = [CCMenu menuWithItems:aboutButton, app.jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }
@@ -119,6 +119,8 @@
 
 - (void) dealloc { 
     [super dealloc];
+    [iconMenu release];
+    [aboutButton release];
     /*
     [start release];
     [leaderboard release];
