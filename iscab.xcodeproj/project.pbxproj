@@ -140,6 +140,12 @@
 		8EBCEB80145CC5D100C4209C /* Back-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB7C145CC5CE00C4209C /* Back-Hover.png */; };
 		8EBCEB81145CC5D100C4209C /* Back-Hover-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB7D145CC5CF00C4209C /* Back-Hover-hd.png */; };
 		8EBCEB82145CC5D100C4209C /* Back-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB7E145CC5D000C4209C /* Back-hd.png */; };
+		8EBCEB85145CCAAA00C4209C /* about-text.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB83145CCAA400C4209C /* about-text.png */; };
+		8EBCEB86145CCAAA00C4209C /* about-text-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB84145CCAA600C4209C /* about-text-hd.png */; };
+		8EBCEB8B145CCDF200C4209C /* iHodor.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB87145CCDEE00C4209C /* iHodor.png */; };
+		8EBCEB8C145CCDF200C4209C /* iHodor-Tap.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB88145CCDEF00C4209C /* iHodor-Tap.png */; };
+		8EBCEB8D145CCDF200C4209C /* iHodor-Tap-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB89145CCDF000C4209C /* iHodor-Tap-hd.png */; };
+		8EBCEB8E145CCDF200C4209C /* iHodor-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EBCEB8A145CCDF100C4209C /* iHodor-hd.png */; };
 		8EC83324142848BC0095938B /* bloody_skin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331A142848BC0095938B /* bloody_skin2.png */; };
 		8EC83325142848BC0095938B /* bloody_skin3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331B142848BC0095938B /* bloody_skin3.png */; };
 		8EC83326142848BC0095938B /* clean_skin2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EC8331C142848BC0095938B /* clean_skin2.png */; };
@@ -502,6 +508,12 @@
 		8EBCEB7C145CC5CE00C4209C /* Back-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back-Hover.png"; sourceTree = "<group>"; };
 		8EBCEB7D145CC5CF00C4209C /* Back-Hover-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back-Hover-hd.png"; sourceTree = "<group>"; };
 		8EBCEB7E145CC5D000C4209C /* Back-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back-hd.png"; sourceTree = "<group>"; };
+		8EBCEB83145CCAA400C4209C /* about-text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about-text.png"; sourceTree = "<group>"; };
+		8EBCEB84145CCAA600C4209C /* about-text-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "about-text-hd.png"; sourceTree = "<group>"; };
+		8EBCEB87145CCDEE00C4209C /* iHodor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iHodor.png; sourceTree = "<group>"; };
+		8EBCEB88145CCDEF00C4209C /* iHodor-Tap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iHodor-Tap.png"; sourceTree = "<group>"; };
+		8EBCEB89145CCDF000C4209C /* iHodor-Tap-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iHodor-Tap-hd.png"; sourceTree = "<group>"; };
+		8EBCEB8A145CCDF100C4209C /* iHodor-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iHodor-hd.png"; sourceTree = "<group>"; };
 		8EC8331A142848BC0095938B /* bloody_skin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin2.png; sourceTree = "<group>"; };
 		8EC8331B142848BC0095938B /* bloody_skin3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bloody_skin3.png; sourceTree = "<group>"; };
 		8EC8331C142848BC0095938B /* clean_skin2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clean_skin2.png; sourceTree = "<group>"; };
@@ -921,6 +933,10 @@
 		8E6A6D77141F062700921E7E /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				8EBCEB87145CCDEE00C4209C /* iHodor.png */,
+				8EBCEB88145CCDEF00C4209C /* iHodor-Tap.png */,
+				8EBCEB89145CCDF000C4209C /* iHodor-Tap-hd.png */,
+				8EBCEB8A145CCDF100C4209C /* iHodor-hd.png */,
 				8EBCEB7B145CC5CD00C4209C /* Back.png */,
 				8EBCEB7C145CC5CE00C4209C /* Back-Hover.png */,
 				8EBCEB7D145CC5CF00C4209C /* Back-Hover-hd.png */,
@@ -946,6 +962,8 @@
 		8E6A6D7D141F062700921E7E /* Labels */ = {
 			isa = PBXGroup;
 			children = (
+				8EBCEB83145CCAA400C4209C /* about-text.png */,
+				8EBCEB84145CCAA600C4209C /* about-text-hd.png */,
 				8EBCEB77145CC35B00C4209C /* help-text.png */,
 				8EBCEB78145CC35E00C4209C /* help-text-hd.png */,
 				8E817E121453582F00D895F5 /* scab_added-hd.png */,
@@ -1890,6 +1908,12 @@
 				8EBCEB80145CC5D100C4209C /* Back-Hover.png in Resources */,
 				8EBCEB81145CC5D100C4209C /* Back-Hover-hd.png in Resources */,
 				8EBCEB82145CC5D100C4209C /* Back-hd.png in Resources */,
+				8EBCEB85145CCAAA00C4209C /* about-text.png in Resources */,
+				8EBCEB86145CCAAA00C4209C /* about-text-hd.png in Resources */,
+				8EBCEB8B145CCDF200C4209C /* iHodor.png in Resources */,
+				8EBCEB8C145CCDF200C4209C /* iHodor-Tap.png in Resources */,
+				8EBCEB8D145CCDF200C4209C /* iHodor-Tap-hd.png in Resources */,
+				8EBCEB8E145CCDF200C4209C /* iHodor-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

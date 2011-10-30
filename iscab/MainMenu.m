@@ -26,8 +26,8 @@
     return scene;
 }
 
--(id) init {
-    if( (self=[super init] )) {
+- (id)init {
+    if ((self = [super init])) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
         CCSprite *bg = [CCSprite spriteWithFile:@"menu-background.png"];

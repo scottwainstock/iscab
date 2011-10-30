@@ -49,15 +49,17 @@
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] replaceScene:[About scene]];
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[About scene]]];
 }
 
-- (void)homeTapped:(CCMenuItem  *)menuItem {    
+- (void)homeTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
 }
 
-- (void)jarTapped:(CCMenuItem  *)menuItem { 
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeUp transitionWithDuration:0.5f scene:[JarScene scene]]];
+- (void)jarTapped:(CCMenuItem  *)menuItem {
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {
