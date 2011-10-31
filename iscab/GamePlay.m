@@ -100,8 +100,9 @@ AppDelegate *app;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
+    [scene setTag:GAMEPLAY_SCENE_TAG];
     GamePlay *layer = [GamePlay node];
-    [scene addChild:layer z:0 tag:100];
+    [scene addChild:layer z:0 tag:GAMEPLAY_SCENE_TAG];
     
     return scene;
 }
@@ -143,22 +144,13 @@ AppDelegate *app;
                     
         [self addChild:app.batchNode];
         
-        NSData *mScabs = [defaults objectForKey:@"scabs"];
-        if (mScabs != nil)
-            [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:mScabs]];
-                 
-        if (![app.scabs count]) {
+        if (![defaults objectForKey:@"scabs"]) {
             NSLog(@"GENERATING NEW BOARD");
             [self updateBackground:nil];
             [self generateScabs];
         } else {
             NSLog(@"USING EXISTING BOARD");
-            [self updateBackground:[defaults stringForKey:@"skinBackground"]];
-            
-            NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
-            for (Scab *scab in app.scabs) {
-                [scab displaySprites];
-            }
+            [self displayExistingBoard];
         }
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -166,6 +158,19 @@ AppDelegate *app;
     }
             
     return self;
+}
+
+- (void)displayExistingBoard {
+    NSLog(@"DISPLAY EXISTING BOARD");
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"scabs"]]];
+    [self updateBackground:[defaults stringForKey:@"skinBackground"]];
+    
+    NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
+    for (Scab *scab in app.scabs) {
+        [scab displaySprites];
+    }    
 }
 
 - (void)generateScabs {
@@ -277,24 +282,6 @@ AppDelegate *app;
     endSequenceRunning = false;
 }
 
-- (void)backTapped:(CCMenuItem  *)menuItem { 
-    [super backTapped:menuItem];
-    [app saveState];
-
-    for (Scab *scab in app.scabs) {
-        [scab reset];
-    }
-}
-
-- (void)jarTapped:(CCMenuItem  *)menuItem {
-    [super jarTapped:menuItem];
-    [app saveState];
-    
-    for (Scab *scab in app.scabs) {
-        [scab reset];
-    }
-}
-
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
     CCLabelTTF *overpickWarning = [CCLabelTTF labelWithString:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" dimensions:CGSizeMake(200.0f, 35.0f) alignment:UITextAlignmentCenter fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
     [overpickWarning setColor:ccBLACK];
@@ -371,6 +358,19 @@ AppDelegate *app;
     self.gravity = space->gravity;
     
     return space;
+}
+
+- (void)onExit {
+    [super onExit];
+    NSLog(@"ON EXIT");
+    [app saveState];
+}
+
+- (void)onEnterTransitionDidFinish {
+    [super onEnterTransitionDidFinish];
+    NSLog(@"ON ENTER TRANSITION DID FINISH");
+    if (![app.scabs count])
+        [self displayExistingBoard];
 }
 
 - (void)dealloc {

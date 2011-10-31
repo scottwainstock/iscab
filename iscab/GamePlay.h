@@ -41,6 +41,7 @@
 
 + (id)scene;
 
+- (void)displayExistingBoard;
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
 - (bool)isBoardCompleted;
 - (void)setupSkinBackgroundBoundaries;
