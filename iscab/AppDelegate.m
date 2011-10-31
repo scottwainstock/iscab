@@ -199,35 +199,6 @@
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
 }
 
-- (void)saveState {
-    NSLog(@"SAVING");
-    for (Scab *scab in self.scabs) {
-        [scab setIsAged:YES];
-        
-        bool alreadyScheduled = FALSE;
-        for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
-            if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
-                alreadyScheduled = TRUE;
-        }
-        
-        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
-            [self scheduleNotification:[scab healDate]];
-    }
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-    [defaults synchronize];
-    
-    for (Scab *scab in self.scabs) {
-        [scab reset];
-    }
-    
-    self.scabs = nil;
-    //[[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
-}
-
 - (Jar *)currentJar {
     for (Jar *jar in self.jars) {
         if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
@@ -271,12 +242,17 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+    NSLog(@"WILL RESIGN ACTIVE");
 	[[CCDirector sharedDirector] pause];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	[[CCDirector sharedDirector] resume];
     NSLog(@"APPLICATION WENT ACTIVE");
+	[[CCDirector sharedDirector] resume];
+    
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] displayExistingBoard];
+    }
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -284,17 +260,51 @@
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {
-    [self saveState];
+    NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
+    
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+        [self saveState];
+    }
 }
 
--(void) applicationWillEnterForeground:(UIApplication*)application {
+- (void)scheduleNotifications {
+    for (Scab *scab in self.scabs) {
+        NSLog(@"SCHEDULING NOTIFICATION");
+        [scab setIsAged:YES];
+        
+        bool alreadyScheduled = FALSE;
+        for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+            if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
+                alreadyScheduled = TRUE;
+        }
+        
+        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
+            [self scheduleNotification:[scab healDate]];
+    }
+}
+
+- (void)saveState {
+    [self scheduleNotifications];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
+    [defaults synchronize];
+    
+    for (Scab *scab in self.scabs) {
+        [scab reset];
+    }
+    self.scabs = nil;
+}
+
+- (void)applicationWillEnterForeground:(UIApplication*)application {
 	[[CCDirector sharedDirector] startAnimation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     NSLog(@"TERMINATING");
-    [self saveState];
     
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director openGLView] removeFromSuperview];

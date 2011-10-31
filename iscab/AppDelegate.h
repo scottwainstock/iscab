@@ -15,6 +15,7 @@
 #define NUM_JARS_TO_FILL 3
 #define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
 #define DEFAULT_FONT_SIZE 10
+#define GAMEPLAY_SCENE_TAG 10
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow *window;
@@ -40,9 +41,10 @@
 @property (nonatomic, retain) CCMenuItem *backButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
 
-- (void)saveState;
 - (Jar *)currentJar;
 - (CGPoint)centerOfAllScabs;
+- (void)saveState;
 - (void)scheduleNotification:(NSDate *)date;
+- (void)scheduleNotifications;
 
 @end
