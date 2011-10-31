@@ -64,4 +64,13 @@ AppDelegate *app;
     }
 }
 
+- (void)setupNavigationIcons {    
+    CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Tap.png" target:self selector:@selector(backTapped:)];
+    backButton.position = ccp(40, 40);
+    
+    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, nil];
+    iconMenu.position = CGPointZero;
+    [self addChild:iconMenu z:2];
+}
+
 @end
