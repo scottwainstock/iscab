@@ -72,28 +72,28 @@
     [self playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionFade transitionWithDuration:0.5f scene:[GamePlay scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[GamePlay scene]]];
 }
 
 - (void)helpTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionShrinkGrow transitionWithDuration:0.5f scene:[Help scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[Help scene]]];
 }
 
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[Leaderboard scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[Leaderboard scene]]];
 }
 
 - (void)chooseSkinTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[SkinColorPicker scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SkinColorPicker scene]]];
 }
 
 - (void)soundTapped:(CCMenuItem *)menuItem {

@@ -45,12 +45,12 @@
 }
 
 - (void)backTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] popScene];
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:0.5f];
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[About scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[About scene]]];
 }
 
 - (void)homeTapped:(CCMenuItem  *)menuItem {
@@ -59,7 +59,7 @@
 
 - (void)jarTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionPageTurn transitionWithDuration:0.5f scene:[JarScene scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {
