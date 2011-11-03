@@ -165,7 +165,7 @@ AppDelegate *app;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"scabs"]]];
-    [self updateBackground:[defaults stringForKey:@"skinBackground"]];
+    [self updateBackground:[defaults stringForKey:@"skinBackgroundNumber"]];
     
     NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
     for (Scab *scab in app.scabs) {
@@ -174,8 +174,8 @@ AppDelegate *app;
 }
 
 - (void)generateScabs {
-    NSString *backgroundNumber = [[app.skinBackground componentsSeparatedByString: @"_"] objectAtIndex:2];
-    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:backgroundNumber] CGRectValue];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
     
     int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
     for (int x = 0; x < numScabs; x++) {
@@ -185,30 +185,34 @@ AppDelegate *app;
 
 - (void)setupSkinBackgroundBoundaries {
     self.skinBackgroundBoundaries = [[NSMutableDictionary alloc] init];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(80, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 80 -X_SCAB_BORDER_BOUNDARY, 165)] forKey:@"background0.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 275)] forKey:@"background1.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"background2.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"background3.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 225)] forKey:@"background4.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 205)] forKey:@"background5.jpg"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(50, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 100, 235)] forKey:@"background6.jpg"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(80, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 80 -X_SCAB_BORDER_BOUNDARY, 165)] forKey:@"0"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 275)] forKey:@"1"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"2"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"3"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 225)] forKey:@"4"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 205)] forKey:@"5"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(50, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 100, 235)] forKey:@"6"];
 }
 
-- (void)updateBackground:(NSString *)newSkinBackground {
+- (void)updateBackground:(NSString *)skinBackgroundNumber {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [(CCSprite *)[self getChildByTag:BACKGROUND_IMAGE_TAG_ID] removeFromParentAndCleanup:YES];
     
-    if (newSkinBackground == nil)
-        newSkinBackground = [NSMutableString stringWithFormat:@"%@_skin_background%d.jpg", [defaults objectForKey:@"skinColor"], arc4random() % NUM_BACKGROUNDS];
+    if (skinBackgroundNumber == nil)
+        skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
     
-    NSLog(@"NEW SKIN BACKGROUND %@", newSkinBackground);
+    NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [defaults objectForKey:@"skinColor"], skinBackgroundNumber];
     
-    CCSprite *bg = [CCSprite spriteWithFile:newSkinBackground];
+    NSLog(@"SETTING BACKGROUND: %@", skinBackground);
+        
+    CCSprite *bg = [CCSprite spriteWithFile:skinBackground];
     bg.tag = BACKGROUND_IMAGE_TAG_ID;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
-    app.skinBackground = [newSkinBackground copy];
+    
+    [defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
+    [defaults synchronize];
 }
 
 - (void)splatterBlood:(ScabChunk *)scabChunk {

@@ -20,7 +20,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, skinBackground, backButton, jarButton;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton;
 
 - (NSMutableArray *)scabs { 
     @synchronized(scabs) {
@@ -46,16 +46,6 @@
             batchNode = [[CCSpriteBatchNode alloc] init];
         
         return batchNode;
-    }
-    return nil;
-}
-
-- (NSString *)skinBackground {    
-    @synchronized(skinBackground) {
-        if (skinBackground == nil)
-            skinBackground = [[NSMutableString alloc] init];
-        
-        return skinBackground;
     }
     return nil;
 }
@@ -158,9 +148,9 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         
-    if ([defaults stringForKey:@"skinColor"] == NULL) {
+    if ([defaults stringForKey:@"skinColor"] == NULL)
         [defaults setObject:@"light" forKey:@"skinColor"];
-    }
+
     [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
     [defaults synchronize];
 
@@ -288,7 +278,6 @@
     [self scheduleNotifications];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[self skinBackground] forKey:@"skinBackground"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
     [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [defaults synchronize];

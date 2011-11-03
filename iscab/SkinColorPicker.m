@@ -26,18 +26,43 @@
     } else {
         [defaults setObject:@"light" forKey:@"skinColor"];        
     }
+    
+    [self setupBackground];
 }
 
 - (id)init {
-    if( (self=[super init] )) {        
-        CCMenuItemImage *pickerText = [CCMenuItemImage itemFromNormalImage:@"choose-skin-text.png" selectedImage: @"choose-skin-text.png" target:self selector:@selector(changeSkinColor:)];
-        
-        CCMenu *menu = [CCMenu menuWithItems:pickerText, nil];       
-        menu.position = ccp(160, 240);
-        [self addChild:menu];        
+    if( (self=[super init] )) {   
+        self.isTouchEnabled = YES;
+
+        CCSprite *pickerText = [CCSprite spriteWithFile:@"choose-skin-text.png"];
+        pickerText.position = ccp(160, 240);
+        [self addChild:pickerText];        
     }
     
     return self;
+}
+
+- (void)ccTouchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    CGPoint touchLocation = [self convertTouchToNodeSpace:[touches anyObject]];
+    
+    CGRect lightSkinBox   = CGRectMake(35, 265, 115, 105);
+    CGRect mediumSkinBox  = CGRectMake(175, 265, 115, 105);
+    CGRect darkSkinBox    = CGRectMake(35, 125, 115, 105);
+    CGRect pictureSkinBox = CGRectMake(175, 125, 115, 105);
+
+    if (CGRectContainsPoint(lightSkinBox, touchLocation)) {
+        [defaults setObject:@"light" forKey:@"skinColor"];
+    } else if (CGRectContainsPoint(mediumSkinBox, touchLocation)) {
+        [defaults setObject:@"medium" forKey:@"skinColor"];
+    } else if (CGRectContainsPoint(darkSkinBox, touchLocation)) {
+        [defaults setObject:@"dark" forKey:@"skinColor"];
+    } else if (CGRectContainsPoint(pictureSkinBox, touchLocation)) {
+        NSLog(@"PICZ");
+    }
+        
+    [self setupBackground];
 }
 
 @end
