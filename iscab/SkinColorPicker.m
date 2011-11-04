@@ -8,8 +8,11 @@
 
 #import "SkinColorPicker.h"
 #import "AppDelegate.h"
+#import "CCUIViewWrapper.h"
 
 @implementation SkinColorPicker
+
+CCUIViewWrapper *wrapper;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
@@ -17,17 +20,6 @@
     [scene addChild: layer];
     
     return scene;
-}
-
-- (IBAction)changeSkinColor:(id)sender {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
-        [defaults setObject:@"dark" forKey:@"skinColor"];
-    } else {
-        [defaults setObject:@"light" forKey:@"skinColor"];        
-    }
-    
-    [self setupBackground];
 }
 
 - (id)init {
@@ -43,6 +35,7 @@
 }
 
 - (void)ccTouchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     CGPoint touchLocation = [self convertTouchToNodeSpace:[touches anyObject]];
@@ -59,9 +52,53 @@
     } else if (CGRectContainsPoint(darkSkinBox, touchLocation)) {
         [defaults setObject:@"dark" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(pictureSkinBox, touchLocation)) {
-        NSLog(@"PICZ");
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            NSLog(@"PIX");
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];        
+            imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
+            imagePicker.delegate = self;
+            imagePicker.allowsEditing = NO;
+            [imagePicker presentModalViewController:imagePicker animated:YES];
+            
+            wrapper = [CCUIViewWrapper wrapperForUIView:imagePicker.view];
+            wrapper.contentSize = CGSizeMake(app.screenWidth, app.screenHeight);
+            wrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
+            [self addChild:wrapper];
+        } else {
+            NSLog(@"NO CAMERA");
+        }
     }
         
+    [self setupBackground];
+}
+
+- (UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize;
+{
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+	newImage = [self imageWithImage:newImage scaledToSize:CGSizeMake(320, 480)];
+    
+	[picker dismissModalViewControllerAnimated:YES];
+	[picker.view removeFromSuperview];
+	[picker	release];
+	[self removeChild:wrapper cleanup:YES];
+	wrapper = nil;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:UIImagePNGRepresentation(newImage) forKey:@"photoBackground"];
+    [defaults setObject:@"photo" forKey:@"skinColor"];    
+    [defaults synchronize];
+    
+    NSLog(@"SAVED");
+    
     [self setupBackground];
 }
 

@@ -103,6 +103,7 @@
 		8E84548A144E1181002F5424 /* Scab.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E845489144E1181002F5424 /* Scab.m */; };
 		8EA38FA91462061E000658A1 /* Home_Logo-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EA38FA71462061E000658A1 /* Home_Logo-hd.png */; };
 		8EA38FAA1462061E000658A1 /* Home_Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EA38FA81462061E000658A1 /* Home_Logo.png */; };
+		8EA38FAD14622F3A000658A1 /* CCUIViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA38FAC14622F3A000658A1 /* CCUIViewWrapper.m */; };
 		8EB71A9813F399C200072593 /* Wound.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8B13F399C200072593 /* Wound.m */; };
 		8EB71A9913F399C200072593 /* SkinColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8C13F399C200072593 /* SkinColorPicker.m */; };
 		8EB71A9A13F399C200072593 /* ScabChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A8D13F399C200072593 /* ScabChunk.m */; };
@@ -485,6 +486,8 @@
 		8E845489144E1181002F5424 /* Scab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scab.m; sourceTree = "<group>"; };
 		8EA38FA71462061E000658A1 /* Home_Logo-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Home_Logo-hd.png"; sourceTree = "<group>"; };
 		8EA38FA81462061E000658A1 /* Home_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home_Logo.png; sourceTree = "<group>"; };
+		8EA38FAB14622F3A000658A1 /* CCUIViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCUIViewWrapper.h; path = libs/cocos2d/CCUIViewWrapper.h; sourceTree = "<group>"; };
+		8EA38FAC14622F3A000658A1 /* CCUIViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCUIViewWrapper.m; path = libs/cocos2d/CCUIViewWrapper.m; sourceTree = "<group>"; };
 		8EB71A7E13F399C200072593 /* Wound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wound.h; sourceTree = "<group>"; };
 		8EB71A7F13F399C200072593 /* SkinColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkinColorPicker.h; sourceTree = "<group>"; };
 		8EB71A8013F399C200072593 /* ScabChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScabChunk.h; sourceTree = "<group>"; };
@@ -1400,6 +1403,8 @@
 				8ECA19E813F397AD006597EA /* ccTypes.h */,
 				8ECA19E913F397AD006597EA /* cocos2d.h */,
 				8ECA19EA13F397AD006597EA /* cocos2d.m */,
+				8EA38FAB14622F3A000658A1 /* CCUIViewWrapper.h */,
+				8EA38FAC14622F3A000658A1 /* CCUIViewWrapper.m */,
 				8ECA19EC13F397AD006597EA /* Platforms */,
 				8ECA1A1113F397AE006597EA /* Support */,
 			);
@@ -2174,6 +2179,7 @@
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
 				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,
 				8E84548A144E1181002F5424 /* Scab.m in Sources */,
+				8EA38FAD14622F3A000658A1 /* CCUIViewWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

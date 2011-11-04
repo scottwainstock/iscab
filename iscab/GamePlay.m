@@ -192,6 +192,7 @@ AppDelegate *app;
     [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 225)] forKey:@"4"];
     [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 205)] forKey:@"5"];
     [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(50, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 100, 235)] forKey:@"6"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:PHOTO_BACKGROUND];
 }
 
 - (void)updateBackground:(NSString *)skinBackgroundNumber {
@@ -201,11 +202,18 @@ AppDelegate *app;
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
     
-    NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [defaults objectForKey:@"skinColor"], skinBackgroundNumber];
+    CCSprite *bg;
+    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
+        NSData *imageData = [defaults objectForKey:@"photoBackground"];
+        UIImage *image = [UIImage imageWithData:imageData];
+        bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
+
+    } else {
+        NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [defaults objectForKey:@"skinColor"], skinBackgroundNumber];
+        NSLog(@"SETTING BACKGROUND: %@", skinBackground);
+        bg = [CCSprite spriteWithFile:skinBackground];
+    }
     
-    NSLog(@"SETTING BACKGROUND: %@", skinBackground);
-        
-    CCSprite *bg = [CCSprite spriteWithFile:skinBackground];
     bg.tag = BACKGROUND_IMAGE_TAG_ID;
     bg.anchorPoint = ccp(0, 0);
     bg.position = ccp(0, 0);
