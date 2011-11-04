@@ -30,11 +30,10 @@
     if ((self = [super init])) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        CCSprite *bg = [CCSprite spriteWithFile:@"menu-background.png"];
-        bg.anchorPoint = ccp(0, 0);
-        bg.position = ccp(0, 0);
-        [self addChild:bg z:0];
-        
+        CCSprite *homeLogo = [CCSprite spriteWithFile:@"Home_Logo.png"];
+        homeLogo.position = ccp(150, 300);
+        [self addChild:homeLogo z:0];
+
         start = [CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)];
         
         leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];
@@ -107,8 +106,8 @@
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
-    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SOUND On.png" selectedImage:@"SOUND ON-Hover.png" target:nil selector:nil] retain];
-    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SOUND OFF.png" selectedImage:@"SOUND OFF-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SoundOn.png" selectedImage:@"SoundOn-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SoundOff.png" selectedImage:@"SoundOff-Hover.png" target:nil selector:nil] retain];
     
     if (currentSoundState) {
         return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];

@@ -23,6 +23,7 @@
 #define BACKGROUND_IMAGE_TAG_ID 777
 #define X_SCAB_BORDER_BOUNDARY 10
 #define Y_SCAB_BORDER_BOUNDARY 10
+#define PHOTO_BACKGROUND @"50"
 
 @interface GamePlay : IScabCCLayer {
     cpSpace *space;

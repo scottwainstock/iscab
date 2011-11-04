@@ -18,16 +18,35 @@
 - (id)init {
     if((self=[super init] )) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
-        
-        CCSprite *skinBG = [CCSprite spriteWithFile:@"clean-skin-background.png"];
-        skinBG.anchorPoint = ccp(0, 0);
-        skinBG.position = ccp(0, 0);
-        [self addChild:skinBG z:-10];
-        
+
         [self setupNavigationIcons];
     }
 
     return self;
+}
+
+- (void)onEnter {
+    [super onEnter];
+    [self setupBackground];
+}
+
+- (void)setupBackground {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
+
+    CCSprite *skinBG;
+    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
+        NSData *imageData = [defaults objectForKey:@"photoBackground"];
+        UIImage *image = [UIImage imageWithData:imageData];
+        skinBG = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
+    } else {
+        skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@_skin_background2.jpg", [defaults objectForKey:@"skinColor"]]];
+    }
+    
+    skinBG.anchorPoint = ccp(0, 0);
+    skinBG.position = ccp(0, 0);
+    [self addChild:skinBG z:-10 tag:SKIN_BACKGROUND_TAG];
 }
 
 - (void)setupNavigationIcons {

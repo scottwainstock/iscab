@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 
-@interface SkinColorPicker : IScabCCLayer {
+@interface SkinColorPicker : IScabCCLayer <UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 }
 
 + (id)scene;
