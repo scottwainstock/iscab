@@ -106,8 +106,8 @@
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
-    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SOUND On.png" selectedImage:@"SOUND ON-Hover.png" target:nil selector:nil] retain];
-    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SOUND OFF.png" selectedImage:@"SOUND OFF-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SoundOn.png" selectedImage:@"SoundOn-Hover.png" target:nil selector:nil] retain];
+    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SoundOff.png" selectedImage:@"SoundOff-Hover.png" target:nil selector:nil] retain];
     
     if (currentSoundState) {
         return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
