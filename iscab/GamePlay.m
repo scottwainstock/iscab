@@ -295,11 +295,10 @@ AppDelegate *app;
 }
 
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
-    CCLabelTTF *overpickWarning = [CCLabelTTF labelWithString:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" dimensions:CGSizeMake(200.0f, 35.0f) alignment:UITextAlignmentCenter fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE];
-    [overpickWarning setColor:ccBLACK];
-    [overpickWarning setPosition:ccp(195, 400)];
-    [overpickWarning runAction:[CCFadeOut actionWithDuration:8]]; 
-    [self addChild:overpickWarning z:100];
+    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [warning show];
+    [warning release];
+    
     [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
     [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
