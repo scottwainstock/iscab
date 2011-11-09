@@ -37,12 +37,19 @@ AppDelegate *app;
             [self addChild:scabLevel z:4];
         }
             
-        CCSprite *jarCover = [CCSprite spriteWithFile:@"jar_front.png"];
+        CCSprite *jarCover = [CCSprite spriteWithFile:@"Jar-Front.png"];
         jarCover.position = ccp(160, 240);
         [self addChild:jarCover z:4];
     }
                                
     return self;
+}
+
+- (void)setupBackground {
+    CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
+    skinBG.anchorPoint = ccp(0, 0);
+    skinBG.position = ccp(0, 0);
+    [self addChild:skinBG z:-10 tag:SKIN_BACKGROUND_TAG];
 }
 
 - (NSString *)jarBackgroundImage {    
@@ -54,13 +61,13 @@ AppDelegate *app;
     
     switch (numFilledJars) {
         case 0:
-            return @"single_jar.png";
+            return @"Jar-Back.png";
         case 1:
-            return @"one_jar_full.png";
+            return @"one-full.png";
         case 2:
-            return @"two_jars_full.png";
+            return @"two-full.png";
         default:
-            return @"two_jars_full.png";
+            return @"two-full.png";
     }
 }
 
