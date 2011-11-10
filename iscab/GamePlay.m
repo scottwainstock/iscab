@@ -181,6 +181,10 @@ AppDelegate *app;
     for (int x = 0; x < numScabs; x++) {
         [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
     }
+    
+    if ((arc4random() % 10) == 1) {
+        [app.scabs addObject:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
+    }
 }
 
 - (void)setupSkinBackgroundBoundaries {
