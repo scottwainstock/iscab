@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#define NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS 30
+#define SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS 75
+#define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 40
+
+#define XXX_SCAB_SIZE 30
+
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
 #define OVERPICKED_THRESHOLD 0.5
@@ -60,16 +66,19 @@
 
 - (bool)isOverpicked;
 - (bool)isComplete;
-- (NSTimeInterval)maximumHealingInterval;
-- (NSTimeInterval)healingInterval;
-- (int)scabSize;
+- (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
+- (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (int)pointValue;
+- (int)scabSize;
 - (void)reset;
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
-- (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
+- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
+- (NSTimeInterval)maximumHealingInterval;
+- (NSTimeInterval)healingInterval;
+- (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary;
 - (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge;
 
 @end

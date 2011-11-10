@@ -93,12 +93,84 @@
     }
 }
 
+- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary {
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
+
+    CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS, SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS);
+
+    center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
+    
+    int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
+    int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
+    
+    for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++) { 
+        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge]]];
+    }
+    
+    return coordinates;
+}
+
+- (NSMutableArray *)XShapeCoordinates:(CGRect)backgroundBoundary {
+    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
+    
+    for (int xNumber = 0; xNumber < 3; xNumber++) {    
+        int topSwipeLocation = XXX_SCAB_SIZE;
+        for (int bottomSwipeLocation = 0; bottomSwipeLocation < XXX_SCAB_SIZE; bottomSwipeLocation++) {
+            int adjustedBottomSwipeLocation = bottomSwipeLocation + (xNumber * XXX_SCAB_SIZE);
+            
+            [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(
+                adjustedBottomSwipeLocation + scabOrigin.x, 
+                bottomSwipeLocation + scabOrigin.y
+            )]];
+            [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(
+                adjustedBottomSwipeLocation + scabOrigin.x,
+                topSwipeLocation + scabOrigin.y
+            )]];
+            
+            topSwipeLocation--;
+        }
+    }
+    
+    [coordinates addObjectsFromArray:[self randomScabChunksForOrigin:scabOrigin withBoundary:backgroundBoundary]];
+    
+    return coordinates;
+}
+
+- (void)initializeStates {
+    [self setIsOverpickWarningIssued:NO];
+    [self setSizeAtCreation:[self.scabChunks count]];
+    
+    NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
+    
+    [self setBirthday:[NSDate date]];
+    [self setHealDate:[[NSDate date] dateByAddingTimeInterval:[self healingInterval]]];
+}
+
+- (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary {
+    int scabXOffset = (arc4random() % (int)backgroundBoundary.size.width) + backgroundBoundary.origin.x;
+    int scabYOffset = (arc4random() % (int)backgroundBoundary.size.height) + backgroundBoundary.origin.y;
+    
+    return CGPointMake(scabXOffset, scabYOffset);
+}
+
+- (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
+    if ((self = [super init])) {
+        NSMutableArray *shapeCoordinates = [self XShapeCoordinates:backgroundBoundary];
+        
+        for (int x = 0; x < [shapeCoordinates count]; x++) { 
+            [self createScabChunkAndBorderWithCenter:[[shapeCoordinates objectAtIndex:x] CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
+        }
+        
+        [self initializeStates];
+    }
+    
+    return self;
+}
+
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
-        int scabXOffset = (arc4random() % (int)backgroundBoundary.size.width) + backgroundBoundary.origin.x;
-        int scabYOffset = (arc4random() % (int)backgroundBoundary.size.height) + backgroundBoundary.origin.y;
-
-        CGPoint scabOrigin = CGPointMake(scabXOffset, scabYOffset);
+        CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
         CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, (arc4random() % MAX_SCAB_WIDTH) + 1, (arc4random() % MAX_SCAB_HEIGHT) + 1);
         
         center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
@@ -133,12 +205,7 @@
             }
         }
         
-        [self setIsOverpickWarningIssued:NO];
-        [self setSizeAtCreation:[self.scabChunks count]];
-        NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
-
-        [self setBirthday:[NSDate date]];
-        [self setHealDate:[[NSDate date] dateByAddingTimeInterval:[self healingInterval]]];
+        [self initializeStates];
     }
     
     return self;

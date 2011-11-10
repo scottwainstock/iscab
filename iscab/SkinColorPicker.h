@@ -10,6 +10,8 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 
+#define CAMERA_TOUCHED_TAG 44
+
 @interface SkinColorPicker : IScabCCLayer <UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
 }
 

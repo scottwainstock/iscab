@@ -67,9 +67,19 @@ CCUIViewWrapper *wrapper;
         } else {
             NSLog(@"NO CAMERA");
         }
+        
+        CCSprite *cameraTouched = [CCSprite spriteWithFile:@"camera-Tap.png"];
+        cameraTouched.position = ccp(228, 181);
+        [cameraTouched setTag:CAMERA_TOUCHED_TAG];
+        
+        [self addChild:cameraTouched];
     }
         
     [self setupBackground];
+}
+
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self removeChild:[self getChildByTag:CAMERA_TOUCHED_TAG] cleanup:YES];
 }
 
 - (UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize;
