@@ -52,12 +52,14 @@
     int sizeAtCreation;
     bool isAged;
     bool isOverpickWarningIssued;
+    NSString *name;
 }
 
 @property (nonatomic, assign) bool isOverpickWarningIssued;
 @property (nonatomic, assign) bool isAged;
 @property (nonatomic, assign) int sizeAtCreation;
 @property (nonatomic, assign) CGPoint center;
+@property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSDate *birthday;
 @property (nonatomic, retain) NSDate *healDate;
 @property (nonatomic, retain) NSMutableArray *wounds;
@@ -75,6 +77,7 @@
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
+- (void)initializeStates:(NSString *)scabName;
 - (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
