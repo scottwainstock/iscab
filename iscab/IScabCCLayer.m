@@ -10,7 +10,6 @@
 #import "MainMenu.h"
 #import "JarScene.h"
 #import "About.h"
-#import "SpecialScabs.h"
 #import "SimpleAudioEngine.h"
 #import "AppDelegate.h"
 
@@ -62,11 +61,6 @@
     CCMenu *menu = [CCMenu menuWithItems:app.backButton, app.jarButton, nil];
     menu.position = CGPointZero;
     [self addChild:menu z:2];
-}
-
-- (void)specialTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabs scene]]];
 }
 
 - (void)backTapped:(CCMenuItem  *)menuItem {

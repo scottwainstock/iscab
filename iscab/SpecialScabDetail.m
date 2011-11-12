@@ -24,9 +24,11 @@
 
 - (id)initWithScabName:(NSString *)scabName {
     if ((self=[super init])) {
-        CCSprite *scabImage = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@-detail.png", scabName]];
+        [self setSharedItemFileName:[NSString stringWithFormat:@"%@-detail.png", scabName]];
+        
+        CCSprite *scabImage = [CCSprite spriteWithFile:self.sharedItemFileName];
         scabImage.position = ccp(160, 300);
-        [self addChild:scabImage z:0];        
+        [self addChild:scabImage z:0];  
     }
     
     return self;

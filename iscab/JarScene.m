@@ -47,6 +47,8 @@ AppDelegate *app;
         CCMenu *iconMenu = [CCMenu menuWithItems:specialButton, nil];
         iconMenu.position = CGPointZero;
         [self addChild:iconMenu z:2];
+        
+        [self setSharedItemFileName:[NSString stringWithFormat:@"Jar-Front.png"]];
     }
                                
     return self;

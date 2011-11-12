@@ -7,9 +7,13 @@
 //
 
 #import "IScabCCShareLayer.h"
-
+#import "SpecialScabs.h"
+#import "AppDelegate.h"
+#import "SHK.h"
 
 @implementation IScabCCShareLayer
+
+@synthesize sharedItemFileName;
 
 - (void)setupBackground {
     CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
@@ -22,9 +26,24 @@
     CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
     backButton.position = ccp(40, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, nil];
+    CCMenuItem *shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
+    shareButton.position = ccp(280, 40);
+    
+    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, shareButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
+}
+
+- (void)specialTapped:(CCMenuItem  *)menuItem {
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabs scene]]];
+}
+
+- (void)shareTapped:(CCMenuItem *)menuItem {
+    SHKItem *item = [SHKItem image:[UIImage imageNamed:self.sharedItemFileName] title:@"iScab"];
+    
+	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+    [actionSheet showInView:[[CCDirector sharedDirector] openGLView]];
 }
 
 @end

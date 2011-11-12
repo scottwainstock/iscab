@@ -30,6 +30,8 @@
         [self addChild:petriTop z:4];
         
         [self addFoundScabs];
+        
+        [self setSharedItemFileName:@"SpecialScabs_Petri_Bottom.png"];
     }
     
     return self;

@@ -10,6 +10,9 @@
 #import "IScabCCLayer.h"
 
 @interface IScabCCShareLayer : IScabCCLayer {
+    NSString *sharedItemFileName;
 }
+
+@property (nonatomic, retain) NSString *sharedItemFileName;
 
 @end
