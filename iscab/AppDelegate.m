@@ -126,13 +126,11 @@
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];
 	
-	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
 	
 	// make the View Controller a child of the main window
-	[window addSubview: viewController.view];
-	
+	[window addSubview:viewController.view];
 	[window makeKeyAndVisible];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
@@ -146,6 +144,14 @@
 	// Run the intro Scene
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setBool:YES forKey:@"xxx"];
+    [defaults setBool:YES forKey:@"jesus"];
+    [defaults setBool:YES forKey:@"heart"];
+    [defaults setBool:YES forKey:@"illuminati"];
+    [defaults setBool:YES forKey:@"sass"];
+
+    
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         
     if ([defaults stringForKey:@"skinColor"] == NULL)

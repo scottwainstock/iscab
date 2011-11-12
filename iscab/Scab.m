@@ -13,7 +13,7 @@
 
 @implementation Scab
 
-@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation, healDate, isAged, isOverpickWarningIssued;
+@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation, healDate, isAged, isOverpickWarningIssued, name;
 
 - (NSMutableArray *)scabChunks { 
     @synchronized(scabChunks) {
@@ -51,6 +51,7 @@
     [coder encodeInt:self.sizeAtCreation forKey:@"sizeAtCreation"];
     [coder encodeBool:self.isAged forKey:@"isAged"];
     [coder encodeBool:self.isOverpickWarningIssued forKey:@"isOverpickWarningIssued"];
+    [coder encodeObject:(NSString *)self.name forKey:@"name"];
 } 
 
 - (id)initWithCoder:(NSCoder *)coder {
@@ -65,6 +66,7 @@
         self.sizeAtCreation = [coder decodeIntForKey:@"sizeAtCreation"];
         self.isAged = [coder decodeBoolForKey:@"isAged"];
         self.isOverpickWarningIssued = [coder decodeBoolForKey:@"isOverpickWarningIssued"];
+        self.name = (NSString *)[coder decodeObjectForKey:@"name"];
     }
     
     NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
@@ -74,6 +76,7 @@
     NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
     NSLog(@"LOADED SCAB HEAL DATE: %@", [self healDate]);
     NSLog(@"IS AGED: %d", (int)[self isAged]);
+    NSLog(@"NAME: %@", [self name]);
 
     return self; 
 }
@@ -137,7 +140,8 @@
     return coordinates;
 }
 
-- (void)initializeStates {
+- (void)initializeStates:(NSString *)scabName {
+    [self setName:scabName];
     [self setIsOverpickWarningIssued:NO];
     [self setSizeAtCreation:[self.scabChunks count]];
     
@@ -162,7 +166,7 @@
             [self createScabChunkAndBorderWithCenter:[[shapeCoordinates objectAtIndex:x] CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
         }
         
-        [self initializeStates];
+        [self initializeStates:@"xxx"];
     }
     
     return self;
@@ -205,7 +209,7 @@
             }
         }
         
-        [self initializeStates];
+        [self initializeStates:@"standard"];
     }
     
     return self;

@@ -40,16 +40,18 @@ AppDelegate *app;
         CCSprite *jarCover = [CCSprite spriteWithFile:@"Jar-Front.png"];
         jarCover.position = ccp(160, 240);
         [self addChild:jarCover z:4];
+        
+        CCMenuItem *specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
+        specialButton.position = ccp(280, 445);
+        
+        CCMenu *iconMenu = [CCMenu menuWithItems:specialButton, nil];
+        iconMenu.position = CGPointZero;
+        [self addChild:iconMenu z:2];
+        
+        [self setSharedItemFileName:[NSString stringWithFormat:@"Jar-Front.png"]];
     }
                                
     return self;
-}
-
-- (void)setupBackground {
-    CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
-    skinBG.anchorPoint = ccp(0, 0);
-    skinBG.position = ccp(0, 0);
-    [self addChild:skinBG z:-10 tag:SKIN_BACKGROUND_TAG];
 }
 
 - (NSString *)jarBackgroundImage {    
@@ -69,15 +71,6 @@ AppDelegate *app;
         default:
             return @"two-full.png";
     }
-}
-
-- (void)setupNavigationIcons {    
-    CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
-    backButton.position = ccp(40, 40);
-    
-    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, nil];
-    iconMenu.position = CGPointZero;
-    [self addChild:iconMenu z:2];
 }
 
 @end

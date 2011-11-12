@@ -18,6 +18,7 @@
 #import "drawSpace.h"
 #import "cpSpace.h"
 #import "cpShape.h"
+#import "SpecialScabs.h"
 
 static const ccColor3B ccSCABGLOW={255,105,180};
 
@@ -178,13 +179,13 @@ AppDelegate *app;
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
     
     int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
-    for (int x = 0; x < numScabs; x++) {
+ /*   for (int x = 0; x < numScabs; x++) {
         [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
-    }
+    }*/
     
-    if ((arc4random() % 10) == 1) {
+    //if ((arc4random() % 10) == 1) {
         [app.scabs addObject:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
-    }
+    //}
 }
 
 - (void)setupSkinBackgroundBoundaries {
@@ -239,6 +240,10 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
+    if (![defaults valueForKey:[scab name]])
+        [defaults setBool:YES forKey:[scab name]];
+    
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
