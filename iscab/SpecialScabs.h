@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IScabCCLayer.h"
+#import "IScabCCShareLayer.h"
 
-@interface SpecialScabs : IScabCCLayer {
+@interface SpecialScabs : IScabCCShareLayer {
 }
 
 + (id)scene;

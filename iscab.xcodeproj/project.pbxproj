@@ -18,6 +18,7 @@
 		8E430E70146F0D76001401E0 /* xxx-detail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E66146F0D76001401E0 /* xxx-detail-hd.png */; };
 		8E430E71146F0D76001401E0 /* xxx-detail.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E67146F0D76001401E0 /* xxx-detail.png */; };
 		8E430E75146F0DB1001401E0 /* SpecialScabDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E430E74146F0DB1001401E0 /* SpecialScabDetail.m */; };
+		8E430E78146F14E1001401E0 /* IScabCCShareLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E430E77146F14E1001401E0 /* IScabCCShareLayer.m */; };
 		8E46AB681437BD55001BD1B3 /* scabs-hd.zss in Resources */ = {isa = PBXBuildFile; fileRef = 8E46AB651437BD55001BD1B3 /* scabs-hd.zss */; };
 		8E46AB691437BD55001BD1B3 /* scabs-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8E46AB661437BD55001BD1B3 /* scabs-hd.plist */; };
 		8E46AB6A1437BD55001BD1B3 /* scabs-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E46AB671437BD55001BD1B3 /* scabs-hd.png */; };
@@ -446,6 +447,8 @@
 		8E430E67146F0D76001401E0 /* xxx-detail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xxx-detail.png"; sourceTree = "<group>"; };
 		8E430E73146F0DB1001401E0 /* SpecialScabDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialScabDetail.h; sourceTree = "<group>"; };
 		8E430E74146F0DB1001401E0 /* SpecialScabDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialScabDetail.m; sourceTree = "<group>"; };
+		8E430E76146F14E1001401E0 /* IScabCCShareLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScabCCShareLayer.h; sourceTree = "<group>"; };
+		8E430E77146F14E1001401E0 /* IScabCCShareLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IScabCCShareLayer.m; sourceTree = "<group>"; };
 		8E46AB651437BD55001BD1B3 /* scabs-hd.zss */ = {isa = PBXFileReference; lastKnownFileType = file; path = "scabs-hd.zss"; sourceTree = "<group>"; };
 		8E46AB661437BD55001BD1B3 /* scabs-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "scabs-hd.plist"; sourceTree = "<group>"; };
 		8E46AB671437BD55001BD1B3 /* scabs-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scabs-hd.png"; sourceTree = "<group>"; };
@@ -1359,6 +1362,8 @@
 				8EB71A9213F399C200072593 /* IScabSprite.m */,
 				8EB71A8613F399C200072593 /* IScabCCLayer.h */,
 				8EB71A9313F399C200072593 /* IScabCCLayer.m */,
+				8E430E76146F14E1001401E0 /* IScabCCShareLayer.h */,
+				8E430E77146F14E1001401E0 /* IScabCCShareLayer.m */,
 				8EB71A8713F399C200072593 /* Help.h */,
 				8EB71A9413F399C200072593 /* Help.m */,
 				8EB71A8913F399C200072593 /* CCParticleMyBlood.h */,
@@ -2369,6 +2374,7 @@
 				8EA38FAD14622F3A000658A1 /* CCUIViewWrapper.m in Sources */,
 				8EEC36EB146B76270035C563 /* SpecialScabs.m in Sources */,
 				8E430E75146F0DB1001401E0 /* SpecialScabDetail.m in Sources */,
+				8E430E78146F14E1001401E0 /* IScabCCShareLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
