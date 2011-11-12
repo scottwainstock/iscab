@@ -15,4 +15,6 @@
 + (id)scene;
 + (NSArray *)specialScabNames;
 
+- (void)addFoundScabs;
+
 @end

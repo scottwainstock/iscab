@@ -7,7 +7,7 @@
 //
 
 #import "SpecialScabs.h"
-
+#import "SpecialScabDetail.h"
 
 @implementation SpecialScabs
 
@@ -17,6 +17,22 @@
     [scene addChild:layer];
     
     return scene;
+}
+
+- (id)init {    
+    if ((self=[super init])) {
+        CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
+        petriBottom.position = ccp(160, 240);
+        [self addChild:petriBottom z:0];
+        
+        CCSprite *petriTop = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Top.png"];
+        petriTop.position = ccp(160, 240);
+        [self addChild:petriTop z:4];
+        
+        [self addFoundScabs];
+    }
+    
+    return self;
 }
 
 + (NSArray *)specialScabNames {
@@ -61,22 +77,8 @@
 
 - (void)specialScabTapped:(CCMenuItem  *)menuItem {
     NSLog(@"TAPPY %@", (NSString *)menuItem.userData);
-}
-
-- (id)init {    
-    if ((self=[super init])) {
-        CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
-        petriBottom.position = ccp(160, 240);
-        [self addChild:petriBottom z:0];
-                
-        CCSprite *petriTop = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Top.png"];
-        petriTop.position = ccp(160, 240);
-        [self addChild:petriTop z:4];
-        
-        [self addFoundScabs];
-    }
-    
-    return self;
+    [[CCDirector sharedDirector] pushScene:
+	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
 }
 
 - (void)setupBackground {
