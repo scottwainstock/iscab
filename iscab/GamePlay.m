@@ -241,8 +241,8 @@ AppDelegate *app;
 
 - (void)addScabToJar:(Scab *)scab {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
-    if (![defaults valueForKey:[scab name]])
-        [defaults setBool:YES forKey:[scab name]];
+    if (![defaults valueForKey:scab.name])
+        [defaults setBool:YES forKey:scab.name];
     
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];

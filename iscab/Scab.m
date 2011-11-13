@@ -9,6 +9,7 @@
 #import "Scab.h"
 #import "Wound.h"
 #import "GamePlay.h"
+#import "SpecialScabs.h"
 #import "AppDelegate.h"
 
 @implementation Scab
@@ -113,7 +114,64 @@
     return coordinates;
 }
 
-- (NSMutableArray *)XShapeCoordinates:(CGRect)backgroundBoundary {
++ (CGFloat)gbDotWithV1:(CGPoint)v1 v2:(CGPoint)v2 {
+	return v1.x * v2.x + v1.y * v2.y;
+}
+
++ (CGPoint)gbSubWithV1:(CGPoint)v1 v2:(CGPoint)v2 {
+	return CGPointMake(v1.x - v2.x, v1.y - v2.y);
+}
+
++ (BOOL)gbPointInTriangle:(CGPoint)point pointA:(CGPoint)pointA pointB:(CGPoint)pointB pointC:(CGPoint)pointC {  
+    //http://www.blackpawn.com/texts/pointinpoly/default.html
+	CGPoint v0 = [self gbSubWithV1:pointC v2:pointA];
+	CGPoint v1 = [self gbSubWithV1:pointB v2:pointA];
+    CGPoint v2 = [self gbSubWithV1:point v2:pointA];
+    
+	CGFloat dot00 = [self gbDotWithV1:v0 v2:v0];
+	CGFloat dot01 = [self gbDotWithV1:v0 v2:v1];
+	CGFloat dot02 = [self gbDotWithV1:v0 v2:v2];
+	CGFloat dot11 = [self gbDotWithV1:v1 v2:v1];
+	CGFloat dot12 = [self gbDotWithV1:v1 v2:v2];
+    
+	CGFloat invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+	CGFloat u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	CGFloat v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+    
+	return (u > 0) && (v > 0) && (u + v < 1);
+}
+
+- (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary {
+    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
+    CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
+    center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
+    int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
+    int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
+    
+    CGPoint eyeCenter = CGPointMake(scabOrigin.x + (ILLUMINATI_SCAB_SIZE / 2), (ILLUMINATI_SCAB_SIZE + scabOrigin.y) - 30);
+    
+    CGPoint top = CGPointMake((ILLUMINATI_SCAB_SIZE / 2) + scabOrigin.x, ILLUMINATI_SCAB_SIZE + scabOrigin.y);
+    CGPoint left = CGPointMake(scabOrigin.x, scabOrigin.y);
+    CGPoint right = CGPointMake(ILLUMINATI_SCAB_SIZE + scabOrigin.x, scabOrigin.y);
+    
+    for (int x = 0; x < ILLUMINATI_SCAB_SIZE * 10; x++) { 
+        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary maxDistanceToXEdge:maxDistanceToXEdge maxDistanceToYEdge:maxDistanceToYEdge];
+       
+        if (
+            !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
+            [Scab gbPointInTriangle:scabChunkCenter pointA:left pointB:top pointC:right] &&
+            (ccpLengthSQ(ccpSub(eyeCenter, scabChunkCenter)) > (ILLUMINATI_EYE_RADIUS * ILLUMINATI_EYE_RADIUS))
+        )
+            [coordinates addObject:[NSValue valueWithCGPoint:scabChunkCenter]];
+    }
+    
+    [coordinates addObject:[NSValue valueWithCGPoint:eyeCenter]];
+
+    return coordinates;
+}
+
+- (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary {
     CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
     NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     
@@ -140,7 +198,7 @@
     return coordinates;
 }
 
-- (void)initializeStates:(NSString *)scabName {
+- (void)initializeStatesWithName:(NSString *)scabName {
     [self setName:scabName];
     [self setIsOverpickWarningIssued:NO];
     [self setSizeAtCreation:[self.scabChunks count]];
@@ -160,13 +218,31 @@
 
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
     if ((self = [super init])) {
-        NSMutableArray *shapeCoordinates = [self XShapeCoordinates:backgroundBoundary];
+        NSArray *specialScabNames = [SpecialScabs specialScabNames];
+        NSString *specialScabName = [specialScabNames objectAtIndex:(arc4random() % ([specialScabNames count] - 1))];
+        
+        NSMutableArray *shapeCoordinates;
+        
+        shapeCoordinates = [self illuminatiShapeCoordinates:backgroundBoundary];
+        
+        /*
+        if ([specialScabName isEqualToString:@"xxx"]) {
+            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
+        } else if ([specialScabName isEqualToString:@"sass"]) {
+            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
+        } else if ([specialScabName isEqualToString:@"jesus"]) {
+            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
+        } else if ([specialScabName isEqualToString:@"heart"]) {       
+            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
+        } else if ([specialScabName isEqualToString:@"illuminati"]) {
+            shapeCoordinates = [self illuminatiShapeCoordinates:backgroundBoundary];
+        }*/
         
         for (int x = 0; x < [shapeCoordinates count]; x++) { 
             [self createScabChunkAndBorderWithCenter:[[shapeCoordinates objectAtIndex:x] CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
         }
         
-        [self initializeStates:@"xxx"];
+        [self initializeStatesWithName:specialScabName];
     }
     
     return self;
@@ -209,7 +285,7 @@
             }
         }
         
-        [self initializeStates:@"standard"];
+        [self initializeStatesWithName:@"standard"];
     }
     
     return self;

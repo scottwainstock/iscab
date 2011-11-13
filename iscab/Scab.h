@@ -13,6 +13,8 @@
 #define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 40
 
 #define XXX_SCAB_SIZE 30
+#define ILLUMINATI_SCAB_SIZE 80
+#define ILLUMINATI_EYE_RADIUS (ILLUMINATI_SCAB_SIZE / 8)
 
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
@@ -77,7 +79,7 @@
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
-- (void)initializeStates:(NSString *)scabName;
+- (void)initializeStatesWithName:(NSString *)scabName;
 - (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
