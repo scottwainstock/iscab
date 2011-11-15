@@ -26,7 +26,7 @@ CCUIViewWrapper *wrapper;
     if( (self=[super init] )) {   
         self.isTouchEnabled = YES;
 
-        CCSprite *pickerText = [CCSprite spriteWithFile:@"choose-skin-text.png"];
+        CCSprite *pickerText = [CCSprite spriteWithFile:@"Choose_Skin.png"];
         pickerText.position = ccp(160, 240);
         [self addChild:pickerText];        
     }
