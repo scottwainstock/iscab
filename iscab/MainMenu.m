@@ -36,8 +36,11 @@
 
         start = [CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)];
         
-        leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];
+        leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];    
         
+        if (![defaults boolForKey:@"gameCenterEnabled"])
+            [leaderboard setIsEnabled:NO];
+                
         chooseSkin = [CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)];
         
         sound = [self currentSoundState:[defaults boolForKey:@"sound"]];

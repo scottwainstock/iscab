@@ -31,6 +31,7 @@
 		8E4832B2144F955A0064B82A /* scab_border2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AA144F955A0064B82A /* scab_border2.png */; };
 		8E4832B3144F955A0064B82A /* scab_border3-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AB144F955A0064B82A /* scab_border3-hd.png */; };
 		8E4832B4144F955A0064B82A /* scab_border3.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E4832AC144F955A0064B82A /* scab_border3.png */; };
+		8E5C882A1472263200240EDD /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E5C88291472263200240EDD /* GameKit.framework */; };
 		8E60E2E4142E48D200D920C3 /* About-Hover.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2DE142E48D200D920C3 /* About-Hover.png */; };
 		8E60E2E5142E48D200D920C3 /* About.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2DF142E48D200D920C3 /* About.png */; };
 		8E60E2E6142E48D200D920C3 /* Home-Over.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E60E2E0142E48D200D920C3 /* Home-Over.png */; };
@@ -530,6 +531,7 @@
 		8E4832AA144F955A0064B82A /* scab_border2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border2.png; sourceTree = "<group>"; };
 		8E4832AB144F955A0064B82A /* scab_border3-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scab_border3-hd.png"; sourceTree = "<group>"; };
 		8E4832AC144F955A0064B82A /* scab_border3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scab_border3.png; sourceTree = "<group>"; };
+		8E5C88291472263200240EDD /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		8E60E2DE142E48D200D920C3 /* About-Hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "About-Hover.png"; sourceTree = "<group>"; };
 		8E60E2DF142E48D200D920C3 /* About.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = About.png; sourceTree = "<group>"; };
 		8E60E2E0142E48D200D920C3 /* Home-Over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Home-Over.png"; sourceTree = "<group>"; };
@@ -1241,6 +1243,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E5C882A1472263200240EDD /* GameKit.framework in Frameworks */,
 				8E9F7C8E146F1CEB00C5B21D /* MessageUI.framework in Frameworks */,
 				8E9F7C8C146F1CE000C5B21D /* Security.framework in Frameworks */,
 				8E9F7C89146F1CCE00C5B21D /* SystemConfiguration.framework in Frameworks */,
@@ -1898,6 +1901,7 @@
 		8ECA191513F397AC006597EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8E5C88291472263200240EDD /* GameKit.framework */,
 				8E9F7C8D146F1CEB00C5B21D /* MessageUI.framework */,
 				8E9F7C8B146F1CE000C5B21D /* Security.framework */,
 				8E9F7C88146F1CCE00C5B21D /* SystemConfiguration.framework */,
