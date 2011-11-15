@@ -17,6 +17,7 @@
 #import "Wound.h"
 #import "Jar.h"
 #import "chipmunk.h"
+#import "GameKit/GameKit.h"
 
 @implementation AppDelegate
 
@@ -145,6 +146,13 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
+    if ([self isGameCenterAPIAvailable]) {
+        [defaults setBool:YES forKey:@"gameCenterEnabled"];
+        [self authenticateLocalPlayer];
+    } else {
+        [defaults setBool:NO forKey:@"gameCenterEnabled"];
+    }
+
     [defaults setBool:YES forKey:@"xxx"];
     [defaults setBool:YES forKey:@"jesus"];
     [defaults setBool:YES forKey:@"heart"];
@@ -193,6 +201,22 @@
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+}
+
+- (void)authenticateLocalPlayer {
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
+    }];
+}
+
+- (BOOL)isGameCenterAPIAvailable {
+    BOOL localPlayerClassAvailable = (NSClassFromString(@"GKLocalPlayer")) != nil;
+    
+    NSString *reqSysVer = @"4.1";
+    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
+    BOOL osVersionSupported = ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
+    
+    return (localPlayerClassAvailable && osVersionSupported);
 }
 
 - (Jar *)currentJar {
