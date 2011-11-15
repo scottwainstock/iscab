@@ -44,5 +44,7 @@
 - (void)saveState;
 - (void)scheduleNotification:(NSDate *)date;
 - (void)scheduleNotifications;
+- (BOOL)isGameCenterAPIAvailable;
+- (void)authenticateLocalPlayer;
 
 @end

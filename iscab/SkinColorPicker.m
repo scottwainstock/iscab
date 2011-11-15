@@ -26,7 +26,7 @@ CCUIViewWrapper *wrapper;
     if( (self=[super init] )) {   
         self.isTouchEnabled = YES;
 
-        CCSprite *pickerText = [CCSprite spriteWithFile:@"choose-skin-text.png"];
+        CCSprite *pickerText = [CCSprite spriteWithFile:@"Choose_Skin.png"];
         pickerText.position = ccp(160, 240);
         [self addChild:pickerText];        
     }
@@ -93,8 +93,10 @@ CCUIViewWrapper *wrapper;
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-	newImage = [self imageWithImage:newImage scaledToSize:CGSizeMake(320, 480)];
+    
+	newImage = [self imageWithImage:newImage scaledToSize:CGSizeMake(app.screenWidth, app.screenHeight)];
     
 	[picker dismissModalViewControllerAnimated:YES];
 	[picker.view removeFromSuperview];

@@ -12,7 +12,11 @@
 #define SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS 75
 #define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 40
 
+#define HEART_SCAB_SIZE 60
+#define HEART_TOP_RADIUS 10
 #define XXX_SCAB_SIZE 30
+#define ILLUMINATI_SCAB_SIZE 80
+#define ILLUMINATI_EYE_RADIUS (ILLUMINATI_SCAB_SIZE / 8)
 
 #define NUM_SHAPE_TYPES 4
 #define NUM_DARK_PATCHES 4
@@ -66,6 +70,8 @@
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
++ (BOOL)gbPointInTriangle:(CGPoint)point pointA:(CGPoint)pointA pointB:(CGPoint)pointB pointC:(CGPoint)pointC;
+
 - (bool)isOverpicked;
 - (bool)isComplete;
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary;
@@ -77,11 +83,14 @@
 - (void)displaySprites;
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
-- (void)initializeStates:(NSString *)scabName;
+- (void)initializeStatesWithName:(NSString *)scabName;
 - (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
 - (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary;
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary maxDistanceToXEdge:(int)maxDistanceToXEdge maxDistanceToYEdge:(int)maxDistanceToYEdge;
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin;
+- (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary;
+- (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary;
+- (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary;
 
 @end

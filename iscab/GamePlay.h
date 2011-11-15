@@ -14,6 +14,7 @@
 #import "chipmunk.h"
 #import "cpShape.h"
 
+#define PERCENT_CHANCE_OF_SPECIAL_SCAB 10
 #define NUM_BACKGROUNDS 6
 #define NUM_SCRATCH_SOUNDS 3
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
