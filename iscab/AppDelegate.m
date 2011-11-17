@@ -17,7 +17,7 @@
 #import "Wound.h"
 #import "Jar.h"
 #import "chipmunk.h"
-#import "GameKit/GameKit.h"
+#import "GameCenterBridge.h"
 
 @implementation AppDelegate
 
@@ -146,19 +146,25 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if ([self isGameCenterAPIAvailable]) {
+    if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [defaults setBool:YES forKey:@"gameCenterEnabled"];
-        [self authenticateLocalPlayer];
+        [GameCenterBridge authenticateLocalPlayer];
     } else {
         [defaults setBool:NO forKey:@"gameCenterEnabled"];
     }
+    
+    if ([defaults objectForKey:@"highScore"]) {
+        [GameCenterBridge reportScore:[[defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
+        [defaults removeObjectForKey:@"highScore"];
+    }
 
+    //THIS IS JUST FOR TESTING PURPOSES
     [defaults setBool:YES forKey:@"xxx"];
     [defaults setBool:YES forKey:@"jesus"];
     [defaults setBool:YES forKey:@"heart"];
     [defaults setBool:YES forKey:@"illuminati"];
     [defaults setBool:YES forKey:@"sass"];
-
+    //
     
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         
@@ -173,7 +179,7 @@
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
 
     cpInitChipmunk();
-        
+            
     NSData *mJars = [defaults objectForKey:@"jars"];
     if (mJars != nil) {
         NSLog(@"LOADING SAVED JARS");
@@ -190,33 +196,28 @@
         for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
             [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
         }
+        
+        [defaults setObject:[NSDate date] forKey:@"startTime"];
     }
     
     for (int i = 0; i < [self.jars count]; i++) {
         NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabLevels]);
     }
     
+    
+    //THIS IS JUST FOR TESTING PURPOSES
+    for (int i = 0; i < [self.jars count] - 1; i++) {
+        [[self.jars objectAtIndex:i] setNumScabLevels:MAX_NUM_SCAB_LEVELS];
+    }
+    [[self.jars objectAtIndex:2] setNumScabLevels:MAX_NUM_SCAB_LEVELS - 1];
+    //
+    
+    
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
-}
-
-- (void)authenticateLocalPlayer {
-    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
-    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
-    }];
-}
-
-- (BOOL)isGameCenterAPIAvailable {
-    BOOL localPlayerClassAvailable = (NSClassFromString(@"GKLocalPlayer")) != nil;
-    
-    NSString *reqSysVer = @"4.1";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    BOOL osVersionSupported = ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
-    
-    return (localPlayerClassAvailable && osVersionSupported);
 }
 
 - (Jar *)currentJar {

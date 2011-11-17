@@ -18,6 +18,7 @@
 #import "drawSpace.h"
 #import "cpSpace.h"
 #import "cpShape.h"
+#import "GameCenterBridge.h"
 #import "SpecialScabs.h"
 
 static const ccColor3B ccSCABGLOW={255,105,180};
@@ -27,34 +28,6 @@ static const ccColor3B ccSCABGLOW={255,105,180};
 @synthesize allBlood, looseScabChunks, gravity, skinBackgroundBoundaries, endSequenceRunning;
 
 AppDelegate *app;
-
-- (NSMutableArray *)allBlood { 
-    @synchronized(allBlood) {
-        if (allBlood == nil)
-            allBlood = [[NSMutableArray alloc] init];
-        return allBlood;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)looseScabChunks { 
-    @synchronized(looseScabChunks) {
-        if (looseScabChunks == nil)
-            looseScabChunks = [[NSMutableArray alloc] init];
-        return looseScabChunks;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)activeScabChunks {
-    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
-    for (Scab *scab in app.scabs) {
-        [scabChunks addObjectsFromArray:scab.scabChunks];
-    }
-    
-    //[scabChunks release];
-    return scabChunks;
-}
 
 - (void)update:(ccTime)delta {
     cpSpaceStep(space, delta);
@@ -239,15 +212,18 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults valueForKey:scab.name])
         [defaults setBool:YES forKey:scab.name];
     
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
-    if (currentJar.numScabLevels > MAX_NUM_SCAB_LEVELS)
+    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
+        
+        [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"startTime"]] forCategory:@"iscab_leaderboard"];
+    }
 
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
@@ -310,6 +286,20 @@ AppDelegate *app;
     [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
     [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
+
+
+- (cpSpace *)createSpace {    
+    space = cpSpaceNew();
+    space->gravity = ccp(0, -GRAVITY_FACTOR);
+    cpSpaceResizeStaticHash(space, 400, 200);
+    cpSpaceResizeActiveHash(space, 200, 200);
+    space->elasticIterations = 10;
+    self.gravity = space->gravity;
+    
+    return space;
+}
+
+#pragma touch_elements
 
 - (void)registerWithTouchDispatcher {
     [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
@@ -374,16 +364,7 @@ AppDelegate *app;
     [self ccTouchEnded:touch withEvent:event]; 
 }
 
-- (cpSpace *)createSpace {    
-    space = cpSpaceNew();
-    space->gravity = ccp(0, -GRAVITY_FACTOR);
-    cpSpaceResizeStaticHash(space, 400, 200);
-    cpSpaceResizeActiveHash(space, 200, 200);
-    space->elasticIterations = 10;
-    self.gravity = space->gravity;
-    
-    return space;
-}
+#pragma exit/enter setup
 
 - (void)onExit {
     [super onExit];
@@ -409,6 +390,36 @@ AppDelegate *app;
     [allWounds release];
     [allBlood release];
     [[CCTextureCache sharedTextureCache] removeUnusedTextures];*/
+}
+
+#pragma singletons
+
+- (NSMutableArray *)allBlood { 
+    @synchronized(allBlood) {
+        if (allBlood == nil)
+            allBlood = [[NSMutableArray alloc] init];
+        return allBlood;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)looseScabChunks { 
+    @synchronized(looseScabChunks) {
+        if (looseScabChunks == nil)
+            looseScabChunks = [[NSMutableArray alloc] init];
+        return looseScabChunks;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)activeScabChunks {
+    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
+    for (Scab *scab in app.scabs) {
+        [scabChunks addObjectsFromArray:scab.scabChunks];
+    }
+    
+    //[scabChunks release];
+    return scabChunks;
 }
 
 @end
