@@ -219,6 +219,16 @@ AppDelegate *app;
     if (![scab.name isEqualToString:@"standard"])
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
     
+    NSArray *specialScabNames = [SpecialScabs specialScabNames];
+    bool allSpecialScabsPicked = true;
+    for (int i = 0; i < [specialScabNames count]; i++) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[specialScabNames objectAtIndex:i]])
+            allSpecialScabsPicked = false;
+    }
+    
+    if (allSpecialScabsPicked)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
+    
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];

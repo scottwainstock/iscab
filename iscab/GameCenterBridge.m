@@ -7,6 +7,7 @@
 //
 
 #import "GameCenterBridge.h"
+#import "SpecialScabs.h"
 #import "GameKit/GameKit.h"
 
 @implementation GameCenterBridge
@@ -49,7 +50,7 @@
              if (error != nil) {
              }
          }];
-    }
+    }    
 }
 
 - (GKAchievement*)getAchievementForIdentifier:(NSString*)identifier {
