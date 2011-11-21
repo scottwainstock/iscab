@@ -223,6 +223,7 @@ AppDelegate *app;
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
         
         [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"startTime"]] forCategory:@"iscab_leaderboard"];
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
     }
 
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
