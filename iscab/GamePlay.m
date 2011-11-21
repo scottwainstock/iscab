@@ -247,7 +247,7 @@ AppDelegate *app;
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
             break;
         case 3:
-            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"startTime"]] forCategory:@"iscab_leaderboard"];
+            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
             break;
         default:
@@ -255,12 +255,20 @@ AppDelegate *app;
     }
 }
 
-- (void)addScabToJar:(Scab *)scab {        
+- (void)addScabToJar:(Scab *)scab {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
-    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS)
+    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
+        
+        if ([[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_speedjar"];
+        
+        [defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+    }
     
     [self reportAchievementsForScab:(Scab *)scab];
            

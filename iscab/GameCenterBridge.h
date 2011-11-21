@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "GameKit/GameKit.h"
 
+#define SPEEDILY_FILLED_JAR_TIME 3600
+
 @interface GameCenterBridge : NSObject {
     NSMutableDictionary *achievementsDictionary;
 }

@@ -190,7 +190,8 @@
             [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
         }
         
-        [defaults setObject:[NSDate date] forKey:@"startTime"];
+        [defaults setObject:[NSDate date] forKey:@"gameStartTime"];
+        [defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
     
     for (int i = 0; i < [self.jars count]; i++) {
