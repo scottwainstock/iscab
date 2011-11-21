@@ -211,7 +211,7 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)addScabToJar:(Scab *)scab {
+- (void)reportAchievementsForScab:(Scab *)scab {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     if (![scab.name isEqualToString:@"standard"]) {
@@ -222,7 +222,7 @@ AppDelegate *app;
         else
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
     }
-                                                           
+    
     NSArray *specialScabNames = [SpecialScabs specialScabNames];
     bool allSpecialScabsPicked = true;
     for (int i = 0; i < [specialScabNames count]; i++) {
@@ -233,16 +233,37 @@ AppDelegate *app;
     if (allSpecialScabsPicked)
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
     
+    int jarsFilled = 0;
+    for (int i = 0; i < [app.jars count]; i++) {
+        if ([[app.jars objectAtIndex:i] numScabLevels] == MAX_NUM_SCAB_LEVELS)
+            jarsFilled += 1;
+    }
+    
+    switch (jarsFilled) {
+        case 1:
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_1filled"];
+            break;
+        case 2:
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
+            break;
+        case 3:
+            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"startTime"]] forCategory:@"iscab_leaderboard"];
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)addScabToJar:(Scab *)scab {        
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
-    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
+    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS)
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
-        
-        [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"startTime"]] forCategory:@"iscab_leaderboard"];
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
-    }
-
+    
+    [self reportAchievementsForScab:(Scab *)scab];
+           
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
     [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
