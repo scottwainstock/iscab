@@ -213,8 +213,6 @@ AppDelegate *app;
 
 - (void)addScabToJar:(Scab *)scab {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults valueForKey:scab.name])
-        [defaults setBool:YES forKey:scab.name];
     
     if (![scab.name isEqualToString:@"standard"]) {
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
@@ -228,7 +226,7 @@ AppDelegate *app;
     NSArray *specialScabNames = [SpecialScabs specialScabNames];
     bool allSpecialScabsPicked = true;
     for (int i = 0; i < [specialScabNames count]; i++) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[specialScabNames objectAtIndex:i]])
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[specialScabNames objectAtIndex:i]] == nil)
             allSpecialScabsPicked = false;
     }
     

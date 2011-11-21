@@ -160,14 +160,6 @@
         [defaults removeObjectForKey:@"highScore"];
     }
 
-    //THIS IS JUST FOR TESTING PURPOSES
-    [defaults setBool:YES forKey:@"xxx"];
-    [defaults setBool:YES forKey:@"jesus"];
-    [defaults setBool:YES forKey:@"heart"];
-    [defaults setBool:YES forKey:@"illuminati"];
-    [defaults setBool:YES forKey:@"sass"];
-    //
-    
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         
     if ([defaults stringForKey:@"skinColor"] == NULL)
@@ -175,7 +167,6 @@
 
     [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
     [defaults synchronize];
-
     
     [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
