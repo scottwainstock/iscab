@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */; };
 		8E430E68146F0D76001401E0 /* heart-detail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E5E146F0D76001401E0 /* heart-detail-hd.png */; };
 		8E430E69146F0D76001401E0 /* heart-detail.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E5F146F0D76001401E0 /* heart-detail.png */; };
 		8E430E6A146F0D76001401E0 /* illuminati-detail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E60146F0D76001401E0 /* illuminati-detail-hd.png */; };
@@ -505,6 +506,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterBridge.h; sourceTree = "<group>"; };
+		8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterBridge.m; sourceTree = "<group>"; };
 		8E430E5E146F0D76001401E0 /* heart-detail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heart-detail-hd.png"; sourceTree = "<group>"; };
 		8E430E5F146F0D76001401E0 /* heart-detail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heart-detail.png"; sourceTree = "<group>"; };
 		8E430E60146F0D76001401E0 /* illuminati-detail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "illuminati-detail-hd.png"; sourceTree = "<group>"; };
@@ -1960,6 +1963,8 @@
 				8EEC36EA146B76270035C563 /* SpecialScabs.m */,
 				8E430E73146F0DB1001401E0 /* SpecialScabDetail.h */,
 				8E430E74146F0DB1001401E0 /* SpecialScabDetail.m */,
+				8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */,
+				8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */,
 				8ECA1ADD13F397AF006597EA /* GameConfig.h */,
 				8ECA192713F397AC006597EA /* Resources */,
 				8ECA193B13F397AC006597EA /* libs */,
@@ -3018,6 +3023,7 @@
 				8E9F7D79146F2B9200C5B21D /* SHKOAuthView.m in Sources */,
 				8E9F7D7A146F2B9200C5B21D /* SHKShareMenu.m in Sources */,
 				8E9F7D7B146F2B9200C5B21D /* SHKViewControllerWrapper.m in Sources */,
+				8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

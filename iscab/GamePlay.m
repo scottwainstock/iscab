@@ -18,6 +18,7 @@
 #import "drawSpace.h"
 #import "cpSpace.h"
 #import "cpShape.h"
+#import "GameCenterBridge.h"
 #import "SpecialScabs.h"
 
 static const ccColor3B ccSCABGLOW={255,105,180};
@@ -27,34 +28,6 @@ static const ccColor3B ccSCABGLOW={255,105,180};
 @synthesize allBlood, looseScabChunks, gravity, skinBackgroundBoundaries, endSequenceRunning;
 
 AppDelegate *app;
-
-- (NSMutableArray *)allBlood { 
-    @synchronized(allBlood) {
-        if (allBlood == nil)
-            allBlood = [[NSMutableArray alloc] init];
-        return allBlood;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)looseScabChunks { 
-    @synchronized(looseScabChunks) {
-        if (looseScabChunks == nil)
-            looseScabChunks = [[NSMutableArray alloc] init];
-        return looseScabChunks;
-    }
-    return nil;
-}
-
-- (NSMutableArray *)activeScabChunks {
-    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
-    for (Scab *scab in app.scabs) {
-        [scabChunks addObjectsFromArray:scab.scabChunks];
-    }
-    
-    //[scabChunks release];
-    return scabChunks;
-}
 
 - (void)update:(ccTime)delta {
     cpSpaceStep(space, delta);
@@ -132,7 +105,6 @@ AppDelegate *app;
 
 - (id)init {
     if((self=[super init])) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
@@ -145,7 +117,7 @@ AppDelegate *app;
                     
         [self addChild:app.batchNode];
         
-        if (![defaults objectForKey:@"scabs"]) {
+        if (![app.defaults objectForKey:@"scabs"]) {
             NSLog(@"GENERATING NEW BOARD");
             [self updateBackground:nil];
             [self generateScabs];
@@ -163,10 +135,9 @@ AppDelegate *app;
 
 - (void)displayExistingBoard {
     NSLog(@"DISPLAY EXISTING BOARD");
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"scabs"]]];
-    [self updateBackground:[defaults stringForKey:@"skinBackgroundNumber"]];
+    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scabs"]]];
+    [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
     NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
     for (Scab *scab in app.scabs) {
@@ -175,8 +146,7 @@ AppDelegate *app;
 }
 
 - (void)generateScabs {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
+    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
     
     int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
     for (int x = 0; x < numScabs; x++) {
@@ -200,20 +170,19 @@ AppDelegate *app;
 }
 
 - (void)updateBackground:(NSString *)skinBackgroundNumber {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [(CCSprite *)[self getChildByTag:BACKGROUND_IMAGE_TAG_ID] removeFromParentAndCleanup:YES];
     
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
     
     CCSprite *bg;
-    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
-        NSData *imageData = [defaults objectForKey:@"photoBackground"];
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
+        NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
         UIImage *image = [UIImage imageWithData:imageData];
         bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
 
     } else {
-        NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [defaults objectForKey:@"skinColor"], skinBackgroundNumber];
+        NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [app.defaults objectForKey:@"skinColor"], skinBackgroundNumber];
         NSLog(@"SETTING BACKGROUND: %@", skinBackground);
         bg = [CCSprite spriteWithFile:skinBackground];
     }
@@ -223,8 +192,7 @@ AppDelegate *app;
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
     
-    [defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
-    [defaults synchronize];
+    [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
 }
 
 - (void)splatterBlood:(ScabChunk *)scabChunk {
@@ -238,17 +206,63 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)addScabToJar:(Scab *)scab {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
-    if (![defaults valueForKey:scab.name])
-        [defaults setBool:YES forKey:scab.name];
+- (void)reportAchievementsForScab:(Scab *)scab {    
+    if (![scab.name isEqualToString:@"standard"]) {
+        [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
+    } else if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
+        else
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
+    }
     
+    NSArray *specialScabNames = [SpecialScabs specialScabNames];
+    bool allSpecialScabsPicked = true;
+    for (int i = 0; i < [specialScabNames count]; i++) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[specialScabNames objectAtIndex:i]] == nil)
+            allSpecialScabsPicked = false;
+    }
+    
+    if (allSpecialScabsPicked)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
+    
+    int jarsFilled = 0;
+    for (int i = 0; i < [app.jars count]; i++) {
+        if ([[app.jars objectAtIndex:i] numScabLevels] == MAX_NUM_SCAB_LEVELS)
+            jarsFilled += 1;
+    }
+    
+    switch (jarsFilled) {
+        case 1:
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_1filled"];
+            break;
+        case 2:
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
+            break;
+        case 3:
+            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)addScabToJar:(Scab *)scab {
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
-    if (currentJar.numScabLevels > MAX_NUM_SCAB_LEVELS)
+    if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
-
+        
+        if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_speedjar"];
+        
+        [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+    }
+    
+    [self reportAchievementsForScab:(Scab *)scab];
+           
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
     [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
@@ -310,6 +324,20 @@ AppDelegate *app;
     [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
     [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
+
+
+- (cpSpace *)createSpace {    
+    space = cpSpaceNew();
+    space->gravity = ccp(0, -GRAVITY_FACTOR);
+    cpSpaceResizeStaticHash(space, 400, 200);
+    cpSpaceResizeActiveHash(space, 200, 200);
+    space->elasticIterations = 10;
+    self.gravity = space->gravity;
+    
+    return space;
+}
+
+#pragma touch_elements
 
 - (void)registerWithTouchDispatcher {
     [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
@@ -374,16 +402,7 @@ AppDelegate *app;
     [self ccTouchEnded:touch withEvent:event]; 
 }
 
-- (cpSpace *)createSpace {    
-    space = cpSpaceNew();
-    space->gravity = ccp(0, -GRAVITY_FACTOR);
-    cpSpaceResizeStaticHash(space, 400, 200);
-    cpSpaceResizeActiveHash(space, 200, 200);
-    space->elasticIterations = 10;
-    self.gravity = space->gravity;
-    
-    return space;
-}
+#pragma exit/enter setup
 
 - (void)onExit {
     [super onExit];
@@ -409,6 +428,36 @@ AppDelegate *app;
     [allWounds release];
     [allBlood release];
     [[CCTextureCache sharedTextureCache] removeUnusedTextures];*/
+}
+
+#pragma singletons
+
+- (NSMutableArray *)allBlood { 
+    @synchronized(allBlood) {
+        if (allBlood == nil)
+            allBlood = [[NSMutableArray alloc] init];
+        return allBlood;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)looseScabChunks { 
+    @synchronized(looseScabChunks) {
+        if (looseScabChunks == nil)
+            looseScabChunks = [[NSMutableArray alloc] init];
+        return looseScabChunks;
+    }
+    return nil;
+}
+
+- (NSMutableArray *)activeScabChunks {
+    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
+    for (Scab *scab in app.scabs) {
+        [scabChunks addObjectsFromArray:scab.scabChunks];
+    }
+    
+    //[scabChunks release];
+    return scabChunks;
 }
 
 @end

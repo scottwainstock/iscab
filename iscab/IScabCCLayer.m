@@ -31,17 +31,17 @@
 }
 
 - (void)setupBackground {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
 
     CCSprite *skinBG;
-    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
-        NSData *imageData = [defaults objectForKey:@"photoBackground"];
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
+        NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
         UIImage *image = [UIImage imageWithData:imageData];
         skinBG = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
     } else {
-        skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@_skin_background2.jpg", [defaults objectForKey:@"skinColor"]]];
+        skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@_skin_background2.jpg", [app.defaults objectForKey:@"skinColor"]]];
     }
     
     skinBG.anchorPoint = ccp(0, 0);

@@ -19,6 +19,8 @@
 
 @synthesize menu, start, leaderboard, chooseSkin, sound, help, iconMenu, aboutButton;
 
+AppDelegate *app;
+
 +(id) scene {
     CCScene *scene = [CCScene node];
     MainMenu *layer = [MainMenu node];
@@ -28,7 +30,7 @@
 
 - (id)init {
     if ((self = [super init])) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         
         CCSprite *homeLogo = [CCSprite spriteWithFile:@"Home_Logo.png"];
         homeLogo.position = ccp(150, 300);
@@ -38,12 +40,12 @@
         
         leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];    
         
-        if (![defaults boolForKey:@"gameCenterEnabled"])
+        if (![app.defaults boolForKey:@"gameCenterEnabled"])
             [leaderboard setIsEnabled:NO];
                 
         chooseSkin = [CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)];
         
-        sound = [self currentSoundState:[defaults boolForKey:@"sound"]];
+        sound = [self currentSoundState:[app.defaults boolForKey:@"sound"]];
         
         help = [CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)];
 
@@ -57,8 +59,6 @@
 }
 
 - (void)setupNavigationIcons {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
     aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
@@ -101,11 +101,10 @@
 - (void)soundTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];    
-    [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
-    [defaults synchronize];
+    [app.defaults setBool:[app.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
+    [app.defaults synchronize];
     
-    [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
+    [CDAudioManager sharedManager].mute = [app.defaults boolForKey:@"sound"];    
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {

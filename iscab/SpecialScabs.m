@@ -8,6 +8,7 @@
 
 #import "SpecialScabs.h"
 #import "SpecialScabDetail.h"
+#import "AppDelegate.h"
 
 @implementation SpecialScabs
 
@@ -42,14 +43,13 @@
 }
 
 - (void)addFoundScabs {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     CCMenu *scabMenu = [CCMenu menuWithItems:nil];
     
     NSArray *specialScabs = [SpecialScabs specialScabNames];
-
     for (int i = 0; i < [specialScabs count]; i++) {
         NSString *scabName = [specialScabs objectAtIndex:i];
-        if ([defaults valueForKey:scabName]) {
+        if ([app.gameCenterBridge.achievementsDictionary valueForKey:[NSString stringWithFormat:@"iscab_", scabName]]) {
             CCMenuItem *scabMenuItem = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"%@.png", scabName] selectedImage:[NSString stringWithFormat:@"%@_Tap.png", scabName] target:self selector:@selector(specialScabTapped:)];
             
             [scabMenuItem setUserData:scabName];
