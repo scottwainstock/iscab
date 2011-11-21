@@ -17,11 +17,12 @@
 #import "Wound.h"
 #import "Jar.h"
 #import "chipmunk.h"
+#import "GameKit/GameKit.h"
 #import "GameCenterBridge.h"
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton, gameCenterBridge;
 
 - (NSMutableArray *)scabs { 
     @synchronized(scabs) {
@@ -148,7 +149,8 @@
     
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [defaults setBool:YES forKey:@"gameCenterEnabled"];
-        [GameCenterBridge authenticateLocalPlayer];
+        gameCenterBridge = [[GameCenterBridge alloc] init];
+        [self.gameCenterBridge authenticateLocalPlayer];
     } else {
         [defaults setBool:NO forKey:@"gameCenterEnabled"];
     }

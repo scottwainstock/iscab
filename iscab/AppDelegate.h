@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Jar.h"
+#import "GameCenterBridge.h"
 
 @class RootViewController;
 
@@ -28,6 +29,7 @@
     NSMutableArray *scabs;
     CCMenuItem *backButton;
     CCMenuItem *jarButton;
+    GameCenterBridge *gameCenterBridge;
 }
 
 @property (nonatomic) int screenWidth;
@@ -38,6 +40,7 @@
 @property (nonatomic, retain) NSMutableArray *scabs;
 @property (nonatomic, retain) CCMenuItem *backButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
+@property (nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
 - (Jar *)currentJar;
 - (CGPoint)centerOfAllScabs;

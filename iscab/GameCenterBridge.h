@@ -7,12 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GameKit/GameKit.h"
 
 @interface GameCenterBridge : NSObject {
+    NSMutableDictionary *achievementsDictionary;
 }
 
-+ (void)reportScore:(int64_t)score forCategory:(NSString*)category;
-+ (void)authenticateLocalPlayer;
+@property (nonatomic, retain) NSMutableDictionary *achievementsDictionary;
+
++ (void)reportScore:(int64_t)score forCategory:(NSString *)category;
 + (BOOL)isGameCenterAPIAvailable;
+- (void)reportAchievementIdentifier:(NSString *)identifier;
+- (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier;
+- (void)authenticateLocalPlayer;
+- (void)loadAchievements;
 
 @end

@@ -11,6 +11,8 @@
 
 @implementation GameCenterBridge
 
+@synthesize achievementsDictionary;
+
 + (void)reportScore:(int64_t)score forCategory:(NSString*)category {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if (![defaults boolForKey:@"gameCenterEnabled"])
@@ -26,12 +28,6 @@
     }];
 }
 
-+ (void)authenticateLocalPlayer {
-    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
-    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
-    }];
-}
-
 + (BOOL)isGameCenterAPIAvailable {
     BOOL localPlayerClassAvailable = (NSClassFromString(@"GKLocalPlayer")) != nil;
     
@@ -40,6 +36,45 @@
     BOOL osVersionSupported = ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
     
     return (localPlayerClassAvailable && osVersionSupported);
+}
+
+- (void)reportAchievementIdentifier:(NSString*)identifier {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults boolForKey:@"gameCenterEnabled"])
+        return;
+
+    GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
+    if (achievement) {
+        [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
+             if (error != nil) {
+             }
+         }];
+    }
+}
+
+- (GKAchievement*)getAchievementForIdentifier:(NSString*)identifier {
+    GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
+    if (achievement == nil) {
+        achievement = [[[GKAchievement alloc] initWithIdentifier:identifier] autorelease];
+        [achievementsDictionary setObject:achievement forKey:achievement.identifier];
+    }
+    return [[achievement retain] autorelease];
+}
+
+- (void)authenticateLocalPlayer {
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    [localPlayer authenticateWithCompletionHandler:^(NSError *error) {
+        if (error == nil)
+            [self loadAchievements];
+    }];
+}
+
+- (void)loadAchievements {
+    [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
+        if (error == nil)
+            for (GKAchievement* achievement in achievements)
+                [achievementsDictionary setObject: achievement forKey: achievement.identifier];
+    }];
 }
 
 @end
