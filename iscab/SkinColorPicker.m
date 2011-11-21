@@ -36,7 +36,6 @@ CCUIViewWrapper *wrapper;
 
 - (void)ccTouchesBegan:(NSSet*)touches withEvent:(UIEvent*)event {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     CGPoint touchLocation = [self convertTouchToNodeSpace:[touches anyObject]];
     
@@ -46,11 +45,11 @@ CCUIViewWrapper *wrapper;
     CGRect pictureSkinBox = CGRectMake(175, 125, 115, 105);
 
     if (CGRectContainsPoint(lightSkinBox, touchLocation)) {
-        [defaults setObject:@"light" forKey:@"skinColor"];
+        [app.defaults setObject:@"light" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(mediumSkinBox, touchLocation)) {
-        [defaults setObject:@"medium" forKey:@"skinColor"];
+        [app.defaults setObject:@"medium" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(darkSkinBox, touchLocation)) {
-        [defaults setObject:@"dark" forKey:@"skinColor"];
+        [app.defaults setObject:@"dark" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(pictureSkinBox, touchLocation)) {
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             NSLog(@"PIX");
@@ -104,10 +103,8 @@ CCUIViewWrapper *wrapper;
 	[self removeChild:wrapper cleanup:YES];
 	wrapper = nil;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:UIImagePNGRepresentation(newImage) forKey:@"photoBackground"];
-    [defaults setObject:@"photo" forKey:@"skinColor"];    
-    [defaults synchronize];
+    [app.defaults setObject:UIImagePNGRepresentation(newImage) forKey:@"photoBackground"];
+    [app.defaults setObject:@"photo" forKey:@"skinColor"];    
     
     NSLog(@"SAVED");
     

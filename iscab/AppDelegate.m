@@ -22,7 +22,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton, gameCenterBridge;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton, gameCenterBridge, defaults;
 
 - (NSMutableArray *)scabs { 
     @synchronized(scabs) {
@@ -145,35 +145,34 @@
 	
 	// Run the intro Scene
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.defaults = [NSUserDefaults standardUserDefaults];
     
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
-        [defaults setBool:YES forKey:@"gameCenterEnabled"];
+        [self.defaults setBool:YES forKey:@"gameCenterEnabled"];
         gameCenterBridge = [[GameCenterBridge alloc] init];
         [self.gameCenterBridge authenticateLocalPlayer];
     } else {
-        [defaults setBool:NO forKey:@"gameCenterEnabled"];
+        [self.defaults setBool:NO forKey:@"gameCenterEnabled"];
     }
     
-    if ([defaults objectForKey:@"highScore"]) {
-        [GameCenterBridge reportScore:[[defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
-        [defaults removeObjectForKey:@"highScore"];
+    if ([self.defaults objectForKey:@"highScore"]) {
+        [GameCenterBridge reportScore:[[self.defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
+        [self.defaults removeObjectForKey:@"highScore"];
     }
 
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"scabs.plist"];
         
-    if ([defaults stringForKey:@"skinColor"] == NULL)
-        [defaults setObject:@"light" forKey:@"skinColor"];
+    if ([self.defaults stringForKey:@"skinColor"] == NULL)
+        [self.defaults setObject:@"light" forKey:@"skinColor"];
 
-    [defaults setBool:[defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
-    [defaults synchronize];
+    [self.defaults setBool:[self.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
     
-    [CDAudioManager sharedManager].mute = [defaults boolForKey:@"sound"];    
+    [CDAudioManager sharedManager].mute = [self.defaults boolForKey:@"sound"];    
 //    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
 
     cpInitChipmunk();
             
-    NSData *mJars = [defaults objectForKey:@"jars"];
+    NSData *mJars = [self.defaults objectForKey:@"jars"];
     if (mJars != nil) {
         NSLog(@"LOADING SAVED JARS");
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
@@ -190,8 +189,8 @@
             [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
         }
         
-        [defaults setObject:[NSDate date] forKey:@"gameStartTime"];
-        [defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+        [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
+        [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
     
     for (int i = 0; i < [self.jars count]; i++) {
@@ -302,10 +301,9 @@
 - (void)saveState {
     [self scheduleNotifications];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-    [defaults synchronize];
+    [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
+    [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
+    [self.defaults synchronize];
     
     for (Scab *scab in self.scabs) {
         [scab reset];

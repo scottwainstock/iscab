@@ -105,7 +105,6 @@ AppDelegate *app;
 
 - (id)init {
     if((self=[super init])) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
@@ -118,7 +117,7 @@ AppDelegate *app;
                     
         [self addChild:app.batchNode];
         
-        if (![defaults objectForKey:@"scabs"]) {
+        if (![app.defaults objectForKey:@"scabs"]) {
             NSLog(@"GENERATING NEW BOARD");
             [self updateBackground:nil];
             [self generateScabs];
@@ -136,10 +135,9 @@ AppDelegate *app;
 
 - (void)displayExistingBoard {
     NSLog(@"DISPLAY EXISTING BOARD");
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"scabs"]]];
-    [self updateBackground:[defaults stringForKey:@"skinBackgroundNumber"]];
+    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scabs"]]];
+    [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
     NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
     for (Scab *scab in app.scabs) {
@@ -148,8 +146,7 @@ AppDelegate *app;
 }
 
 - (void)generateScabs {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
+    CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
     
     int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
     for (int x = 0; x < numScabs; x++) {
@@ -173,20 +170,19 @@ AppDelegate *app;
 }
 
 - (void)updateBackground:(NSString *)skinBackgroundNumber {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [(CCSprite *)[self getChildByTag:BACKGROUND_IMAGE_TAG_ID] removeFromParentAndCleanup:YES];
     
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
     
     CCSprite *bg;
-    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
-        NSData *imageData = [defaults objectForKey:@"photoBackground"];
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
+        NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
         UIImage *image = [UIImage imageWithData:imageData];
         bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
 
     } else {
-        NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [defaults objectForKey:@"skinColor"], skinBackgroundNumber];
+        NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [app.defaults objectForKey:@"skinColor"], skinBackgroundNumber];
         NSLog(@"SETTING BACKGROUND: %@", skinBackground);
         bg = [CCSprite spriteWithFile:skinBackground];
     }
@@ -196,8 +192,7 @@ AppDelegate *app;
     bg.position = ccp(0, 0);
     [self addChild:bg z:-1];
     
-    [defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
-    [defaults synchronize];
+    [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
 }
 
 - (void)splatterBlood:(ScabChunk *)scabChunk {
@@ -211,9 +206,7 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)reportAchievementsForScab:(Scab *)scab {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
+- (void)reportAchievementsForScab:(Scab *)scab {    
     if (![scab.name isEqualToString:@"standard"]) {
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
     } else if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
@@ -247,7 +240,7 @@ AppDelegate *app;
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
             break;
         case 3:
-            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
+            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
             break;
         default:
@@ -256,18 +249,16 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
         
-        if ([[NSDate date] timeIntervalSinceDate:[defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
+        if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_speedjar"];
         
-        [defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+        [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
     
     [self reportAchievementsForScab:(Scab *)scab];

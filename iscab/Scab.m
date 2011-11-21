@@ -222,8 +222,8 @@
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
     ScabChunk *scabChunk = [self createScabChunk:scabChunkCenter type:type scabChunkNo:scabChunkNo priority:priority];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([[defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
         [self createScabChunkBorderFromIScabSprite:scabChunk];
     }
     

@@ -30,10 +30,12 @@
     CCMenuItem *backButton;
     CCMenuItem *jarButton;
     GameCenterBridge *gameCenterBridge;
+    NSUserDefaults *defaults;
 }
 
 @property (nonatomic) int screenWidth;
 @property (nonatomic) int screenHeight;
+@property (nonatomic, retain) NSUserDefaults *defaults;
 @property (nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;

@@ -8,6 +8,7 @@
 
 #import "GameCenterBridge.h"
 #import "SpecialScabs.h"
+#import "AppDelegate.h"
 #import "GameKit/GameKit.h"
 
 @implementation GameCenterBridge
@@ -15,8 +16,8 @@
 @synthesize achievementsDictionary;
 
 + (void)reportScore:(int64_t)score forCategory:(NSString*)category {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults boolForKey:@"gameCenterEnabled"])
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if (![app.defaults boolForKey:@"gameCenterEnabled"])
         return;
     
     NSLog(@"ABOUT TO REPORT %lld", score);
@@ -25,7 +26,7 @@
     
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
         if (error != nil)
-            [defaults setObject:[NSNumber numberWithLongLong:score] forKey:@"highScore"];
+            [app.defaults setObject:[NSNumber numberWithLongLong:score] forKey:@"highScore"];
     }];
 }
 
@@ -40,8 +41,8 @@
 }
 
 - (void)reportAchievementIdentifier:(NSString*)identifier {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if (![defaults boolForKey:@"gameCenterEnabled"])
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    if (![app.defaults boolForKey:@"gameCenterEnabled"])
         return;
 
     GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
