@@ -207,9 +207,13 @@ AppDelegate *app;
 }
 
 - (void)reportAchievementsForScab:(Scab *)scab {    
-    if (![scab.name isEqualToString:@"standard"]) {
+    if (![scab.name isEqualToString:@"standard"])
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
-    } else if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
+    
+    if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_goodtime"];
+    
+    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
         if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
         else
