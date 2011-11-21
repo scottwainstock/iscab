@@ -216,6 +216,9 @@ AppDelegate *app;
     if (![defaults valueForKey:scab.name])
         [defaults setBool:YES forKey:scab.name];
     
+    if (![scab.name isEqualToString:@"standard"])
+        [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
+    
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
