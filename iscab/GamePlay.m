@@ -216,9 +216,15 @@ AppDelegate *app;
     if (![defaults valueForKey:scab.name])
         [defaults setBool:YES forKey:scab.name];
     
-    if (![scab.name isEqualToString:@"standard"])
+    if (![scab.name isEqualToString:@"standard"]) {
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
-    
+    } else if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
+        else
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
+    }
+                                                           
     NSArray *specialScabNames = [SpecialScabs specialScabNames];
     bool allSpecialScabsPicked = true;
     for (int i = 0; i < [specialScabNames count]; i++) {
