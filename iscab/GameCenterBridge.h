@@ -12,6 +12,7 @@
 #define SPEEDILY_FILLED_JAR_TIME 3600
 #define BIG_SCAB_GOOD_TIME 200
 #define BIG_SCAB_QUICKLY 180
+#define BIG_SCAB_MIN_TIME 150
 #define SCAB_GOOD_TIME 120
 
 @interface GameCenterBridge : NSObject {

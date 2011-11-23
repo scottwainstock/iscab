@@ -223,6 +223,14 @@ AppDelegate *app;
         else
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggood"];
     }
+   
+    if (
+        [scab.name isEqualToString:@"standard"] && 
+        (scab.scabSize == XL_SCAB) &&
+        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
+        )
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
+    
     
     if (
         [scab.name isEqualToString:@"standard"] && 
