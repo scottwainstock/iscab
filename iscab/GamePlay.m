@@ -233,9 +233,17 @@ AppDelegate *app;
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-    )
+    ) {
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
-    
+        
+        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
+        numBigScabsPickedInMinimumTime += 1;
+        
+        if (numBigScabsPickedInMinimumTime >= 3)
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3big"];
+            
+        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
+    }
     
     if (
         [scab.name isEqualToString:@"standard"] && 
