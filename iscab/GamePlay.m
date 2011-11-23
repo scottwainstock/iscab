@@ -33,6 +33,8 @@ AppDelegate *app;
     cpSpaceStep(space, delta);
     
     if (!endSequenceRunning) {
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
+
         NSMutableArray *spritesToDelete = [[NSMutableArray alloc] init];
         
         for (IScabSprite *sprite in app.batchNode.children) {
@@ -206,7 +208,10 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)reportAchievementsForScab:(Scab *)scab {    
+- (void)reportAchievementsForScab:(Scab *)scab {
+    if (!scab.isOverpickWarningIssued)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_surgeon"];
+    
     if (![scab.name isEqualToString:@"standard"])
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
     
@@ -228,7 +233,7 @@ AppDelegate *app;
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-        )
+    )
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
     
     
