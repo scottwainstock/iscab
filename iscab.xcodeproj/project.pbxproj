@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */; };
+		8E39A460147CA59A008FC74D /* GKAchievementNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */; };
+		8E39A461147CA59A008FC74D /* GKAchievementHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */; };
+		8E39A468147CA5AE008FC74D /* gk-icon-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A464147CA5AE008FC74D /* gk-icon-hd.png */; };
+		8E39A469147CA5AE008FC74D /* gk-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A465147CA5AE008FC74D /* gk-icon.png */; };
+		8E39A46A147CA5AE008FC74D /* gk-notification-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A466147CA5AE008FC74D /* gk-notification-hd.png */; };
+		8E39A46B147CA5AE008FC74D /* gk-notification.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A467147CA5AE008FC74D /* gk-notification.png */; };
 		8E430E68146F0D76001401E0 /* heart-detail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E5E146F0D76001401E0 /* heart-detail-hd.png */; };
 		8E430E69146F0D76001401E0 /* heart-detail.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E5F146F0D76001401E0 /* heart-detail.png */; };
 		8E430E6A146F0D76001401E0 /* illuminati-detail-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E430E60146F0D76001401E0 /* illuminati-detail-hd.png */; };
@@ -508,6 +514,14 @@
 /* Begin PBXFileReference section */
 		8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterBridge.h; sourceTree = "<group>"; };
 		8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterBridge.m; sourceTree = "<group>"; };
+		8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementNotification.m; sourceTree = "<group>"; };
+		8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKAchievementNotification.h; sourceTree = "<group>"; };
+		8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementHandler.m; sourceTree = "<group>"; };
+		8E39A45F147CA59A008FC74D /* GKAchievementHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKAchievementHandler.h; sourceTree = "<group>"; };
+		8E39A464147CA5AE008FC74D /* gk-icon-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gk-icon-hd.png"; sourceTree = "<group>"; };
+		8E39A465147CA5AE008FC74D /* gk-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gk-icon.png"; sourceTree = "<group>"; };
+		8E39A466147CA5AE008FC74D /* gk-notification-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gk-notification-hd.png"; sourceTree = "<group>"; };
+		8E39A467147CA5AE008FC74D /* gk-notification.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "gk-notification.png"; sourceTree = "<group>"; };
 		8E430E5E146F0D76001401E0 /* heart-detail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heart-detail-hd.png"; sourceTree = "<group>"; };
 		8E430E5F146F0D76001401E0 /* heart-detail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heart-detail.png"; sourceTree = "<group>"; };
 		8E430E60146F0D76001401E0 /* illuminati-detail-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "illuminati-detail-hd.png"; sourceTree = "<group>"; };
@@ -1264,6 +1278,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E39A463147CA5AE008FC74D /* GKAchievementNotification */ = {
+			isa = PBXGroup;
+			children = (
+				8E39A464147CA5AE008FC74D /* gk-icon-hd.png */,
+				8E39A465147CA5AE008FC74D /* gk-icon.png */,
+				8E39A466147CA5AE008FC74D /* gk-notification-hd.png */,
+				8E39A467147CA5AE008FC74D /* gk-notification.png */,
+			);
+			name = GKAchievementNotification;
+			path = Resources/GKAchievementNotification;
+			sourceTree = "<group>";
+		};
 		8E430E5D146F0D76001401E0 /* SpecialScabs */ = {
 			isa = PBXGroup;
 			children = (
@@ -1923,6 +1949,10 @@
 		8ECA192613F397AC006597EA /* iscab */ = {
 			isa = PBXGroup;
 			children = (
+				8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */,
+				8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */,
+				8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */,
+				8E39A45F147CA59A008FC74D /* GKAchievementHandler.h */,
 				8EB71AE213F39E1200072593 /* drawSpace.c */,
 				8EB71AE313F39E1200072593 /* drawSpace.h */,
 				8EB71A7E13F399C200072593 /* Wound.h */,
@@ -1983,6 +2013,7 @@
 				8EB71AAE13F399F600072593 /* drew.ttf */,
 				8ECA192A13F397AC006597EA /* fps_images.png */,
 				8ECA193813F397AC006597EA /* Info.plist */,
+				8E39A463147CA5AE008FC74D /* GKAchievementNotification */,
 				8E430E5D146F0D76001401E0 /* SpecialScabs */,
 				8EED423814528630005E45BE /* JarLayers */,
 				8E6A6D6A141F062700921E7E /* Backgrounds */,
@@ -2811,6 +2842,10 @@
 				8E9F7D54146F2B9200C5B21D /* SHKSharers.plist in Resources */,
 				8E9F7D59146F2B9200C5B21D /* Localizable.strings in Resources */,
 				8E9F7D60146F2B9200C5B21D /* FBConnect.bundle in Resources */,
+				8E39A468147CA5AE008FC74D /* gk-icon-hd.png in Resources */,
+				8E39A469147CA5AE008FC74D /* gk-icon.png in Resources */,
+				8E39A46A147CA5AE008FC74D /* gk-notification-hd.png in Resources */,
+				8E39A46B147CA5AE008FC74D /* gk-notification.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3024,6 +3059,8 @@
 				8E9F7D7A146F2B9200C5B21D /* SHKShareMenu.m in Sources */,
 				8E9F7D7B146F2B9200C5B21D /* SHKViewControllerWrapper.m in Sources */,
 				8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */,
+				8E39A460147CA59A008FC74D /* GKAchievementNotification.m in Sources */,
+				8E39A461147CA59A008FC74D /* GKAchievementHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
