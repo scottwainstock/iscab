@@ -33,8 +33,6 @@ AppDelegate *app;
     cpSpaceStep(space, delta);
     
     if (!endSequenceRunning) {
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
-
         NSMutableArray *spritesToDelete = [[NSMutableArray alloc] init];
         
         for (IScabSprite *sprite in app.batchNode.children) {
@@ -110,7 +108,7 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
-        
+            
         [self setupSkinBackgroundBoundaries];
         
         [self createSpace];
@@ -326,6 +324,8 @@ AppDelegate *app;
         CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 3];
         title.position =  ccp(-100, 380);
         [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+        
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
         
         [[[CCDirector sharedDirector] runningScene] addChild:title];
     }
