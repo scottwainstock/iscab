@@ -108,7 +108,7 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
-        
+            
         [self setupSkinBackgroundBoundaries];
         
         [self createSpace];
@@ -206,10 +206,51 @@ AppDelegate *app;
     [particles release];
 }
 
-- (void)reportAchievementsForScab:(Scab *)scab {    
-    if (![scab.name isEqualToString:@"standard"]) {
+- (void)reportAchievementsForScab:(Scab *)scab {
+    if (!scab.isOverpickWarningIssued)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_surgeon"];
+    
+    if (![scab.name isEqualToString:@"standard"])
         [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
-    } else if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
+    
+    if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_goodtime"];
+    
+    if (
+        [scab.name isEqualToString:@"standard"] && 
+        (scab.scabSize == XL_SCAB) &&
+        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
+    ) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_biggood"])
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggoodagain"];
+        else
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggood"];
+    }
+   
+    if (
+        [scab.name isEqualToString:@"standard"] && 
+        (scab.scabSize == XL_SCAB) &&
+        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
+    ) {
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
+        
+        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
+        numBigScabsPickedInMinimumTime += 1;
+        
+        if (numBigScabsPickedInMinimumTime >= 3)
+            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3big"];
+            
+        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
+    }
+    
+    if (
+        [scab.name isEqualToString:@"standard"] && 
+        (scab.scabSize == XL_SCAB) &&
+        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_QUICKLY)
+    )
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigquick"];
+    
+    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
         if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
         else
@@ -283,6 +324,8 @@ AppDelegate *app;
         CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 3];
         title.position =  ccp(-100, 380);
         [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+        
+        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
         
         [[[CCDirector sharedDirector] runningScene] addChild:title];
     }
