@@ -26,10 +26,13 @@
     CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
     backButton.position = ccp(40, 40);
     
+    CCMenuItem *specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
+    specialButton.position = ccp(165, 35);
+    
     CCMenuItem *shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
     shareButton.position = ccp(280, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, shareButton, nil];
+    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, specialButton, shareButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }

@@ -41,13 +41,6 @@ AppDelegate *app;
         jarCover.position = ccp(160, 240);
         [self addChild:jarCover z:4];
         
-        CCMenuItem *specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
-        specialButton.position = ccp(165, 35);
-        
-        CCMenu *iconMenu = [CCMenu menuWithItems:specialButton, nil];
-        iconMenu.position = CGPointZero;
-        [self addChild:iconMenu z:2];
-        
         [self setSharedItemFileName:[NSString stringWithFormat:@"Jar-Front.png"]];
     }
                                
