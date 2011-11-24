@@ -25,7 +25,7 @@
         helpText.position = ccp(160, 240);
         [self addChild:helpText z:-1];
     
-        CCMenuItem *stopButton = [CCMenuItemImage itemFromNormalImage:@"Stop-Pickin-Tap.png" selectedImage:@"Stop-Pickin.png" target:self selector:@selector(stopTapped:)];
+        CCMenuItem *stopButton = [CCMenuItemImage itemFromNormalImage:@"Stop-Pickin.png" selectedImage:@"Stop-Pickin-Tap.png" target:self selector:@selector(stopTapped:)];
         stopButton.position = ccp(165, 35);
         
         CCMenu *iconMenu = [CCMenu menuWithItems:stopButton, nil];
