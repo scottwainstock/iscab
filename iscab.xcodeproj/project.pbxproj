@@ -537,6 +537,8 @@
 		8EF85F40147DFE39005ACADB /* xxx-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2D147DFE39005ACADB /* xxx-email-hd.jpg */; };
 		8EF85F41147DFE39005ACADB /* xxx-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2E147DFE39005ACADB /* xxx-email.jpg */; };
 		8EF85F43147E0335005ACADB /* xxx-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F42147E0335005ACADB /* xxx-detail.jpg */; };
+		8EF85F46147E124C005ACADB /* ChooseSkin_Tap-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F44147E124C005ACADB /* ChooseSkin_Tap-hd.png */; };
+		8EF85F47147E124C005ACADB /* ChooseSkin_Tap.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F45147E124C005ACADB /* ChooseSkin_Tap.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1309,6 +1311,8 @@
 		8EF85F2D147DFE39005ACADB /* xxx-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-email-hd.jpg"; sourceTree = "<group>"; };
 		8EF85F2E147DFE39005ACADB /* xxx-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-email.jpg"; sourceTree = "<group>"; };
 		8EF85F42147E0335005ACADB /* xxx-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F44147E124C005ACADB /* ChooseSkin_Tap-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ChooseSkin_Tap-hd.png"; sourceTree = "<group>"; };
+		8EF85F45147E124C005ACADB /* ChooseSkin_Tap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ChooseSkin_Tap.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1533,6 +1537,8 @@
 		8E6A6D8E141F062700921E7E /* Sprites */ = {
 			isa = PBXGroup;
 			children = (
+				8EF85F44147E124C005ACADB /* ChooseSkin_Tap-hd.png */,
+				8EF85F45147E124C005ACADB /* ChooseSkin_Tap.png */,
 				8EF85ED5147DCCDA005ACADB /* medium_clean_skin3.png */,
 				8EF85ED6147DCCDA005ACADB /* medium_clean_skin2.png */,
 				8EF85ED7147DCCDA005ACADB /* medium_clean_skin1.png */,
@@ -2958,6 +2964,8 @@
 				8EF85F40147DFE39005ACADB /* xxx-email-hd.jpg in Resources */,
 				8EF85F41147DFE39005ACADB /* xxx-email.jpg in Resources */,
 				8EF85F43147E0335005ACADB /* xxx-detail.jpg in Resources */,
+				8EF85F46147E124C005ACADB /* ChooseSkin_Tap-hd.png in Resources */,
+				8EF85F47147E124C005ACADB /* ChooseSkin_Tap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
