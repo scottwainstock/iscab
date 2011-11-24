@@ -49,7 +49,7 @@
 
 - (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
     [leaderboardViewController dismissModalViewControllerAnimated:YES];
-    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:0.5f];
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:TRANSITION_SPEED];
 }
 
 - (void)dealloc {

@@ -48,7 +48,6 @@
     
     for (NSString *scabName in [SpecialScabs specialScabNames]) {
         if ([app.gameCenterBridge.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", scabName]]) {
-            NSLog(@"SWEET");
             CCMenuItem *scabMenuItem = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"%@.png", scabName] selectedImage:[NSString stringWithFormat:@"%@_Tap.png", scabName] target:self selector:@selector(specialScabTapped:)];
             
             [scabMenuItem setUserData:scabName];
@@ -79,7 +78,7 @@
 - (void)specialScabTapped:(CCMenuItem  *)menuItem {
     NSLog(@"TAPPY %@", (NSString *)menuItem.userData);
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
+	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
 }
 
 @end

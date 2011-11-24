@@ -39,7 +39,7 @@
 
 - (void)specialTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabs scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabs scene]]];
 }
 
 - (void)shareTapped:(CCMenuItem *)menuItem {

@@ -17,6 +17,7 @@
 #define DEFAULT_FONT_NAME @"ITC Avant Garde Gothic Std"
 #define DEFAULT_FONT_SIZE 10
 #define GAMEPLAY_SCENE_TAG 10
+#define TRANSITION_SPEED 0.25f
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
 	UIWindow *window;
