@@ -42,7 +42,7 @@ AppDelegate *app;
         [self addChild:jarCover z:4];
         
         CCMenuItem *specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
-        specialButton.position = ccp(280, 445);
+        specialButton.position = ccp(165, 35);
         
         CCMenu *iconMenu = [CCMenu menuWithItems:specialButton, nil];
         iconMenu.position = CGPointZero;

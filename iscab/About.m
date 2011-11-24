@@ -28,7 +28,7 @@
         CCMenuItemImage *ihodor = [CCMenuItemImage itemFromNormalImage:@"iHodor.png" selectedImage: @"iHodor-Tap.png" target:self selector:@selector(ihodorButtonPressed:)];
         
         CCMenu *menu = [CCMenu menuWithItems:ihodor, nil];       
-        menu.position = ccp(260, 165);
+        menu.position = ccp(240, 150);
         [self addChild:menu];        
     }
     
