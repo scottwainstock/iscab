@@ -65,8 +65,7 @@
 
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
     if ((self = [super init])) {
-        NSArray *specialScabNames = [SpecialScabs specialScabNames];
-        NSString *specialScabName = [specialScabNames objectAtIndex:(arc4random() % ([specialScabNames count] - 1))];
+        NSString *specialScabName = [[SpecialScabs specialScabNames] objectAtIndex:(arc4random() % ([[SpecialScabs specialScabNames] count] - 1))];
         
         NSMutableArray *shapeCoordinates;
         

@@ -257,10 +257,9 @@ AppDelegate *app;
             [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
     }
     
-    NSArray *specialScabNames = [SpecialScabs specialScabNames];
     bool allSpecialScabsPicked = true;
-    for (int i = 0; i < [specialScabNames count]; i++) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[specialScabNames objectAtIndex:i]] == nil)
+    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:specialScabName] == nil)
             allSpecialScabsPicked = false;
     }
     
