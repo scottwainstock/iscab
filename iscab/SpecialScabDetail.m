@@ -18,16 +18,16 @@
     return scene;
 }
 
-+(id)nodeWithScabName:(NSString *)scabName {
++ (id)nodeWithScabName:(NSString *)scabName {
     return [[[self alloc] initWithScabName:scabName] autorelease];
 }
 
 - (id)initWithScabName:(NSString *)scabName {
     if ((self=[super init])) {
-        [self setSharedItemFileName:[NSString stringWithFormat:@"%@-detail.png", scabName]];
+        [self setSharedItemFileName:[NSString stringWithFormat:@"%@-detail.jpg", scabName]];
         
         CCSprite *scabImage = [CCSprite spriteWithFile:self.sharedItemFileName];
-        scabImage.position = ccp(160, 300);
+        scabImage.position = ccp(160, 240);
         [self addChild:scabImage z:0];  
     }
     

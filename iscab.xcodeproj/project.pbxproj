@@ -517,15 +517,26 @@
 		8EF85F04147DCCDA005ACADB /* light_clean_skin0-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85EEC147DCCDA005ACADB /* light_clean_skin0-hd.png */; };
 		8EF85F08147DCD07005ACADB /* camera-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F06147DCD07005ACADB /* camera-hd.png */; };
 		8EF85F09147DCD07005ACADB /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F07147DCD07005ACADB /* camera.png */; };
-		8EF85F13147DCD28005ACADB /* heart-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0A147DCD28005ACADB /* heart-detail-hd.jpg */; };
-		8EF85F14147DCD28005ACADB /* illuminati-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0B147DCD28005ACADB /* illuminati-detail-hd.jpg */; };
-		8EF85F15147DCD28005ACADB /* illuminati-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0C147DCD28005ACADB /* illuminati-detail.jpg */; };
-		8EF85F16147DCD28005ACADB /* jesus-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0D147DCD28005ACADB /* jesus-detail-hd.jpg */; };
-		8EF85F17147DCD28005ACADB /* jesus-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0E147DCD28005ACADB /* jesus-detail.jpg */; };
-		8EF85F18147DCD28005ACADB /* sass-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F0F147DCD28005ACADB /* sass-detail-hd.jpg */; };
-		8EF85F19147DCD28005ACADB /* sass-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F10147DCD28005ACADB /* sass-detail.jpg */; };
-		8EF85F1A147DCD28005ACADB /* xxx-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F11147DCD28005ACADB /* xxx-detail-hd.jpg */; };
-		8EF85F1B147DCD28005ACADB /* xxx-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F12147DCD28005ACADB /* xxx-detail.jpg */; };
+		8EF85F2F147DFE39005ACADB /* heart-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F1C147DFE39005ACADB /* heart-detail-hd.jpg */; };
+		8EF85F30147DFE39005ACADB /* heart-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F1D147DFE39005ACADB /* heart-detail.jpg */; };
+		8EF85F31147DFE39005ACADB /* heart-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F1E147DFE39005ACADB /* heart-email-hd.jpg */; };
+		8EF85F32147DFE39005ACADB /* heart-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F1F147DFE39005ACADB /* heart-email.jpg */; };
+		8EF85F33147DFE39005ACADB /* illuminati-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F20147DFE39005ACADB /* illuminati-detail-hd.jpg */; };
+		8EF85F34147DFE39005ACADB /* illuminati-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F21147DFE39005ACADB /* illuminati-detail.jpg */; };
+		8EF85F35147DFE39005ACADB /* illuminati-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F22147DFE39005ACADB /* illuminati-email-hd.jpg */; };
+		8EF85F36147DFE39005ACADB /* illuminati-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F23147DFE39005ACADB /* illuminati-email.jpg */; };
+		8EF85F37147DFE39005ACADB /* jesus-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F24147DFE39005ACADB /* jesus-detail-hd.jpg */; };
+		8EF85F38147DFE39005ACADB /* jesus-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F25147DFE39005ACADB /* jesus-detail.jpg */; };
+		8EF85F39147DFE39005ACADB /* jesus-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F26147DFE39005ACADB /* jesus-email-hd.jpg */; };
+		8EF85F3A147DFE39005ACADB /* jesus-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F27147DFE39005ACADB /* jesus-email.jpg */; };
+		8EF85F3B147DFE39005ACADB /* sass-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F28147DFE39005ACADB /* sass-detail-hd.jpg */; };
+		8EF85F3C147DFE39005ACADB /* sass-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F29147DFE39005ACADB /* sass-detail.jpg */; };
+		8EF85F3D147DFE39005ACADB /* sass-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2A147DFE39005ACADB /* sass-email-hd.jpg */; };
+		8EF85F3E147DFE39005ACADB /* sass-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2B147DFE39005ACADB /* sass-email.jpg */; };
+		8EF85F3F147DFE39005ACADB /* xxx-detail-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2C147DFE39005ACADB /* xxx-detail-hd.jpg */; };
+		8EF85F40147DFE39005ACADB /* xxx-email-hd.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2D147DFE39005ACADB /* xxx-email-hd.jpg */; };
+		8EF85F41147DFE39005ACADB /* xxx-email.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F2E147DFE39005ACADB /* xxx-email.jpg */; };
+		8EF85F43147E0335005ACADB /* xxx-detail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 8EF85F42147E0335005ACADB /* xxx-detail.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1278,15 +1289,26 @@
 		8EF85EEC147DCCDA005ACADB /* light_clean_skin0-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "light_clean_skin0-hd.png"; sourceTree = "<group>"; };
 		8EF85F06147DCD07005ACADB /* camera-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera-hd.png"; sourceTree = "<group>"; };
 		8EF85F07147DCD07005ACADB /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
-		8EF85F0A147DCD28005ACADB /* heart-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "heart-detail-hd.jpg"; sourceTree = "<group>"; };
-		8EF85F0B147DCD28005ACADB /* illuminati-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-detail-hd.jpg"; sourceTree = "<group>"; };
-		8EF85F0C147DCD28005ACADB /* illuminati-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-detail.jpg"; sourceTree = "<group>"; };
-		8EF85F0D147DCD28005ACADB /* jesus-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-detail-hd.jpg"; sourceTree = "<group>"; };
-		8EF85F0E147DCD28005ACADB /* jesus-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-detail.jpg"; sourceTree = "<group>"; };
-		8EF85F0F147DCD28005ACADB /* sass-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-detail-hd.jpg"; sourceTree = "<group>"; };
-		8EF85F10147DCD28005ACADB /* sass-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-detail.jpg"; sourceTree = "<group>"; };
-		8EF85F11147DCD28005ACADB /* xxx-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-detail-hd.jpg"; sourceTree = "<group>"; };
-		8EF85F12147DCD28005ACADB /* xxx-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F1C147DFE39005ACADB /* heart-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "heart-detail-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F1D147DFE39005ACADB /* heart-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "heart-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F1E147DFE39005ACADB /* heart-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "heart-email-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F1F147DFE39005ACADB /* heart-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "heart-email.jpg"; sourceTree = "<group>"; };
+		8EF85F20147DFE39005ACADB /* illuminati-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-detail-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F21147DFE39005ACADB /* illuminati-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F22147DFE39005ACADB /* illuminati-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-email-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F23147DFE39005ACADB /* illuminati-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "illuminati-email.jpg"; sourceTree = "<group>"; };
+		8EF85F24147DFE39005ACADB /* jesus-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-detail-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F25147DFE39005ACADB /* jesus-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F26147DFE39005ACADB /* jesus-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-email-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F27147DFE39005ACADB /* jesus-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jesus-email.jpg"; sourceTree = "<group>"; };
+		8EF85F28147DFE39005ACADB /* sass-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-detail-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F29147DFE39005ACADB /* sass-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-detail.jpg"; sourceTree = "<group>"; };
+		8EF85F2A147DFE39005ACADB /* sass-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-email-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F2B147DFE39005ACADB /* sass-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sass-email.jpg"; sourceTree = "<group>"; };
+		8EF85F2C147DFE39005ACADB /* xxx-detail-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-detail-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F2D147DFE39005ACADB /* xxx-email-hd.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-email-hd.jpg"; sourceTree = "<group>"; };
+		8EF85F2E147DFE39005ACADB /* xxx-email.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-email.jpg"; sourceTree = "<group>"; };
+		8EF85F42147E0335005ACADB /* xxx-detail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xxx-detail.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1327,15 +1349,26 @@
 		8E430E5D146F0D76001401E0 /* SpecialScabs */ = {
 			isa = PBXGroup;
 			children = (
-				8EF85F0A147DCD28005ACADB /* heart-detail-hd.jpg */,
-				8EF85F0B147DCD28005ACADB /* illuminati-detail-hd.jpg */,
-				8EF85F0C147DCD28005ACADB /* illuminati-detail.jpg */,
-				8EF85F0D147DCD28005ACADB /* jesus-detail-hd.jpg */,
-				8EF85F0E147DCD28005ACADB /* jesus-detail.jpg */,
-				8EF85F0F147DCD28005ACADB /* sass-detail-hd.jpg */,
-				8EF85F10147DCD28005ACADB /* sass-detail.jpg */,
-				8EF85F11147DCD28005ACADB /* xxx-detail-hd.jpg */,
-				8EF85F12147DCD28005ACADB /* xxx-detail.jpg */,
+				8EF85F42147E0335005ACADB /* xxx-detail.jpg */,
+				8EF85F1C147DFE39005ACADB /* heart-detail-hd.jpg */,
+				8EF85F1D147DFE39005ACADB /* heart-detail.jpg */,
+				8EF85F1E147DFE39005ACADB /* heart-email-hd.jpg */,
+				8EF85F1F147DFE39005ACADB /* heart-email.jpg */,
+				8EF85F20147DFE39005ACADB /* illuminati-detail-hd.jpg */,
+				8EF85F21147DFE39005ACADB /* illuminati-detail.jpg */,
+				8EF85F22147DFE39005ACADB /* illuminati-email-hd.jpg */,
+				8EF85F23147DFE39005ACADB /* illuminati-email.jpg */,
+				8EF85F24147DFE39005ACADB /* jesus-detail-hd.jpg */,
+				8EF85F25147DFE39005ACADB /* jesus-detail.jpg */,
+				8EF85F26147DFE39005ACADB /* jesus-email-hd.jpg */,
+				8EF85F27147DFE39005ACADB /* jesus-email.jpg */,
+				8EF85F28147DFE39005ACADB /* sass-detail-hd.jpg */,
+				8EF85F29147DFE39005ACADB /* sass-detail.jpg */,
+				8EF85F2A147DFE39005ACADB /* sass-email-hd.jpg */,
+				8EF85F2B147DFE39005ACADB /* sass-email.jpg */,
+				8EF85F2C147DFE39005ACADB /* xxx-detail-hd.jpg */,
+				8EF85F2D147DFE39005ACADB /* xxx-email-hd.jpg */,
+				8EF85F2E147DFE39005ACADB /* xxx-email.jpg */,
 			);
 			name = SpecialScabs;
 			path = Resources/SpecialScabs;
@@ -2905,15 +2938,26 @@
 				8EF85F04147DCCDA005ACADB /* light_clean_skin0-hd.png in Resources */,
 				8EF85F08147DCD07005ACADB /* camera-hd.png in Resources */,
 				8EF85F09147DCD07005ACADB /* camera.png in Resources */,
-				8EF85F13147DCD28005ACADB /* heart-detail-hd.jpg in Resources */,
-				8EF85F14147DCD28005ACADB /* illuminati-detail-hd.jpg in Resources */,
-				8EF85F15147DCD28005ACADB /* illuminati-detail.jpg in Resources */,
-				8EF85F16147DCD28005ACADB /* jesus-detail-hd.jpg in Resources */,
-				8EF85F17147DCD28005ACADB /* jesus-detail.jpg in Resources */,
-				8EF85F18147DCD28005ACADB /* sass-detail-hd.jpg in Resources */,
-				8EF85F19147DCD28005ACADB /* sass-detail.jpg in Resources */,
-				8EF85F1A147DCD28005ACADB /* xxx-detail-hd.jpg in Resources */,
-				8EF85F1B147DCD28005ACADB /* xxx-detail.jpg in Resources */,
+				8EF85F2F147DFE39005ACADB /* heart-detail-hd.jpg in Resources */,
+				8EF85F30147DFE39005ACADB /* heart-detail.jpg in Resources */,
+				8EF85F31147DFE39005ACADB /* heart-email-hd.jpg in Resources */,
+				8EF85F32147DFE39005ACADB /* heart-email.jpg in Resources */,
+				8EF85F33147DFE39005ACADB /* illuminati-detail-hd.jpg in Resources */,
+				8EF85F34147DFE39005ACADB /* illuminati-detail.jpg in Resources */,
+				8EF85F35147DFE39005ACADB /* illuminati-email-hd.jpg in Resources */,
+				8EF85F36147DFE39005ACADB /* illuminati-email.jpg in Resources */,
+				8EF85F37147DFE39005ACADB /* jesus-detail-hd.jpg in Resources */,
+				8EF85F38147DFE39005ACADB /* jesus-detail.jpg in Resources */,
+				8EF85F39147DFE39005ACADB /* jesus-email-hd.jpg in Resources */,
+				8EF85F3A147DFE39005ACADB /* jesus-email.jpg in Resources */,
+				8EF85F3B147DFE39005ACADB /* sass-detail-hd.jpg in Resources */,
+				8EF85F3C147DFE39005ACADB /* sass-detail.jpg in Resources */,
+				8EF85F3D147DFE39005ACADB /* sass-email-hd.jpg in Resources */,
+				8EF85F3E147DFE39005ACADB /* sass-email.jpg in Resources */,
+				8EF85F3F147DFE39005ACADB /* xxx-detail-hd.jpg in Resources */,
+				8EF85F40147DFE39005ACADB /* xxx-email-hd.jpg in Resources */,
+				8EF85F41147DFE39005ACADB /* xxx-email.jpg in Resources */,
+				8EF85F43147E0335005ACADB /* xxx-detail.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
