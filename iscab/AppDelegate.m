@@ -152,7 +152,7 @@
     } else {
         [self.defaults setBool:NO forKey:@"gameCenterEnabled"];
     }
-    
+
     if ([self.defaults objectForKey:@"highScore"]) {
         [GameCenterBridge reportScore:[[self.defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
         [self.defaults removeObjectForKey:@"highScore"];
