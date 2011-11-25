@@ -16,7 +16,6 @@
 #define BLOOD_COLLISION_TYPE 3
 
 @interface IScabSprite : CCSprite {
-    cpShape *shape;
     cpSpace *space;    
     CGPoint savedLocation;
     int scabChunkNo;
@@ -26,7 +25,6 @@
 }
 
 @property (nonatomic, assign) int scabChunkNo;
-@property (nonatomic, assign) cpShape *shape;
 @property (nonatomic, assign) CGPoint savedLocation;
 
 - (void)update;

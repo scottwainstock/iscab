@@ -38,8 +38,7 @@
 }
 
 - (void)specialTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabs scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabs scene]]];
 }
 
 - (void)shareTapped:(CCMenuItem *)menuItem {

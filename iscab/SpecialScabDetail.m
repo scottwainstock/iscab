@@ -23,7 +23,7 @@
 }
 
 - (id)initWithScabName:(NSString *)scabName {
-    if ((self=[super init])) {
+    if ((self = [super init])) {
         [self setSharedItemFileName:[NSString stringWithFormat:@"%@-detail.jpg", scabName]];
         
         CCSprite *scabImage = [CCSprite spriteWithFile:self.sharedItemFileName];

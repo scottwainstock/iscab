@@ -10,10 +10,9 @@
 #import "cocos2d.h"
 
 @interface CCParticleMyBlood:CCParticleSystemQuad {
-    
 }
 
--(id) init;
--(id) initWithTotalParticles:(int)p;
+- (id)init;
+- (id)initWithTotalParticles:(int)numParticles;
 
 @end

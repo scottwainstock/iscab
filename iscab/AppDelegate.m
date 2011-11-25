@@ -52,8 +52,7 @@
     return nil;
 }
 
-- (void) removeStartupFlicker
-{
+- (void)removeStartupFlicker {
 	//
 	// THIS CODE REMOVES THE STARTUP FLICKER
 	//
@@ -74,15 +73,14 @@
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
 
-- (void) applicationDidFinishLaunching:(UIApplication*)application
-{
+- (void) applicationDidFinishLaunching:(UIApplication*)application {
     NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	// Try to use CADisplayLink director
 	// if it fails (SDK < 3.1) use the default director
-	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+	if(![CCDirector setDirectorType:kCCDirectorTypeDisplayLink])
 		[CCDirector setDirectorType:kCCDirectorTypeDefault];
 	
 	
@@ -107,7 +105,7 @@
 	[director setOpenGLView:glView];
 	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director enableRetinaDisplay:YES] )
+	if(![director enableRetinaDisplay:YES])
 		CCLOG(@"Retina Display Not supported");
 	
 	//
@@ -193,10 +191,9 @@
         [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
     
-    for (int i = 0; i < [self.jars count]; i++) {
-        NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabLevels]);
+    for (Jar *jar in self.jars) {
+        NSLog(@"JAR: %d", [jar numScabLevels]);
     }
-    
     
     //THIS IS JUST FOR TESTING PURPOSES
     for (int i = 0; i < [self.jars count] - 1; i++) {
@@ -204,7 +201,6 @@
     }
     [[self.jars objectAtIndex:2] setNumScabLevels:MAX_NUM_SCAB_LEVELS - 1];
     //
-    
     
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -277,9 +273,8 @@
     NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
     
-    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
         [self saveState];
-    }
 }
 
 - (void)scheduleNotifications {
@@ -305,9 +300,9 @@
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [self.defaults synchronize];
     
-    for (Scab *scab in self.scabs) {
+    for (Scab *scab in self.scabs)
         [scab reset];
-    }
+
     self.scabs = nil;
 }
 
@@ -333,6 +328,13 @@
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
 	[window release];
+    [jars release];
+    [batchNode release];
+    [scabs release];
+    [backButton release];
+    [jarButton release];
+    [gameCenterBridge release];
+    [defaults release];
 	[super dealloc];
 }
         

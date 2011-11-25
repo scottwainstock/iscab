@@ -20,7 +20,7 @@
 }
 
 - (id)init {
-    if( (self=[super init] )) {
+    if ((self = [super init])) {
         CCSprite *aboutText = [CCSprite spriteWithFile:@"about-text.png"];
         aboutText.position = ccp(160, 240);
         [self addChild:aboutText z:-1];

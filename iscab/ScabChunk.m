@@ -61,6 +61,7 @@
 - (void)dealloc {
     [super dealloc];
     [type release];
+    [scab release];
 }
 
 @end

@@ -73,7 +73,7 @@ CCUIViewWrapper *wrapper;
         
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             NSLog(@"PIX");
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];        
+            UIImagePickerController *imagePicker = [[[UIImagePickerController alloc] init] autorelease];        
             imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
             imagePicker.delegate = self;
             imagePicker.allowsEditing = NO;
@@ -109,11 +109,10 @@ CCUIViewWrapper *wrapper;
     [self addChild:cameraNotTouched];
 }
 
-- (UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize;
-{
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
     UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return newImage;

@@ -10,47 +10,36 @@
 
 @implementation CCParticleMyBlood
 
--(id) init {
+- (id)init {
     return [self initWithTotalParticles:955];
 }
 
--(id) initWithTotalParticles:(int)p {
-    if( (self=[super initWithTotalParticles:p]) ) {
-        
+- (id)initWithTotalParticles:(int)numParticles {
+    if ((self=[super initWithTotalParticles:numParticles])) {
         duration = 0.01f;
         self.emitterMode = kCCParticleModeGravity;
         self.gravity = ccp(-118,-2013);
         
-        // Gravity Mode: speed of particles
         self.speed = 0;
         self.speedVar = 440.7;
         
-        // Gravity Mode: tagential
         self.tangentialAccel = 0;
         self.tangentialAccelVar = 0;
         
-        // angle
         angle = 360;
         angleVar = 360;
         
-        // emitter position
-      //  CGSize winSize = [[CCDirector sharedDirector] winSize];
-      //  self.position = ccp(winSize.width/2, winSize.height/2);
         posVar = CGPointZero;
         
-        // life of particles
         life = 0;
         lifeVar = 0.724;
         
-        // size, in pixels
         startSize = 3;
         startSizeVar = 2.0f;
         endSize = kCCParticleStartSizeEqualToEndSize;
         
-        // emits per second
         emissionRate = totalParticles/duration;
         
-        // color of particles
         startColor.r = 1.0f;
         startColor.g = 0.0f;
         startColor.b = 0.0f;

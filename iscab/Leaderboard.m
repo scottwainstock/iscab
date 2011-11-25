@@ -45,6 +45,8 @@
         leaderboardController.leaderboardDelegate = self;
         [leaderboardViewController presentModalViewController:leaderboardController animated: YES];
     }
+    
+    [leaderboardController release];
 }
 
 - (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {

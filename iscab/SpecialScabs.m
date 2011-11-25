@@ -21,7 +21,7 @@
 }
 
 - (id)init {    
-    if ((self=[super init])) {
+    if ((self = [super init])) {
         CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
         petriBottom.position = ccp(160, 240);
         [self addChild:petriBottom z:0];

@@ -17,7 +17,6 @@
 #import "AppDelegate.h"
 #import "drawSpace.h"
 #import "cpSpace.h"
-#import "cpShape.h"
 #import "GameCenterBridge.h"
 #import "SpecialScabs.h"
 

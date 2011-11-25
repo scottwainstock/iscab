@@ -112,4 +112,10 @@
     }];
 }
 
+- (void)dealloc {
+    [achievementsDictionary release];
+    [achievementsDescriptionDictionary release];
+    [super dealloc];
+}
+
 @end
