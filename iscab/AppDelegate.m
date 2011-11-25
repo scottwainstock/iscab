@@ -182,13 +182,7 @@
             }
         }
     } else {
-        NSLog(@"CREATING NEW JARS");
-        for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
-            [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
-        }
-        
-        [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
-        [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+        [self createNewJars];
     }
     
     for (Jar *jar in self.jars) {
@@ -207,6 +201,16 @@
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+}
+
+- (void)createNewJars {
+    NSLog(@"CREATING NEW JARS");
+    self.jars = nil;
+    for (int i = 0; i < NUM_JARS_TO_FILL; i++)
+        [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
+    
+    [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
+    [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"]; 
 }
 
 - (Jar *)currentJar {

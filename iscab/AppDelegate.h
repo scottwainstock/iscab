@@ -49,6 +49,7 @@
 - (void)scheduleNotification:(NSDate *)date;
 - (void)scheduleNotifications;
 - (Jar *)currentJar;
+- (void)createNewJars;
 - (CGPoint)centerOfAllScabs;
 
 @end
