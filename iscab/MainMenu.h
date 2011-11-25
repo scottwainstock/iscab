@@ -11,19 +11,19 @@
 #import "IScabCCLayer.h"
 
 @interface MainMenu : IScabCCLayer {
-    CCMenuItemToggle *sound;
+    CCMenu *menu;
     CCMenuItem *start;
     CCMenuItem *leaderboard;
     CCMenuItem *chooseSkin;
     CCMenuItem *help; 
-    CCMenu *menu;
-    CCMenu *iconMenu;
     CCMenuItem *aboutButton;
+    CCMenuItem *jarButton;
+    CCMenuItemToggle *sound;
 }
 
 @property (nonatomic, retain) CCMenu *menu;
-@property (nonatomic, retain) CCMenu *iconMenu;
 @property (nonatomic, retain) CCMenuItem *aboutButton;
+@property (nonatomic, retain) CCMenuItem *jarButton;
 @property (nonatomic, retain) CCMenuItem *start;
 @property (nonatomic, retain) CCMenuItem *leaderboard;
 @property (nonatomic, retain) CCMenuItem *chooseSkin;

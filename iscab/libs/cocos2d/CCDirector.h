@@ -306,4 +306,6 @@ and when to execute the Scenes.
 // Profiler
 -(void) showProfilers;
 
+- (UIImage*) screenshotUIImage;
+
 @end

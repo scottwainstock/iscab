@@ -52,8 +52,7 @@
     return nil;
 }
 
-- (void) removeStartupFlicker
-{
+- (void)removeStartupFlicker {
 	//
 	// THIS CODE REMOVES THE STARTUP FLICKER
 	//
@@ -74,15 +73,14 @@
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
 
-- (void) applicationDidFinishLaunching:(UIApplication*)application
-{
+- (void) applicationDidFinishLaunching:(UIApplication*)application {
     NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
 	// Try to use CADisplayLink director
 	// if it fails (SDK < 3.1) use the default director
-	if( ! [CCDirector setDirectorType:kCCDirectorTypeDisplayLink] )
+	if(![CCDirector setDirectorType:kCCDirectorTypeDisplayLink])
 		[CCDirector setDirectorType:kCCDirectorTypeDefault];
 	
 	
@@ -107,7 +105,7 @@
 	[director setOpenGLView:glView];
 	
 	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
-	if( ! [director enableRetinaDisplay:YES] )
+	if(![director enableRetinaDisplay:YES])
 		CCLOG(@"Retina Display Not supported");
 	
 	//
@@ -147,6 +145,16 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     self.defaults = [NSUserDefaults standardUserDefaults];
     
+    if ([defaults objectForKey:@"sendNotifications"] == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
+                                                        message:@"Do you want to allow iScab to send you local notifications?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"NO" 
+                                              otherButtonTitles:@"YES", nil];
+        [alert show];
+        [alert release];
+    }
+    
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [self.defaults setBool:YES forKey:@"gameCenterEnabled"];
         gameCenterBridge = [[GameCenterBridge alloc] init];
@@ -184,19 +192,12 @@
             }
         }
     } else {
-        NSLog(@"CREATING NEW JARS");
-        for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
-            [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
-        }
-        
-        [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
-        [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
+        [self createNewJars];
     }
     
-    for (int i = 0; i < [self.jars count]; i++) {
-        NSLog(@"JAR %d: %d", i, [[self.jars objectAtIndex:i] numScabLevels]);
+    for (Jar *jar in self.jars) {
+        NSLog(@"JAR: %d", [jar numScabLevels]);
     }
-    
     
     //THIS IS JUST FOR TESTING PURPOSES
     for (int i = 0; i < [self.jars count] - 1; i++) {
@@ -205,12 +206,30 @@
     [[self.jars objectAtIndex:2] setNumScabLevels:MAX_NUM_SCAB_LEVELS - 1];
     //
     
-    
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([title isEqualToString:@"YES"])
+        [defaults setBool:YES forKey:@"sendNotifications"];
+    else if ([title isEqualToString:@"NO"])
+        [defaults setBool:NO forKey:@"sendNotifications"];
+}
+
+- (void)createNewJars {
+    NSLog(@"CREATING NEW JARS");
+    self.jars = nil;
+    for (int i = 0; i < NUM_JARS_TO_FILL; i++)
+        [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
+    
+    [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
+    [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"]; 
 }
 
 - (Jar *)currentJar {
@@ -239,6 +258,9 @@
 }
 
 - (void)scheduleNotification:(NSDate *)date {
+    if (![defaults boolForKey:@"sendNotifications"])    
+        return;
+    
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = date;
     notification.timeZone = [NSTimeZone defaultTimeZone];
@@ -277,12 +299,14 @@
     NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
     
-    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
         [self saveState];
-    }
 }
 
 - (void)scheduleNotifications {
+    if (![defaults boolForKey:@"sendNotifications"])    
+        return;
+    
     for (Scab *scab in self.scabs) {
         NSLog(@"SCHEDULING NOTIFICATION");
         [scab setIsAged:YES];
@@ -305,9 +329,9 @@
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [self.defaults synchronize];
     
-    for (Scab *scab in self.scabs) {
+    for (Scab *scab in self.scabs)
         [scab reset];
-    }
+
     self.scabs = nil;
 }
 
@@ -333,6 +357,13 @@
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
 	[window release];
+    [jars release];
+    [batchNode release];
+    [scabs release];
+    [backButton release];
+    [jarButton release];
+    [gameCenterBridge release];
+    [defaults release];
 	[super dealloc];
 }
         

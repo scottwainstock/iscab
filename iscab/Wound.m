@@ -7,6 +7,7 @@
 //
 
 #import "Wound.h"
+#import "AppDelegate.h"
 
 @implementation Wound
 
@@ -35,7 +36,13 @@
 
 + (NSString *)woundFrameNameForClean:(bool)isClean isBleeding:(bool)isBleeding scabChunkNo:(int)scabChunkNo {
     if (isClean) {
-        return [NSString stringWithFormat:@"clean_skin%d.png", scabChunkNo];
+        AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        NSString *skinColor = [app.defaults objectForKey:@"skinColor"];
+        
+        if ([skinColor isEqualToString:@"photo"])
+            skinColor = @"light";
+        
+        return [NSString stringWithFormat:@"%@_clean_skin%d.png", skinColor, scabChunkNo];
     } else if (!isClean && isBleeding) {
         return [NSString stringWithFormat:@"bloody_skin%d.png", scabChunkNo];
     } else {

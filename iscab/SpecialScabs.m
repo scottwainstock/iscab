@@ -21,7 +21,7 @@
 }
 
 - (id)init {    
-    if ((self=[super init])) {
+    if ((self = [super init])) {
         CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
         petriBottom.position = ccp(160, 240);
         [self addChild:petriBottom z:0];
@@ -31,8 +31,6 @@
         [self addChild:petriTop z:4];
         
         [self addFoundScabs];
-        
-        [self setSharedItemFileName:@"SpecialScabs_Petri_Bottom.png"];
     }
     
     return self;
@@ -46,27 +44,25 @@
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     CCMenu *scabMenu = [CCMenu menuWithItems:nil];
     
-    NSArray *specialScabs = [SpecialScabs specialScabNames];
-    for (int i = 0; i < [specialScabs count]; i++) {
-        NSString *scabName = [specialScabs objectAtIndex:i];
-        if ([app.gameCenterBridge.achievementsDictionary valueForKey:[NSString stringWithFormat:@"iscab_", scabName]]) {
+    for (NSString *scabName in [SpecialScabs specialScabNames]) {
+        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", scabName]]) {
             CCMenuItem *scabMenuItem = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"%@.png", scabName] selectedImage:[NSString stringWithFormat:@"%@_Tap.png", scabName] target:self selector:@selector(specialScabTapped:)];
             
             [scabMenuItem setUserData:scabName];
 
-            if ([[specialScabs objectAtIndex:i] isEqualToString:@"xxx"])
+            if ([scabName isEqualToString:@"xxx"])
                 scabMenuItem.position = ccp(120, 205);
             
-            if ([[specialScabs objectAtIndex:i] isEqualToString:@"sass"])
+            if ([scabName isEqualToString:@"sass"])
                 scabMenuItem.position = ccp(190, 205);
             
-            if ([[specialScabs objectAtIndex:i] isEqualToString:@"jesus"])
+            if ([scabName isEqualToString:@"jesus"])
                 scabMenuItem.position = ccp(90, 255);
             
-            if ([[specialScabs objectAtIndex:i] isEqualToString:@"heart"])
+            if ([scabName isEqualToString:@"heart"])
                 scabMenuItem.position = ccp(160, 285);
             
-            if ([[specialScabs objectAtIndex:i] isEqualToString:@"illuminati"])
+            if ([scabName isEqualToString:@"illuminati"])
                 scabMenuItem.position = ccp(225, 265);
             
             [scabMenu addChild:scabMenuItem];
@@ -80,7 +76,7 @@
 - (void)specialScabTapped:(CCMenuItem  *)menuItem {
     NSLog(@"TAPPY %@", (NSString *)menuItem.userData);
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
+	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
 }
 
 @end

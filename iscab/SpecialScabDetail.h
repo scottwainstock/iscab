@@ -13,7 +13,7 @@
 }
 
 + (id)scene;
-+(id)nodeWithScabName:(NSString *)scabName;
++ (id)nodeWithScabName:(NSString *)scabName;
 
 - (id)initWithScabName:(NSString *)scabName;
 

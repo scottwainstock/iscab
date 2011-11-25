@@ -64,12 +64,11 @@
 }
 
 - (void)backTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:0.5f];
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:TRANSITION_SPEED];
 }
 
 - (void)aboutTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[About scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[About scene]]];
 }
 
 - (void)homeTapped:(CCMenuItem  *)menuItem {
@@ -77,8 +76,7 @@
 }
 
 - (void)jarTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[JarScene scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[JarScene scene]]];
 }
 
 - (void)playMenuSound {

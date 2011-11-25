@@ -7,11 +7,10 @@
 //
 
 #import "IScabSprite.h"
-#import "cpShape.h"
 
 @implementation IScabSprite
 
-@synthesize savedLocation, shape, scabChunkNo;
+@synthesize savedLocation, scabChunkNo;
 
 - (void)update {
     if (body) {        
@@ -31,14 +30,6 @@
     body->p = location;
     body->data = self;
     cpSpaceAddBody(space, body);
-    
-    shape = cpPolyShapeNew(body, numVerts, verts, CGPointZero);
-    shape->e = 1.0f; 
-    shape->u = 1.0f;
-    shape->data = self;
-    shape->group = 1;
-    self.shape = shape;
-    //cpSpaceAddShape(space, shape);
 }
 
 - (void)createBodyAtLocation:(CGPoint)location shapeNo:(int)shapeNo {    
@@ -112,7 +103,7 @@
 }
 
 - (id)initWithLocation:(CGPoint)location filename:(NSString *)filename shapeNo:(int)shapeNo {
-    if ((self = [super initWithSpriteFrameName:filename])) {     
+    if ((self = [CCSprite spriteWithSpriteFrameName:filename])) {     
         self.position = location;
         savedLocation = location;
         
@@ -123,9 +114,6 @@
 }
 
 - (void)destroy {
-    if (shape) {
-        //cpSpaceRemoveShape(space, shape);
-    }
     [self removeFromParentAndCleanup:YES];
 }
 

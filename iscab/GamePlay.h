@@ -12,7 +12,6 @@
 #import "ScabChunk.h"
 #import "cocos2d.h"
 #import "chipmunk.h"
-#import "cpShape.h"
 
 #define PERCENT_CHANCE_OF_SPECIAL_SCAB 10
 #define NUM_BACKGROUNDS 6

@@ -17,11 +17,11 @@
 
 @implementation MainMenu
 
-@synthesize menu, start, leaderboard, chooseSkin, sound, help, iconMenu, aboutButton;
+@synthesize menu, start, leaderboard, chooseSkin, sound, help, aboutButton, jarButton;
 
 AppDelegate *app;
 
-+(id) scene {
++ (id)scene {
     CCScene *scene = [CCScene node];
     MainMenu *layer = [MainMenu node];
     [scene addChild: layer];
@@ -62,10 +62,10 @@ AppDelegate *app;
     aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
     aboutButton.position = ccp(40, 40);
     
-    app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    app.jarButton.position = ccp(280, 40);
+    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton.position = ccp(280, 40);
     
-    iconMenu = [CCMenu menuWithItems:aboutButton, app.jarButton, nil];
+    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }
@@ -73,29 +73,26 @@ AppDelegate *app;
 - (void)startPickinTapped:(CCMenuItem  *)menuItem {
     [self playMenuSound];
     
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[GamePlay scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[GamePlay scene]]];
 }
 
 - (void)helpTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[Help scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[Help scene]]];
 }
 
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
-    [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[Leaderboard scene]]];
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[Leaderboard scene]]];
 }
 
 - (void)chooseSkinTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
-	 [CCTransitionCrossFade transitionWithDuration:0.5f scene:[SkinColorPicker scene]]];
+	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SkinColorPicker scene]]];
 }
 
 - (void)soundTapped:(CCMenuItem *)menuItem {
@@ -120,14 +117,14 @@ AppDelegate *app;
 
 - (void) dealloc { 
     [super dealloc];
-    [iconMenu release];
-    [aboutButton release];
-    /*
+    [menu release];
     [start release];
     [leaderboard release];
     [chooseSkin release];
     [sound release];
-    [help release];  */     
+    [help release];
+    [aboutButton release];
+    [jarButton release];     
 } 
 
 @end

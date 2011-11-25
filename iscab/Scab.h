@@ -47,15 +47,15 @@
 #define XL_SCAB 3
 
 @interface Scab : NSObject <NSCoding> {
+    int sizeAtCreation;
+    bool isAged;
+    bool isOverpickWarningIssued;
     CGPoint center;
     NSMutableArray *scabChunks;
     NSMutableArray *wounds;
     NSMutableArray *scabChunkBorders;
     NSDate *birthday;
     NSDate *healDate;
-    int sizeAtCreation;
-    bool isAged;
-    bool isOverpickWarningIssued;
     NSString *name;
 }
 

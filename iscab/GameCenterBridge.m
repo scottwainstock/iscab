@@ -61,8 +61,7 @@
     if (achievement) {
         [achievement setPercentComplete:100.0];
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
-             if (error != nil) {
-             }
+             if (error != nil) {}
          }];
     }    
 }
@@ -90,12 +89,23 @@
 }
 
 - (void)loadAchievements {
-    [GKAchievement resetAchievementsWithCompletionHandler:nil];
+    //[GKAchievement resetAchievementsWithCompletionHandler:nil];
+    /*[self reportAchievementIdentifier:@"iscab_xxx"];
+    [self reportAchievementIdentifier:@"iscab_jesus"];
+    [self reportAchievementIdentifier:@"iscab_heart"];
+    [self reportAchievementIdentifier:@"iscab_sass"];
+    [self reportAchievementIdentifier:@"iscab_illuminati"];*/
+
     
     [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
         if (error == nil)
-            for (GKAchievement *achievement in achievements)
+            for (GKAchievement *achievement in achievements) {
                 [achievementsDictionary setObject:achievement forKey:achievement.identifier];
+                [achievement setPercentComplete:100.0];
+                [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
+                    if (error != nil) {}
+                }];
+            }
     }];
     
     [GKAchievementDescription loadAchievementDescriptionsWithCompletionHandler:^(NSArray *descriptions, NSError *error) {
@@ -104,6 +114,12 @@
                 [achievementsDescriptionDictionary setObject:achievementDescription forKey:achievementDescription.identifier];
         }
     }];
+}
+
+- (void)dealloc {
+    [achievementsDictionary release];
+    [achievementsDescriptionDictionary release];
+    [super dealloc];
 }
 
 @end
