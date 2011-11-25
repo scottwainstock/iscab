@@ -115,7 +115,6 @@
 		8E9F7D5C146F2B9200C5B21D /* SHKMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7CF0146F2B9200C5B21D /* SHKMail.m */; };
 		8E9F7D5D146F2B9200C5B21D /* SHKSafari.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7CF3146F2B9200C5B21D /* SHKSafari.m */; };
 		8E9F7D5E146F2B9200C5B21D /* SHKPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7CF6146F2B9200C5B21D /* SHKPhotoAlbum.m */; };
-		8E9F7D5F146F2B9200C5B21D /* SHKDelicious.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7CFA146F2B9200C5B21D /* SHKDelicious.m */; };
 		8E9F7D60146F2B9200C5B21D /* FBConnect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8E9F7CFD146F2B9200C5B21D /* FBConnect.bundle */; };
 		8E9F7D61146F2B9200C5B21D /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D00146F2B9200C5B21D /* FBConnectGlobal.m */; };
 		8E9F7D62146F2B9200C5B21D /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D02146F2B9200C5B21D /* FBDialog.m */; };
@@ -129,11 +128,6 @@
 		8E9F7D6A146F2B9200C5B21D /* FBXMLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D12146F2B9200C5B21D /* FBXMLHandler.m */; };
 		8E9F7D6B146F2B9200C5B21D /* SHKFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D14146F2B9200C5B21D /* SHKFacebook.m */; };
 		8E9F7D6C146F2B9200C5B21D /* SHKFBStreamDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D16146F2B9200C5B21D /* SHKFBStreamDialog.m */; };
-		8E9F7D6D146F2B9200C5B21D /* SHKGoogleReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D19146F2B9200C5B21D /* SHKGoogleReader.m */; };
-		8E9F7D6E146F2B9200C5B21D /* SHKInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D1C146F2B9200C5B21D /* SHKInstapaper.m */; };
-		8E9F7D6F146F2B9200C5B21D /* SHKPinboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D1F146F2B9200C5B21D /* SHKPinboard.m */; };
-		8E9F7D70146F2B9200C5B21D /* SHKReadItLater.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D22146F2B9200C5B21D /* SHKReadItLater.m */; };
-		8E9F7D71146F2B9200C5B21D /* SHKTumblr.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D25146F2B9200C5B21D /* SHKTumblr.m */; };
 		8E9F7D72146F2B9200C5B21D /* SHKTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D28146F2B9200C5B21D /* SHKTwitter.m */; };
 		8E9F7D73146F2B9200C5B21D /* SHKTwitterForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D2A146F2B9200C5B21D /* SHKTwitterForm.m */; };
 		8E9F7D74146F2B9200C5B21D /* SHKActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9F7D2E146F2B9200C5B21D /* SHKActionSheet.m */; };
@@ -690,8 +684,6 @@
 		8E9F7CF3146F2B9200C5B21D /* SHKSafari.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKSafari.m; sourceTree = "<group>"; };
 		8E9F7CF5146F2B9200C5B21D /* SHKPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKPhotoAlbum.h; sourceTree = "<group>"; };
 		8E9F7CF6146F2B9200C5B21D /* SHKPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKPhotoAlbum.m; sourceTree = "<group>"; };
-		8E9F7CF9146F2B9200C5B21D /* SHKDelicious.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKDelicious.h; sourceTree = "<group>"; };
-		8E9F7CFA146F2B9200C5B21D /* SHKDelicious.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKDelicious.m; sourceTree = "<group>"; };
 		8E9F7CFD146F2B9200C5B21D /* FBConnect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBConnect.bundle; sourceTree = "<group>"; };
 		8E9F7CFE146F2B9200C5B21D /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
 		8E9F7CFF146F2B9200C5B21D /* FBConnectGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnectGlobal.h; sourceTree = "<group>"; };
@@ -718,16 +710,6 @@
 		8E9F7D14146F2B9200C5B21D /* SHKFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebook.m; sourceTree = "<group>"; };
 		8E9F7D15146F2B9200C5B21D /* SHKFBStreamDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFBStreamDialog.h; sourceTree = "<group>"; };
 		8E9F7D16146F2B9200C5B21D /* SHKFBStreamDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFBStreamDialog.m; sourceTree = "<group>"; };
-		8E9F7D18146F2B9200C5B21D /* SHKGoogleReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKGoogleReader.h; sourceTree = "<group>"; };
-		8E9F7D19146F2B9200C5B21D /* SHKGoogleReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKGoogleReader.m; sourceTree = "<group>"; };
-		8E9F7D1B146F2B9200C5B21D /* SHKInstapaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKInstapaper.h; sourceTree = "<group>"; };
-		8E9F7D1C146F2B9200C5B21D /* SHKInstapaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKInstapaper.m; sourceTree = "<group>"; };
-		8E9F7D1E146F2B9200C5B21D /* SHKPinboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKPinboard.h; sourceTree = "<group>"; };
-		8E9F7D1F146F2B9200C5B21D /* SHKPinboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKPinboard.m; sourceTree = "<group>"; };
-		8E9F7D21146F2B9200C5B21D /* SHKReadItLater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKReadItLater.h; sourceTree = "<group>"; };
-		8E9F7D22146F2B9200C5B21D /* SHKReadItLater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKReadItLater.m; sourceTree = "<group>"; };
-		8E9F7D24146F2B9200C5B21D /* SHKTumblr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTumblr.h; sourceTree = "<group>"; };
-		8E9F7D25146F2B9200C5B21D /* SHKTumblr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKTumblr.m; sourceTree = "<group>"; };
 		8E9F7D27146F2B9200C5B21D /* SHKTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTwitter.h; sourceTree = "<group>"; };
 		8E9F7D28146F2B9200C5B21D /* SHKTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKTwitter.m; sourceTree = "<group>"; };
 		8E9F7D29146F2B9200C5B21D /* SHKTwitterForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKTwitterForm.h; sourceTree = "<group>"; };
@@ -1859,25 +1841,10 @@
 		8E9F7CF7146F2B9200C5B21D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				8E9F7CF8146F2B9200C5B21D /* Delicious */,
 				8E9F7CFB146F2B9200C5B21D /* Facebook */,
-				8E9F7D17146F2B9200C5B21D /* Google Reader */,
-				8E9F7D1A146F2B9200C5B21D /* Instapaper */,
-				8E9F7D1D146F2B9200C5B21D /* Pinboard */,
-				8E9F7D20146F2B9200C5B21D /* Read It Later */,
-				8E9F7D23146F2B9200C5B21D /* Tumblr */,
 				8E9F7D26146F2B9200C5B21D /* Twitter */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		8E9F7CF8146F2B9200C5B21D /* Delicious */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7CF9146F2B9200C5B21D /* SHKDelicious.h */,
-				8E9F7CFA146F2B9200C5B21D /* SHKDelicious.m */,
-			);
-			path = Delicious;
 			sourceTree = "<group>";
 		};
 		8E9F7CFB146F2B9200C5B21D /* Facebook */ = {
@@ -1919,51 +1886,6 @@
 				8E9F7D12146F2B9200C5B21D /* FBXMLHandler.m */,
 			);
 			path = FBConnect;
-			sourceTree = "<group>";
-		};
-		8E9F7D17146F2B9200C5B21D /* Google Reader */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7D18146F2B9200C5B21D /* SHKGoogleReader.h */,
-				8E9F7D19146F2B9200C5B21D /* SHKGoogleReader.m */,
-			);
-			path = "Google Reader";
-			sourceTree = "<group>";
-		};
-		8E9F7D1A146F2B9200C5B21D /* Instapaper */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7D1B146F2B9200C5B21D /* SHKInstapaper.h */,
-				8E9F7D1C146F2B9200C5B21D /* SHKInstapaper.m */,
-			);
-			path = Instapaper;
-			sourceTree = "<group>";
-		};
-		8E9F7D1D146F2B9200C5B21D /* Pinboard */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7D1E146F2B9200C5B21D /* SHKPinboard.h */,
-				8E9F7D1F146F2B9200C5B21D /* SHKPinboard.m */,
-			);
-			path = Pinboard;
-			sourceTree = "<group>";
-		};
-		8E9F7D20146F2B9200C5B21D /* Read It Later */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7D21146F2B9200C5B21D /* SHKReadItLater.h */,
-				8E9F7D22146F2B9200C5B21D /* SHKReadItLater.m */,
-			);
-			path = "Read It Later";
-			sourceTree = "<group>";
-		};
-		8E9F7D23146F2B9200C5B21D /* Tumblr */ = {
-			isa = PBXGroup;
-			children = (
-				8E9F7D24146F2B9200C5B21D /* SHKTumblr.h */,
-				8E9F7D25146F2B9200C5B21D /* SHKTumblr.m */,
-			);
-			path = Tumblr;
 			sourceTree = "<group>";
 		};
 		8E9F7D26146F2B9200C5B21D /* Twitter */ = {
@@ -3150,7 +3072,6 @@
 				8E9F7D5C146F2B9200C5B21D /* SHKMail.m in Sources */,
 				8E9F7D5D146F2B9200C5B21D /* SHKSafari.m in Sources */,
 				8E9F7D5E146F2B9200C5B21D /* SHKPhotoAlbum.m in Sources */,
-				8E9F7D5F146F2B9200C5B21D /* SHKDelicious.m in Sources */,
 				8E9F7D61146F2B9200C5B21D /* FBConnectGlobal.m in Sources */,
 				8E9F7D62146F2B9200C5B21D /* FBDialog.m in Sources */,
 				8E9F7D63146F2B9200C5B21D /* FBFeedDialog.m in Sources */,
@@ -3163,11 +3084,6 @@
 				8E9F7D6A146F2B9200C5B21D /* FBXMLHandler.m in Sources */,
 				8E9F7D6B146F2B9200C5B21D /* SHKFacebook.m in Sources */,
 				8E9F7D6C146F2B9200C5B21D /* SHKFBStreamDialog.m in Sources */,
-				8E9F7D6D146F2B9200C5B21D /* SHKGoogleReader.m in Sources */,
-				8E9F7D6E146F2B9200C5B21D /* SHKInstapaper.m in Sources */,
-				8E9F7D6F146F2B9200C5B21D /* SHKPinboard.m in Sources */,
-				8E9F7D70146F2B9200C5B21D /* SHKReadItLater.m in Sources */,
-				8E9F7D71146F2B9200C5B21D /* SHKTumblr.m in Sources */,
 				8E9F7D72146F2B9200C5B21D /* SHKTwitter.m in Sources */,
 				8E9F7D73146F2B9200C5B21D /* SHKTwitterForm.m in Sources */,
 				8E9F7D74146F2B9200C5B21D /* SHKActionSheet.m in Sources */,

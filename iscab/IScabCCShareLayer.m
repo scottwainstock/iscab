@@ -13,7 +13,7 @@
 
 @implementation IScabCCShareLayer
 
-@synthesize sharedItemFileName;
+@synthesize shareImage;
 
 - (void)setupBackground {
     CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
@@ -41,11 +41,32 @@
     [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabs scene]]];
 }
 
+- (void)captureScreenshot {
+    UIImage *screenshot = [[CCDirector sharedDirector] screenshotUIImage];
+    
+    CGSize size = [screenshot size];
+    CGRect cropRect = CGRectMake(0, 0, size.width, size.height - 120);
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([screenshot CGImage], cropRect);
+    screenshot = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    
+    [self setShareImage:screenshot];
+}
+
 - (void)shareTapped:(CCMenuItem *)menuItem {
-    SHKItem *item = [SHKItem image:[UIImage imageNamed:self.sharedItemFileName] title:@"iScab"];
+    if (self.shareImage == nil)
+        [self captureScreenshot];
+    
+    SHKItem *item = [SHKItem image:shareImage title:@"iScab"];
     
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
     [actionSheet showInView:[[CCDirector sharedDirector] openGLView]];
+}
+
+- (void)dealloc {
+    [shareImage release];
+    [super dealloc];
 }
 
 @end

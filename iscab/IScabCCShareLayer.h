@@ -10,9 +10,11 @@
 #import "IScabCCLayer.h"
 
 @interface IScabCCShareLayer : IScabCCLayer {
-    NSString *sharedItemFileName;
+    UIImage *shareImage;
 }
 
-@property (nonatomic, retain) NSString *sharedItemFileName;
+@property (nonatomic, retain) UIImage *shareImage;
+
+- (void)shareTapped:(CCMenuItem *)menuItem;
 
 @end

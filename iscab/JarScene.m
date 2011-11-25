@@ -40,8 +40,6 @@ AppDelegate *app;
         CCSprite *jarCover = [CCSprite spriteWithFile:@"Jar-Front.png"];
         jarCover.position = ccp(160, 240);
         [self addChild:jarCover z:4];
-        
-        [self setSharedItemFileName:[NSString stringWithFormat:@"Jar-Front.png"]];
     }
                                
     return self;
