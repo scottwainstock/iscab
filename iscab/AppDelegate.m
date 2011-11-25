@@ -145,16 +145,6 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     self.defaults = [NSUserDefaults standardUserDefaults];
     
-    if ([defaults objectForKey:@"sendNotifications"] == nil) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
-                                                        message:@"Do you want to allow iScab to send you local notifications?"
-                                                       delegate:self
-                                              cancelButtonTitle:@"NO" 
-                                              otherButtonTitles:@"YES", nil];
-        [alert show];
-        [alert release];
-    }
-    
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [self.defaults setBool:YES forKey:@"gameCenterEnabled"];
         gameCenterBridge = [[GameCenterBridge alloc] init];
@@ -211,15 +201,6 @@
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    
-    if ([title isEqualToString:@"YES"])
-        [defaults setBool:YES forKey:@"sendNotifications"];
-    else if ([title isEqualToString:@"NO"])
-        [defaults setBool:NO forKey:@"sendNotifications"];
 }
 
 - (void)createNewJars {

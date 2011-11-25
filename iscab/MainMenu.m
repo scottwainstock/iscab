@@ -52,10 +52,29 @@ AppDelegate *app;
         menu = [CCMenu menuWithItems:start, leaderboard, chooseSkin, sound, help, nil];       
         menu.position = ccp(160, 160);
         [menu alignItemsVerticallyWithPadding:5.0];
-        [self addChild:menu];        
+        [self addChild:menu];
+        
+        if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
+                                                            message:@"Do you want to allow iScab to send you local notifications?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"NO" 
+                                                  otherButtonTitles:@"YES", nil];
+            [alert show];
+            [alert release];
+        }
     }
     
     return self;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([title isEqualToString:@"YES"])
+        [app.defaults setBool:YES forKey:@"sendNotifications"];
+    else if ([title isEqualToString:@"NO"])
+        [app.defaults setBool:NO forKey:@"sendNotifications"];
 }
 
 - (void)setupNavigationIcons {

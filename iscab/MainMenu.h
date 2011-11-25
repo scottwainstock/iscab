@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 
-@interface MainMenu : IScabCCLayer {
+@interface MainMenu : IScabCCLayer <UIAlertViewDelegate> {
     CCMenu *menu;
     CCMenuItem *start;
     CCMenuItem *leaderboard;
