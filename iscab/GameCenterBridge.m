@@ -61,8 +61,7 @@
     if (achievement) {
         [achievement setPercentComplete:100.0];
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
-             if (error != nil) {
-             }
+             if (error != nil) {}
          }];
     }    
 }
@@ -100,8 +99,13 @@
     
     [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
         if (error == nil)
-            for (GKAchievement *achievement in achievements)
+            for (GKAchievement *achievement in achievements) {
                 [achievementsDictionary setObject:achievement forKey:achievement.identifier];
+                [achievement setPercentComplete:100.0];
+                [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
+                    if (error != nil) {}
+                }];
+            }
     }];
     
     [GKAchievementDescription loadAchievementDescriptionsWithCompletionHandler:^(NSArray *descriptions, NSError *error) {
