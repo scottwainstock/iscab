@@ -19,7 +19,7 @@
 #define GAMEPLAY_SCENE_TAG 10
 #define TRANSITION_SPEED 0.25f
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
     int screenWidth;
     int screenHeight;
 	UIWindow *window;

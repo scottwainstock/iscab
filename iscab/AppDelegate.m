@@ -145,6 +145,16 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     self.defaults = [NSUserDefaults standardUserDefaults];
     
+    if ([defaults objectForKey:@"sendNotifications"] == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
+                                                        message:@"Do you want to allow iScab to send you local notifications?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"NO" 
+                                              otherButtonTitles:@"YES", nil];
+        [alert show];
+        [alert release];
+    }
+    
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [self.defaults setBool:YES forKey:@"gameCenterEnabled"];
         gameCenterBridge = [[GameCenterBridge alloc] init];
@@ -203,6 +213,15 @@
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([title isEqualToString:@"YES"])
+        [defaults setBool:YES forKey:@"sendNotifications"];
+    else if ([title isEqualToString:@"NO"])
+        [defaults setBool:NO forKey:@"sendNotifications"];
+}
+
 - (void)createNewJars {
     NSLog(@"CREATING NEW JARS");
     self.jars = nil;
@@ -239,6 +258,9 @@
 }
 
 - (void)scheduleNotification:(NSDate *)date {
+    if (![defaults boolForKey:@"sendNotifications"])    
+        return;
+    
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     notification.fireDate = date;
     notification.timeZone = [NSTimeZone defaultTimeZone];
@@ -282,6 +304,9 @@
 }
 
 - (void)scheduleNotifications {
+    if (![defaults boolForKey:@"sendNotifications"])    
+        return;
+    
     for (Scab *scab in self.scabs) {
         NSLog(@"SCHEDULING NOTIFICATION");
         [scab setIsAged:YES];

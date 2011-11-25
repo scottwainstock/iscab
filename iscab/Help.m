@@ -51,6 +51,7 @@
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
     if ([title isEqualToString:@"YES"]) {
+        [app.defaults setObject:nil forKey:@"sendNotifications"];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         NSLog(@"STOP");
