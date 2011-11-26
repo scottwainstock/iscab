@@ -324,7 +324,7 @@
    for (ScabChunk *removedScabChunk in removedScabs)
        [removedScabChunk destroy];
 
-   [removedScabs removeAllObjects];
+  // [removedScabs removeAllObjects];
    scabChunks = nil;
     
    for (Wound *wound in [self wounds])

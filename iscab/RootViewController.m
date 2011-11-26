@@ -19,7 +19,8 @@
 @implementation RootViewController
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown ||
+            [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait;
 }
 
 //

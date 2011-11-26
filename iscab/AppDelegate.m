@@ -185,17 +185,6 @@
         [self createNewJars];
     }
     
-    for (Jar *jar in self.jars) {
-        NSLog(@"JAR: %d", [jar numScabLevels]);
-    }
-    
-    //THIS IS JUST FOR TESTING PURPOSES
-    for (int i = 0; i < [self.jars count] - 1; i++) {
-        [[self.jars objectAtIndex:i] setNumScabLevels:MAX_NUM_SCAB_LEVELS];
-    }
-    [[self.jars objectAtIndex:2] setNumScabLevels:MAX_NUM_SCAB_LEVELS - 1];
-    //
-    
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
@@ -214,15 +203,13 @@
 }
 
 - (Jar *)currentJar {
-    for (Jar *jar in self.jars) {
+    for (Jar *jar in self.jars)
         if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
-    }
     
-    for (Jar *jar in self.jars) {
+    for (Jar *jar in self.jars)
         if (jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
-    }    
     
     return [self.jars objectAtIndex:0];
 }
@@ -336,6 +323,7 @@
 }
  
 - (void)dealloc {
+    NSLog(@"DEALLOC APP");
 	[[CCDirector sharedDirector] end];
 	[window release];
     [jars release];
