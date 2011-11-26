@@ -45,7 +45,7 @@
     UIImage *screenshot = [[CCDirector sharedDirector] screenshotUIImage];
     
     CGSize size = [screenshot size];
-    CGRect cropRect = CGRectMake(0, 0, size.width, size.height - 120);
+    CGRect cropRect = CGRectMake(0, 0, size.width, size.height - (CROP_SIZE * [[UIScreen mainScreen] scale]));
     
     CGImageRef imageRef = CGImageCreateWithImageInRect([screenshot CGImage], cropRect);
     screenshot = [UIImage imageWithCGImage:imageRef];

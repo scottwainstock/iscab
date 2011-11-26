@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "IScabCCLayer.h"
 
+#define CROP_SIZE 60
+
 @interface IScabCCShareLayer : IScabCCLayer {
     UIImage *shareImage;
 }
