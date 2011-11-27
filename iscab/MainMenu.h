@@ -10,25 +10,15 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 
-@interface MainMenu : IScabCCLayer {
+@interface MainMenu : IScabCCLayer <UIAlertViewDelegate> {
     CCMenu *menu;
-    CCMenuItem *start;
-    CCMenuItem *leaderboard;
-    CCMenuItem *chooseSkin;
-    CCMenuItem *help; 
     CCMenuItem *aboutButton;
     CCMenuItem *jarButton;
-    CCMenuItemToggle *sound;
 }
 
 @property (nonatomic, retain) CCMenu *menu;
 @property (nonatomic, retain) CCMenuItem *aboutButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
-@property (nonatomic, retain) CCMenuItem *start;
-@property (nonatomic, retain) CCMenuItem *leaderboard;
-@property (nonatomic, retain) CCMenuItem *chooseSkin;
-@property (nonatomic, retain) CCMenuItem *help;
-@property (nonatomic, retain) CCMenuItemToggle *sound;
 
 + (id)scene;
 

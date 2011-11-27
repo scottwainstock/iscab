@@ -145,16 +145,6 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     self.defaults = [NSUserDefaults standardUserDefaults];
     
-    if ([defaults objectForKey:@"sendNotifications"] == nil) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
-                                                        message:@"Do you want to allow iScab to send you local notifications?"
-                                                       delegate:self
-                                              cancelButtonTitle:@"NO" 
-                                              otherButtonTitles:@"YES", nil];
-        [alert show];
-        [alert release];
-    }
-    
     if ([GameCenterBridge isGameCenterAPIAvailable]) {
         [self.defaults setBool:YES forKey:@"gameCenterEnabled"];
         gameCenterBridge = [[GameCenterBridge alloc] init];
@@ -162,7 +152,7 @@
     } else {
         [self.defaults setBool:NO forKey:@"gameCenterEnabled"];
     }
-    
+
     if ([self.defaults objectForKey:@"highScore"]) {
         [GameCenterBridge reportScore:[[self.defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
         [self.defaults removeObjectForKey:@"highScore"];
@@ -195,31 +185,11 @@
         [self createNewJars];
     }
     
-    for (Jar *jar in self.jars) {
-        NSLog(@"JAR: %d", [jar numScabLevels]);
-    }
-    
-    //THIS IS JUST FOR TESTING PURPOSES
-    for (int i = 0; i < [self.jars count] - 1; i++) {
-        [[self.jars objectAtIndex:i] setNumScabLevels:MAX_NUM_SCAB_LEVELS];
-    }
-    [[self.jars objectAtIndex:2] setNumScabLevels:MAX_NUM_SCAB_LEVELS - 1];
-    //
-    
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    
-    if ([title isEqualToString:@"YES"])
-        [defaults setBool:YES forKey:@"sendNotifications"];
-    else if ([title isEqualToString:@"NO"])
-        [defaults setBool:NO forKey:@"sendNotifications"];
 }
 
 - (void)createNewJars {
@@ -233,15 +203,13 @@
 }
 
 - (Jar *)currentJar {
-    for (Jar *jar in self.jars) {
+    for (Jar *jar in self.jars)
         if (jar.numScabLevels > 0 && jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
-    }
     
-    for (Jar *jar in self.jars) {
+    for (Jar *jar in self.jars)
         if (jar.numScabLevels < MAX_NUM_SCAB_LEVELS)
             return jar;
-    }    
     
     return [self.jars objectAtIndex:0];
 }
@@ -355,6 +323,7 @@
 }
  
 - (void)dealloc {
+    NSLog(@"DEALLOC APP");
 	[[CCDirector sharedDirector] end];
 	[window release];
     [jars release];

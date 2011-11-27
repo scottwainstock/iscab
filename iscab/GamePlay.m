@@ -20,8 +20,6 @@
 #import "GameCenterBridge.h"
 #import "SpecialScabs.h"
 
-static const ccColor3B ccSCABGLOW={255,105,180};
-
 @implementation GamePlay
 
 @synthesize allBlood, looseScabChunks, gravity, skinBackgroundBoundaries, endSequenceRunning;
@@ -49,21 +47,20 @@ AppDelegate *app;
             [deleteSprite destroy];
         }
         
-        //[spritesToDelete release];
+        [spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
                 CGPoint position = streak.position;
                 
-                if (self.gravity.x > 0) {
+                if (self.gravity.x > 0)
                     position.x = position.x + 1;
-                } else if (self.gravity.x < 0) {
+                else if (self.gravity.x < 0)
                     position.x = position.x - 1;
-                } else if (self.gravity.y > 0) {
+                else if (self.gravity.y > 0)
                     position.y = position.y + 1;
-                } else if (self.gravity.y < 0) {
+                else if (self.gravity.y < 0)
                     position.y = position.y - 1;
-                }
                 
                 [streak setPosition:position];
             }                
@@ -89,30 +86,28 @@ AppDelegate *app;
 }
 
 - (void)didRotate {
-    if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft)) {
+    if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft))
         space->gravity = ccp(-GRAVITY_FACTOR, 0);
-    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight)) {
+    else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight))
         space->gravity = ccp(GRAVITY_FACTOR, 0);
-    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait)) {
+    else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait))
         space->gravity = ccp(0, -GRAVITY_FACTOR);
-    } else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown)) {
+    else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown))
         space->gravity = ccp(0, GRAVITY_FACTOR);
-    }
 
     self.gravity = space->gravity;
 }
 
 - (id)init {
-    if((self=[super init])) {
+    if((self = [super init])) {
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
             
         [self setupSkinBackgroundBoundaries];
-        
         [self createSpace];
         
-        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
                     
         [self addChild:app.batchNode];
         
@@ -139,18 +134,16 @@ AppDelegate *app;
     [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
     NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
-    for (Scab *scab in app.scabs) {
+    for (Scab *scab in app.scabs)
         [scab displaySprites];
-    }    
 }
 
 - (void)generateScabs {
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
     
     int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
-    for (int x = 0; x < numScabs; x++) {
+    for (int x = 0; x < numScabs; x++)
         [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
-    }
     
     if ((arc4random() % PERCENT_CHANCE_OF_SPECIAL_SCAB) == 1)
         [app.scabs addObject:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
@@ -179,7 +172,6 @@ AppDelegate *app;
         NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
         UIImage *image = [UIImage imageWithData:imageData];
         bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
-
     } else {
         NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [app.defaults objectForKey:@"skinColor"], skinBackgroundNumber];
         NSLog(@"SETTING BACKGROUND: %@", skinBackground);
@@ -266,10 +258,9 @@ AppDelegate *app;
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
     
     int jarsFilled = 0;
-    for (int i = 0; i < [app.jars count]; i++) {
-        if ([[app.jars objectAtIndex:i] numScabLevels] == MAX_NUM_SCAB_LEVELS)
+    for (Jar *jar in app.jars)
+        if ([jar numScabLevels] == MAX_NUM_SCAB_LEVELS)
             jarsFilled += 1;
-    }
     
     switch (jarsFilled) {
         case 1:
@@ -330,22 +321,20 @@ AppDelegate *app;
 }
 
 - (bool)isBoardCompleted {
-    for (Scab *scab in app.scabs) {
+    for (Scab *scab in app.scabs)
         if (![scab isComplete])
             return false;
-    }
     
     return true;
 }
 
 - (void)resetBoard {
-    for (Scab *scab in app.scabs) {
+    for (Scab *scab in app.scabs)
         [scab reset];
-    }
     
-    for (CCMotionStreak *streak in [self allBlood]) {
+    for (CCMotionStreak *streak in [self allBlood])
         [streak removeFromParentAndCleanup:NO];
-    }
+
     allBlood = nil;
     
     [app.scabs removeAllObjects];
@@ -398,7 +387,8 @@ AppDelegate *app;
     );
         
     NSMutableArray *removedScabs = [NSMutableArray array];
-    for (ScabChunk *scabChunk in [self activeScabChunks]) {
+    NSMutableArray *activeScabChunks = [self activeScabChunks];
+    for (ScabChunk *scabChunk in activeScabChunks) {
         if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
             [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
             
@@ -410,10 +400,9 @@ AppDelegate *app;
                 [scabChunk ripOffScab];
                 
                 int numWarningsIssued = 0;
-                for (Scab *scab in app.scabs) {
+                for (Scab *scab in app.scabs)
                     if (scab.isOverpickWarningIssued)
                         numWarningsIssued++;
-                }
                 
                 if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && (numWarningsIssued < MAX_NUMBER_OF_OVERPICK_WARNINGS_PER_SESSION))
                     [self warnAboutOverpicking:scabChunk.scab];
@@ -423,16 +412,16 @@ AppDelegate *app;
                     
                     [self.looseScabChunks addObject:looseScab];
                     [app.batchNode addChild:looseScab];
-                    //[looseScab release];
                 }            
             }
         }
     }
     
-    for (ScabChunk *removedScabChunk in removedScabs) {
+    for (ScabChunk *removedScabChunk in removedScabs)
         [self removeScabChunk:removedScabChunk initing:NO];
-    }
+    
     [removedScabs removeAllObjects];
+    [activeScabChunks release];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -459,16 +448,10 @@ AppDelegate *app;
 }
 
 - (void)dealloc {
-    [super dealloc];
-    /*
-    cpSpaceFree(space);
-    [skinBackground release];
-    [skinBackgroundBoundaries release];
-    [batchNode release];
-    [allScabs release];
-    [allWounds release];
     [allBlood release];
-    [[CCTextureCache sharedTextureCache] removeUnusedTextures];*/
+    [looseScabChunks release];
+    [skinBackgroundBoundaries release];
+    [super dealloc];
 }
 
 #pragma singletons
@@ -493,11 +476,9 @@ AppDelegate *app;
 
 - (NSMutableArray *)activeScabChunks {
     NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
-    for (Scab *scab in app.scabs) {
-        [scabChunks addObjectsFromArray:scab.scabChunks];
-    }
+    for (Scab *scab in app.scabs)
+        [scabChunks addObjectsFromArray:[scab.scabChunks copy]];
     
-    //[scabChunks release];
     return scabChunks;
 }
 

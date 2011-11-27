@@ -17,7 +17,7 @@
 
 @implementation MainMenu
 
-@synthesize menu, start, leaderboard, chooseSkin, sound, help, aboutButton, jarButton;
+@synthesize menu, aboutButton, jarButton;
 
 AppDelegate *app;
 
@@ -35,27 +35,46 @@ AppDelegate *app;
         CCSprite *homeLogo = [CCSprite spriteWithFile:@"Home_Logo.png"];
         homeLogo.position = ccp(150, 300);
         [self addChild:homeLogo z:0];
-
-        start = [CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)];
-        
-        leaderboard = [CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)];    
-        
-        if (![app.defaults boolForKey:@"gameCenterEnabled"])
-            [leaderboard setIsEnabled:NO];
-                
-        chooseSkin = [CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)];
-        
-        sound = [self currentSoundState:[app.defaults boolForKey:@"sound"]];
-        
-        help = [CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)];
-
-        menu = [CCMenu menuWithItems:start, leaderboard, chooseSkin, sound, help, nil];       
+       
+        menu = [CCMenu menuWithItems:nil];        
         menu.position = ccp(160, 160);
-        [menu alignItemsVerticallyWithPadding:5.0];
-        [self addChild:menu];        
+                
+        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)]];
+        
+        if ([app.defaults boolForKey:@"gameCenterEnabled"])
+            [menu addChild:[CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)]];    
+        
+        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)]];
+        
+        [menu addChild:[self currentSoundState:[app.defaults boolForKey:@"sound"]]];
+        
+        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)]];
+
+       
+        [menu alignItemsVerticallyWithPadding:5.0f];
+        [self addChild:menu];
+        
+        if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
+                                                            message:@"Do you want to allow iScab to send you local notifications?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"NO" 
+                                                  otherButtonTitles:@"YES", nil];
+            [alert show];
+            [alert release];
+        }        
     }
     
     return self;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    
+    if ([title isEqualToString:@"YES"])
+        [app.defaults setBool:YES forKey:@"sendNotifications"];
+    else if ([title isEqualToString:@"NO"])
+        [app.defaults setBool:NO forKey:@"sendNotifications"];
 }
 
 - (void)setupNavigationIcons {
@@ -116,15 +135,10 @@ AppDelegate *app;
 }
 
 - (void) dealloc { 
-    [super dealloc];
     [menu release];
-    [start release];
-    [leaderboard release];
-    [chooseSkin release];
-    [sound release];
-    [help release];
     [aboutButton release];
-    [jarButton release];     
+    [jarButton release];
+    [super dealloc];
 } 
 
 @end
