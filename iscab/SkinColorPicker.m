@@ -12,12 +12,12 @@
 
 @implementation SkinColorPicker
 
-CCUIViewWrapper *wrapper;
+@synthesize imagePicker, viewWrapper;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
     SkinColorPicker *layer = [SkinColorPicker node];
-    [scene addChild: layer];
+    [scene addChild:layer];
     
     return scene;
 }
@@ -73,16 +73,17 @@ CCUIViewWrapper *wrapper;
         
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             NSLog(@"PIX");
-            UIImagePickerController *imagePicker = [[[UIImagePickerController alloc] init] autorelease];        
+            imagePicker = [[UIImagePickerController alloc] init];        
             imagePicker.sourceType =  UIImagePickerControllerSourceTypeCamera;
             imagePicker.delegate = self;
             imagePicker.allowsEditing = NO;
             [imagePicker presentModalViewController:imagePicker animated:YES];
             
-            wrapper = [CCUIViewWrapper wrapperForUIView:imagePicker.view];
-            wrapper.contentSize = CGSizeMake(app.screenWidth, app.screenHeight);
-            wrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
-            [self addChild:wrapper];
+            viewWrapper = [CCUIViewWrapper wrapperForUIView:imagePicker.view];
+            viewWrapper.contentSize = CGSizeMake(app.screenWidth, app.screenHeight);
+            viewWrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
+            [self addChild:viewWrapper];
+            NSLog(@"WRAPPER ADDED");
         } else {
             NSLog(@"NO CAMERA");
         }
@@ -118,17 +119,23 @@ CCUIViewWrapper *wrapper;
     return newImage;
 }
 
+- (void)removePicker:(UIImagePickerController *)picker {
+    [picker dismissModalViewControllerAnimated:YES];
+	[picker.view removeFromSuperview];
+    [self removeChild:viewWrapper cleanup:NO];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self removePicker:picker];
+}
+
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     
 	newImage = [self imageWithImage:newImage scaledToSize:CGSizeMake(app.screenWidth, app.screenHeight)];
     
-	[picker dismissModalViewControllerAnimated:YES];
-	[picker.view removeFromSuperview];
-	[picker	release];
-	[self removeChild:wrapper cleanup:YES];
-	wrapper = nil;
+    [self removePicker:picker];
     
     [app.defaults setObject:UIImagePNGRepresentation(newImage) forKey:@"photoBackground"];
     [app.defaults setObject:@"photo" forKey:@"skinColor"];    
@@ -136,6 +143,11 @@ CCUIViewWrapper *wrapper;
     NSLog(@"SAVED");
     
     [self setupBackground];
+}
+
+- (void)dealloc {
+    [imagePicker release];
+    [super dealloc];
 }
 
 @end
