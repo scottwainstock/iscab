@@ -33,7 +33,8 @@
 - (void)setupBackground {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
+    if ([self getChildByTag:SKIN_BACKGROUND_TAG])
+        [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
 
     CCSprite *skinBG;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {

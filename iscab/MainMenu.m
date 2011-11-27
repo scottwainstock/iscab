@@ -17,7 +17,7 @@
 
 @implementation MainMenu
 
-@synthesize menu, aboutButton, jarButton;
+@synthesize menu, iconMenu, aboutButton, jarButton;
 
 AppDelegate *app;
 
@@ -50,7 +50,6 @@ AppDelegate *app;
         
         [menu addChild:[CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)]];
 
-       
         [menu alignItemsVerticallyWithPadding:5.0f];
         [self addChild:menu];
         
@@ -84,7 +83,7 @@ AppDelegate *app;
     jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
     jarButton.position = ccp(280, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
+    iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }
@@ -136,6 +135,7 @@ AppDelegate *app;
 
 - (void) dealloc { 
     [menu release];
+    [iconMenu release];
     [aboutButton release];
     [jarButton release];
     [super dealloc];

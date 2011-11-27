@@ -100,16 +100,21 @@ AppDelegate *app;
 
 - (id)init {
     if((self = [super init])) {
+        NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
-            
-        [self setupSkinBackgroundBoundaries];
-        [self createSpace];
+        NSLog(@"GAMEPLAY SETUP COMPLETE");
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [self setupSkinBackgroundBoundaries];
+        NSLog(@"SETUP SKINBACKGROUND");
+        [self createSpace];
+        NSLog(@"CREATED SPACE");
+        
+        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
                     
         [self addChild:app.batchNode];
+        NSLog(@"ADDED BATCH NODES");
         
         if (![app.defaults objectForKey:@"scabs"]) {
             NSLog(@"GENERATING NEW BOARD");
@@ -122,6 +127,8 @@ AppDelegate *app;
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
+        
+        NSLog(@"DONE INITING");
     }
             
     return self;
@@ -145,8 +152,12 @@ AppDelegate *app;
     for (int x = 0; x < numScabs; x++)
         [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
     
+    NSLog(@"GENERATING %d SCABS", numScabs);
+    
     if ((arc4random() % PERCENT_CHANCE_OF_SPECIAL_SCAB) == 1)
         [app.scabs addObject:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
+    
+    NSLog(@"DONE GENERATING SCABS");
 }
 
 - (void)setupSkinBackgroundBoundaries {
