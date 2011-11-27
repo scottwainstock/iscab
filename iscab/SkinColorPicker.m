@@ -23,7 +23,7 @@
 }
 
 - (id)init {
-    if( (self=[super init] )) {   
+    if ((self = [super init])) {   
         self.isTouchEnabled = YES;
 
         CCSprite *pickerText = [CCSprite spriteWithFile:@"Choose_Skin.png"];

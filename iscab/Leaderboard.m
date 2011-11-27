@@ -7,13 +7,11 @@
 //
 
 #import "Leaderboard.h"
-#import "AppDelegate.h"
-#import "CCUIViewWrapper.h"
 #import "GameKit/GKLeaderboardViewController.h"
 
 @implementation Leaderboard
 
-@synthesize leaderboardViewController;
+@synthesize viewController, leaderboardViewController;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
@@ -24,39 +22,34 @@
 }
 
 - (id)init {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-    leaderboardViewController = [[UIViewController alloc] init];        
-    [leaderboardViewController presentModalViewController:leaderboardViewController animated:YES];
-    
-    CCUIViewWrapper *wrapper = [CCUIViewWrapper wrapperForUIView:leaderboardViewController.view];
-    wrapper.contentSize = CGSizeMake(app.screenWidth, app.screenHeight);
-    wrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
-    [self addChild:wrapper];
-    
-    [self showLeaderboard];
+    if ((self=[super init]))
+        [self showLeaderboard];
     
     return self;
 }
 
 - (void)showLeaderboard {
-    GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];
-    if (leaderboardController != nil) {
-        leaderboardController.leaderboardDelegate = self;
-        [leaderboardViewController presentModalViewController:leaderboardController animated: YES];
-    }
+    viewController = [[UIViewController alloc] init]; 
+    [[[[CCDirector sharedDirector] openGLView] window] addSubview:viewController.view];
     
-    [leaderboardController release];
+    leaderboardViewController = [[GKLeaderboardViewController alloc] init];
+    if (leaderboardViewController != nil) {
+        leaderboardViewController.leaderboardDelegate = self;
+        [viewController presentModalViewController:leaderboardViewController animated:YES];
+    }
 }
 
-- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
-    [leaderboardViewController dismissModalViewControllerAnimated:YES];
+- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)leaderBoardViewController {
+    [viewController dismissModalViewControllerAnimated:NO];
+    [viewController.view removeFromSuperview];
+
     [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:TRANSITION_SPEED];
 }
 
 - (void)dealloc {
-    [super dealloc];
+    [viewController release];
     [leaderboardViewController release];
+    [super dealloc];
 }
 
 @end
