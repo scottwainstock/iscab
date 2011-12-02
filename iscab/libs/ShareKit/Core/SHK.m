@@ -268,7 +268,7 @@ BOOL SHKinit;
 {	
 	NSArray *favoriteSharers = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%i", SHK_FAVS_PREFIX_KEY, type]];
 
-    favoriteSharers = [NSArray arrayWithObjects:@"SHKFacebook",@"SHKTwitter",@"SHKMail",@"SHKPhotoAlbum",nil];
+    favoriteSharers = [NSArray arrayWithObjects:@"SHKFacebook",@"SHKTwitter",@"SHKMail",nil];
 
     
 /*	// set defaults
