@@ -57,7 +57,7 @@
     app.backButton.position = ccp(40, 40);
     
     app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    app.jarButton.position = ccp(280, 40);
+    app.jarButton.position = ccp(290, 40);
     
     CCMenu *menu = [CCMenu menuWithItems:app.backButton, app.jarButton, nil];
     menu.position = CGPointZero;
