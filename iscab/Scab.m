@@ -184,7 +184,7 @@
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
    // [self splatterBlood:scab];
     
-    bool isBleeding = (!isClean && (arc4random() % ((int)ceil(ccpDistance([app centerOfAllScabs], iscabSprite.savedLocation) * 0.10) + 1) == 2)) ? TRUE : FALSE;
+    bool isBleeding = (!isClean && (arc4random() % ((int)ceil(ccpDistance([self center], iscabSprite.savedLocation) * 0.10) + 1) == 2)) ? TRUE : FALSE;
     NSString *woundType = [Wound woundFrameNameForClean:isClean isBleeding:isBleeding scabChunkNo:iscabSprite.scabChunkNo];
     
     Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];

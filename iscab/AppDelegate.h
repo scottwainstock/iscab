@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "Jar.h"
+#import "Scab.h"
 #import "GameCenterBridge.h"
 
 @class RootViewController;
@@ -25,8 +26,8 @@
 	UIWindow *window;
     AVAudioPlayer *audioPlayer;
     NSMutableArray *jars;
-    NSMutableArray *scabs;
     NSUserDefaults *defaults;
+    Scab *scab;
     CCSpriteBatchNode *batchNode;
     CCMenuItem *backButton;
     CCMenuItem *jarButton;
@@ -39,7 +40,7 @@
 @property (nonatomic, retain) NSUserDefaults *defaults;
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) NSMutableArray *jars;
-@property (nonatomic, retain) NSMutableArray *scabs;
+@property (nonatomic, retain) Scab *scab;
 @property (nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) CCMenuItem *backButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
@@ -50,6 +51,5 @@
 - (void)scheduleNotifications;
 - (Jar *)currentJar;
 - (void)createNewJars;
-- (CGPoint)centerOfAllScabs;
 
 @end

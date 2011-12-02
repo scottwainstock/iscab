@@ -19,7 +19,6 @@
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
 #define GRAVITY_FACTOR 750
 #define MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS 10
-#define NUM_INDIVIDUAL_SCABS 6
 #define BACKGROUND_IMAGE_TAG_ID 777
 #define X_SCAB_BORDER_BOUNDARY 10
 #define Y_SCAB_BORDER_BOUNDARY 10
@@ -47,10 +46,9 @@
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
 - (bool)isBoardCompleted;
 - (void)setupSkinBackgroundBoundaries;
-- (void)generateScabs;
+- (void)generateScab;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;
 - (void)updateBackground:(NSString *)skinBackground;
-- (NSMutableArray *)activeScabChunks;
 - (cpSpace *)createSpace;
 
 @end
