@@ -375,11 +375,11 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                int numWarningsIssued = 0;
-                if ([app.scab isOverpickWarningIssued])
-                    numWarningsIssued++;
-                
-                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && (numWarningsIssued < MAX_NUMBER_OF_OVERPICK_WARNINGS_PER_SESSION))
+                if (
+                    [scabChunk.scab isOverpicked] && 
+                    ![scabChunk.scab isOverpickWarningIssued] &&
+                    ([[app.defaults objectForKey:@"numScabsPicked"] intValue] <= MAX_NUMBER_OF_OVERPICK_WARNINGS)
+                )
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
