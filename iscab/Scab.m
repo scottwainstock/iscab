@@ -237,10 +237,8 @@
     [self.wounds removeAllObjects];
     [self.scabChunkBorders removeAllObjects];
     
-    for (ScabChunk *scabChunk in savedScabChunks) {
-        NSLog(@"SAVED CHUNK %@", NSStringFromCGPoint(scabChunk.savedLocation));
+    for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
-    }
         
     for (Wound *scabChunkBorder in savedScabChunkBorders)
         [self createScabChunkBorderFromIScabSprite:scabChunkBorder];

@@ -24,7 +24,7 @@ AppDelegate *app;
 - (id)init {
     app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    if ((self=[super init])) {
+    if ((self = [super init])) {
         CCSprite *bg = [CCSprite spriteWithFile:[self jarBackgroundImage]];
         bg.position = ccp(160, 240);
         [self addChild:bg z:0];
@@ -47,10 +47,9 @@ AppDelegate *app;
 
 - (NSString *)jarBackgroundImage {    
     int numFilledJars = 0;
-    for (Jar *jar in [app jars]) {
+    for (Jar *jar in [app jars])
         if (jar.numScabLevels == MAX_NUM_SCAB_LEVELS)
             numFilledJars++;
-    }
     
     switch (numFilledJars) {
         case 0:

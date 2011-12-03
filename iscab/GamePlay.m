@@ -114,16 +114,6 @@ AppDelegate *app;
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
                     
         [self addChild:app.batchNode];
-        NSLog(@"ADDED BATCH NODES");
-        
-        if (![app.defaults objectForKey:@"scab"]) {
-            NSLog(@"GENERATING NEW BOARD");
-            [self updateBackground:nil];
-            [self generateScab];
-        } else {
-            NSLog(@"USING EXISTING BOARD");
-            [self displayExistingBoard];
-        }
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
@@ -416,17 +406,23 @@ AppDelegate *app;
 
 #pragma exit/enter setup
 
+- (void)onEnter {
+    [super onEnter];
+    
+    if (![app.defaults objectForKey:@"scab"]) {
+        NSLog(@"GENERATING NEW BOARD");
+        [self updateBackground:nil];
+        [self generateScab];
+    } else {
+        NSLog(@"USING EXISTING BOARD");
+        [self displayExistingBoard];
+    }
+}
+
 - (void)onExit {
     [super onExit];
     NSLog(@"ON EXIT");
     [app saveState];
-}
-
-- (void)onEnterTransitionDidFinish {
-    [super onEnterTransitionDidFinish];
-    NSLog(@"ON ENTER TRANSITION DID FINISH");
-    if (!app.scab)
-        [self displayExistingBoard];
 }
 
 - (void)dealloc {
