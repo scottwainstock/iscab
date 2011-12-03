@@ -13,7 +13,7 @@
 
 @implementation IScabCCShareLayer
 
-@synthesize shareImage;
+@synthesize shareImage, specialButton, shareButton;
 
 - (void)setupBackground {
     CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
@@ -23,18 +23,22 @@
 }
 
 - (void)setupNavigationIcons {    
-    CCMenuItem *backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
+    backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
     backButton.position = ccp(40, 40);
+    [backButton retain];
     
-    CCMenuItem *specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
+    specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
     specialButton.position = ccp(165, 35);
+    [specialButton retain];
     
-    CCMenuItem *shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
+    shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
     shareButton.position = ccp(280, 40);
+    [shareButton retain];
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:backButton, specialButton, shareButton, nil];
+    iconMenu = [CCMenu menuWithItems:backButton, specialButton, shareButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
+    [iconMenu retain];
 }
 
 - (void)specialTapped:(CCMenuItem  *)menuItem {
@@ -65,6 +69,8 @@
 }
 
 - (void)dealloc {
+    [specialButton release];
+    [shareButton release];
     [shareImage release];
     [super dealloc];
 }

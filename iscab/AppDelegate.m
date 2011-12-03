@@ -22,7 +22,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scab, backButton, jarButton, gameCenterBridge, defaults;
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scab, gameCenterBridge, defaults;
 
 - (NSMutableArray *)jars { 
     @synchronized(jars) {
@@ -304,8 +304,6 @@
     [jars release];
     [batchNode release];
     [scab release];
-    [backButton release];
-    [jarButton release];
     [gameCenterBridge release];
     [defaults release];
 	[super dealloc];

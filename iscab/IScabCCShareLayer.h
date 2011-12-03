@@ -13,9 +13,13 @@
 
 @interface IScabCCShareLayer : IScabCCLayer {
     UIImage *shareImage;
+    CCMenuItem *specialButton;
+    CCMenuItem *shareButton;
 }
 
 @property (nonatomic, retain) UIImage *shareImage;
+@property (nonatomic, retain) CCMenuItem *specialButton;
+@property (nonatomic, retain) CCMenuItem *shareButton;
 
 - (void)shareTapped:(CCMenuItem *)menuItem;
 

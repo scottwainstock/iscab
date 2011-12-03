@@ -109,7 +109,7 @@
             if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
                 [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
         }
-         
+
         int numDarkPatches = (arc4random() % NUM_DARK_PATCHES);
         int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
         int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
@@ -135,7 +135,6 @@
 }
     
 - (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
     int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
 
@@ -144,15 +143,8 @@
         (int)scabCenter.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
     );
     
-    if (
-        CGRectContainsPoint(backgroundBoundary, scabChunkCenter)          && // is inside background boundaries
-        CGRectContainsPoint(scabBoundary, scabChunkCenter)                && // is inside scab boundaries
-        !CGRectContainsPoint(app.backButton.boundingBox, scabChunkCenter) && // is not inside the back icon
-        !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)     // is not inside the jar icon
-    )
-        return scabChunkCenter;
-     
-    return CGPointZero;
+    return (CGRectContainsPoint(backgroundBoundary, scabChunkCenter) && CGRectContainsPoint(scabBoundary, scabChunkCenter)) ?
+        scabChunkCenter : CGPointZero;
 }
     
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
@@ -260,15 +252,14 @@
 }
 
 - (int)scabSize {
-    if (self.sizeAtCreation >= XL_SCAB_SIZE) {
+    if (self.sizeAtCreation >= XL_SCAB_SIZE)
         return XL_SCAB;
-    } else if (self.sizeAtCreation >= LARGE_SCAB_SIZE) {
+    else if (self.sizeAtCreation >= LARGE_SCAB_SIZE)
         return LARGE_SCAB;
-    } else if (self.sizeAtCreation >= MEDIUM_SCAB_SIZE) {
+    else if (self.sizeAtCreation >= MEDIUM_SCAB_SIZE)
         return MEDIUM_SCAB;
-    } else {
+    else
         return SMALL_SCAB;
-    }
 }
 
 - (int)baseHealingInterval {

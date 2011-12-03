@@ -29,8 +29,6 @@
     NSUserDefaults *defaults;
     Scab *scab;
     CCSpriteBatchNode *batchNode;
-    CCMenuItem *backButton;
-    CCMenuItem *jarButton;
     GameCenterBridge *gameCenterBridge;
     RootViewController *viewController;
 }
@@ -42,8 +40,6 @@
 @property (nonatomic, retain) NSMutableArray *jars;
 @property (nonatomic, retain) Scab *scab;
 @property (nonatomic, retain) CCSpriteBatchNode *batchNode;
-@property (nonatomic, retain) CCMenuItem *backButton;
-@property (nonatomic, retain) CCMenuItem *jarButton;
 @property (nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
 - (void)saveState;

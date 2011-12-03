@@ -17,7 +17,7 @@
 
 @implementation MainMenu
 
-@synthesize menu, iconMenu, aboutButton, jarButton;
+@synthesize menu, aboutButton;
 
 AppDelegate *app;
 
@@ -135,9 +135,7 @@ AppDelegate *app;
 
 - (void) dealloc { 
     [menu release];
-    [iconMenu release];
     [aboutButton release];
-    [jarButton release];
     [super dealloc];
 } 
 

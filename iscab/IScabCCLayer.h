@@ -12,7 +12,14 @@
 #define SKIN_BACKGROUND_TAG 8
 
 @interface IScabCCLayer : CCLayer {
+    CCMenu *iconMenu;
+    CCMenuItem *backButton;
+    CCMenuItem *jarButton;
 }
+
+@property (nonatomic, retain) CCMenu *iconMenu;
+@property (nonatomic, retain) CCMenuItem *backButton;
+@property (nonatomic, retain) CCMenuItem *jarButton;
 
 - (void)setupBackground;
 - (void)setupNavigationIcons;
