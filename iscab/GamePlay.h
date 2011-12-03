@@ -13,7 +13,6 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
-#define PERCENT_CHANCE_OF_SPECIAL_SCAB 10
 #define NUM_BACKGROUNDS 6
 #define NUM_SCRATCH_SOUNDS 3
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
@@ -24,6 +23,8 @@
 #define Y_SCAB_BORDER_BOUNDARY 10
 #define PHOTO_BACKGROUND @"50"
 #define MAX_NUMBER_OF_OVERPICK_WARNINGS_PER_SESSION 2
+#define FIRST_FORCED_SPECIAL_SCAB 2
+#define CHANCE_OF_GETTING_SPECIAL_SCAB 2
 
 @interface GamePlay : IScabCCLayer {
     cpSpace *space;
@@ -44,7 +45,6 @@
 
 - (void)displayExistingBoard;
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
-- (bool)isBoardCompleted;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScab;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;

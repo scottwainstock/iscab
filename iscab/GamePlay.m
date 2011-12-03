@@ -47,7 +47,7 @@ AppDelegate *app;
             [deleteSprite destroy];
         }
         
-        [spritesToDelete release];
+        //[spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
@@ -146,7 +146,8 @@ AppDelegate *app;
 - (void)generateScab {
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
 
-    if ((arc4random() % PERCENT_CHANCE_OF_SPECIAL_SCAB) <= 2)
+    int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
+    if (((arc4random() % 10) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
         [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
     else
         [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
@@ -189,17 +190,6 @@ AppDelegate *app;
     [self addChild:bg z:-1];
     
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
-}
-
-- (void)splatterBlood:(ScabChunk *)scabChunk {
-    return;
-    
-    CCParticleMyBlood *particles = [[CCParticleMyBlood alloc] init];
-    particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
-    particles.position = scabChunk.position;
-    [self addChild:particles z:9];
-    particles.autoRemoveOnFinish = YES; 
-    [particles release];
 }
 
 - (void)reportAchievementsForScab:(Scab *)scab {
@@ -305,13 +295,15 @@ AppDelegate *app;
 }
 
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
-    Scab *scab = scabChunk.scab;
     [scabChunk destroy];
 
-    if ([scab isComplete])
-        [self addScabToJar:scab];
-
-    if ([self isBoardCompleted] && !initing) {
+    if ([app.scab isComplete]) {
+        [self addScabToJar:app.scab];
+        
+        int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
+        numScabsPicked += 1;
+        [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
+        
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
@@ -323,10 +315,6 @@ AppDelegate *app;
         
         [[[CCDirector sharedDirector] runningScene] addChild:title];
     }
-}
-
-- (bool)isBoardCompleted {
-    return [app.scab isComplete] ? true : false;
 }
 
 - (void)resetBoard {
@@ -342,6 +330,7 @@ AppDelegate *app;
     [self updateBackground:nil];
     [self generateScab];
     endSequenceRunning = false;
+    NSLog(@"LEAVING RESET BOARD");
 }
 
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor {

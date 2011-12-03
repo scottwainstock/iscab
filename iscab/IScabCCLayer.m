@@ -16,7 +16,7 @@
 @implementation IScabCCLayer
 
 - (id)init {
-    if((self=[super init] )) {  
+    if ((self = [super init])) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
 
         [self setupNavigationIcons];

@@ -256,16 +256,16 @@
         return;
     
     NSLog(@"SCHEDULING NOTIFICATION");
-    [scab setIsAged:YES];
+    [self.scab setIsAged:YES];
         
     bool alreadyScheduled = FALSE;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
-        if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
+        if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
             alreadyScheduled = TRUE;
     }
     
-    if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
-        [self scheduleNotification:[scab healDate]];
+    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
+        [self scheduleNotification:[self.scab healDate]];
 }
 
 - (void)saveState {
@@ -276,7 +276,6 @@
     [self.defaults synchronize];
     
     [self.scab reset];
-    self.scab = nil;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication*)application {
