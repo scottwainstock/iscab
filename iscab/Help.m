@@ -31,6 +31,7 @@
         iconMenu = [CCMenu menuWithItems:stopButton, nil];
         iconMenu.position = CGPointZero;
         [self addChild:iconMenu z:2];
+        [iconMenu retain];
     }
     
     return self;
