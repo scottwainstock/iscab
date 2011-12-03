@@ -82,7 +82,12 @@
             
             viewWrapper = [CCUIViewWrapper wrapperForUIView:imagePicker.view];
             viewWrapper.contentSize = CGSizeMake(app.screenWidth, app.screenHeight);
-            viewWrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
+            
+            if ([[UIScreen mainScreen] scale] == 2.00)
+                viewWrapper.position = ccp(320, 0);
+            else
+                viewWrapper.position = ccp(app.screenWidth / 2, app.screenHeight / 2);
+            
             [self addChild:viewWrapper];
             NSLog(@"WRAPPER ADDED");
         } else {
@@ -112,7 +117,7 @@
 }
 
 - (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
-    UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, [[UIScreen mainScreen] scale]);
     [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
