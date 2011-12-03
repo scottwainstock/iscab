@@ -212,14 +212,15 @@
     ScabChunk *scabChunk = [self createScabChunk:scabChunkCenter type:type scabChunkNo:scabChunkNo priority:priority];
     
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
         [self createScabChunkBorderFromIScabSprite:scabChunk];
-    }
     
     [scabChunk release];
 }
 
 - (void)displaySprites {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
     NSLog(@"DISPLAYING SPRITES");
     NSMutableArray *savedScabChunks = [self.scabChunks copy];
     NSMutableArray *savedScabChunkBorders = [self.scabChunkBorders copy];
@@ -232,8 +233,9 @@
     for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
         
-    for (Wound *scabChunkBorder in savedScabChunkBorders)
-        [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
+        for (Wound *scabChunkBorder in savedScabChunkBorders)
+            [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
     
     bool shouldHealUncleanWounds = [[self healDate] compare:[NSDate date]] == NSOrderedAscending ? TRUE : FALSE;
     for (Wound *wound in savedWounds) {
