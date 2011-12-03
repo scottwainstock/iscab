@@ -25,6 +25,7 @@
 - (id)init {
     if ((self = [super init])) {   
         self.isTouchEnabled = YES;
+        [[CCTextureCache sharedTextureCache] addImage:@"ChooseSkin_Tap.png"];
 
         CCSprite *pickerText = [CCSprite spriteWithFile:@"Choose_Skin.png"];
         pickerText.position = ccp(160, 240);
