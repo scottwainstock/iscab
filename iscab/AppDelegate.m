@@ -22,16 +22,7 @@
 
 @implementation AppDelegate
 
-@synthesize window, jars, screenWidth, screenHeight, batchNode, scabs, backButton, jarButton, gameCenterBridge, defaults;
-
-- (NSMutableArray *)scabs { 
-    @synchronized(scabs) {
-        if (scabs == nil)
-            scabs = [[NSMutableArray alloc] init];
-        return scabs;
-    }
-    return nil;
-}
+@synthesize window, jars, screenWidth, screenHeight, batchNode, scab, gameCenterBridge, defaults;
 
 - (NSMutableArray *)jars { 
     @synchronized(jars) {
@@ -214,17 +205,6 @@
     return [self.jars objectAtIndex:0];
 }
 
-- (CGPoint)centerOfAllScabs {
-    int x = 0;
-    int y = 0;
-    for (Scab *scab in self.scabs) {
-        x += scab.center.x;
-        y += scab.center.y;
-    }
-    
-    return CGPointMake(x / [self.scabs count], y / [self.scabs count]);
-}
-
 - (void)scheduleNotification:(NSDate *)date {
     if (![defaults boolForKey:@"sendNotifications"])    
         return;
@@ -275,32 +255,27 @@
     if (![defaults boolForKey:@"sendNotifications"])    
         return;
     
-    for (Scab *scab in self.scabs) {
-        NSLog(@"SCHEDULING NOTIFICATION");
-        [scab setIsAged:YES];
+    NSLog(@"SCHEDULING NOTIFICATION");
+    [self.scab setIsAged:YES];
         
-        bool alreadyScheduled = FALSE;
-        for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
-            if ([[localNotification fireDate] compare:[scab healDate]] == NSOrderedSame)
-                alreadyScheduled = TRUE;
-        }
-        
-        if (!alreadyScheduled && ([[scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![scab isComplete])
-            [self scheduleNotification:[scab healDate]];
+    bool alreadyScheduled = FALSE;
+    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+        if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
+            alreadyScheduled = TRUE;
     }
+    
+    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
+        [self scheduleNotification:[self.scab healDate]];
 }
 
 - (void)saveState {
     [self scheduleNotifications];
     
-    [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scabs]] forKey:@"scabs"];
+    [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scab]] forKey:@"scab"];
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [self.defaults synchronize];
     
-    for (Scab *scab in self.scabs)
-        [scab reset];
-
-    self.scabs = nil;
+    [self.scab reset];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication*)application {
@@ -328,9 +303,7 @@
 	[window release];
     [jars release];
     [batchNode release];
-    [scabs release];
-    [backButton release];
-    [jarButton release];
+    [scab release];
     [gameCenterBridge release];
     [defaults release];
 	[super dealloc];

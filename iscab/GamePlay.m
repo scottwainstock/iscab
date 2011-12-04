@@ -47,7 +47,7 @@ AppDelegate *app;
             [deleteSprite destroy];
         }
         
-        [spritesToDelete release];
+        //[spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
@@ -100,28 +100,25 @@ AppDelegate *app;
 
 - (id)init {
     if((self = [super init])) {
+        NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         self.isTouchEnabled = YES;
         endSequenceRunning = false;
-            
-        [self setupSkinBackgroundBoundaries];
-        [self createSpace];
+        NSLog(@"GAMEPLAY SETUP COMPLETE");
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [self setupSkinBackgroundBoundaries];
+        NSLog(@"SETUP SKINBACKGROUND");
+        [self createSpace];
+        NSLog(@"CREATED SPACE");
+        
+        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
                     
         [self addChild:app.batchNode];
         
-        if (![app.defaults objectForKey:@"scabs"]) {
-            NSLog(@"GENERATING NEW BOARD");
-            [self updateBackground:nil];
-            [self generateScabs];
-        } else {
-            NSLog(@"USING EXISTING BOARD");
-            [self displayExistingBoard];
-        }
-        
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
+        
+        NSLog(@"DONE INITING");
     }
             
     return self;
@@ -130,35 +127,34 @@ AppDelegate *app;
 - (void)displayExistingBoard {
     NSLog(@"DISPLAY EXISTING BOARD");
 
-    [app.scabs addObjectsFromArray:(NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scabs"]]];
+    [app setScab:(Scab *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scab"]]];
     [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
-    NSLog(@"NUMBER OF SCABS: %d", [app.scabs count]);
-    for (Scab *scab in app.scabs)
-        [scab displaySprites];
+    [app.scab displaySprites];
 }
 
-- (void)generateScabs {
+- (void)generateScab {
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
+
+    int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
+    if (((arc4random() % 10) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
+        [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
+    else
+        [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
     
-    int numScabs = (arc4random() % NUM_INDIVIDUAL_SCABS) + 1;
-    for (int x = 0; x < numScabs; x++)
-        [app.scabs addObject:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
-    
-    if ((arc4random() % PERCENT_CHANCE_OF_SPECIAL_SCAB) == 1)
-        [app.scabs addObject:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
+    NSLog(@"DONE GENERATING SCAB");
 }
 
 - (void)setupSkinBackgroundBoundaries {
     self.skinBackgroundBoundaries = [[NSMutableDictionary alloc] init];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(80, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 80 -X_SCAB_BORDER_BOUNDARY, 165)] forKey:@"0"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 275)] forKey:@"1"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"2"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:@"3"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 225)] forKey:@"4"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), 205)] forKey:@"5"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(50, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - 100, 235)] forKey:@"6"];
-    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(X_SCAB_BORDER_BOUNDARY, Y_SCAB_BORDER_BOUNDARY, app.screenWidth - (X_SCAB_BORDER_BOUNDARY * 2), app.screenHeight - (Y_SCAB_BORDER_BOUNDARY * 2))] forKey:PHOTO_BACKGROUND];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(85, 20, 160, 140)] forKey:@"0"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 85, 270, 170)] forKey:@"1"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 95, 275, 360)] forKey:@"2"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 90, 275, 360)] forKey:@"3"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 85, 270, 165)] forKey:@"4"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 85, 270, 120)] forKey:@"5"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(80, 20, 160, 210)] forKey:@"6"];
+    [self.skinBackgroundBoundaries setObject:[NSValue valueWithCGRect:CGRectMake(25, 90, 275, 360)] forKey:PHOTO_BACKGROUND];
 }
 
 - (void)updateBackground:(NSString *)skinBackgroundNumber {
@@ -166,7 +162,7 @@ AppDelegate *app;
     
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
-    
+
     CCSprite *bg;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
         NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
@@ -184,17 +180,6 @@ AppDelegate *app;
     [self addChild:bg z:-1];
     
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
-}
-
-- (void)splatterBlood:(ScabChunk *)scabChunk {
-    return;
-    
-    CCParticleMyBlood *particles = [[CCParticleMyBlood alloc] init];
-    particles.texture = [[CCTextureCache sharedTextureCache] addImage:@"blood.png"];
-    particles.position = scabChunk.position;
-    [self addChild:particles z:9];
-    particles.autoRemoveOnFinish = YES; 
-    [particles release];
 }
 
 - (void)reportAchievementsForScab:(Scab *)scab {
@@ -300,13 +285,15 @@ AppDelegate *app;
 }
 
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
-    Scab *scab = scabChunk.scab;
     [scabChunk destroy];
 
-    if ([scab isComplete])
-        [self addScabToJar:scab];
-
-    if ([self isBoardCompleted] && !initing) {
+    if ([app.scab isComplete]) {
+        [self addScabToJar:app.scab];
+        
+        int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
+        numScabsPicked += 1;
+        [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
+        
         endSequenceRunning = true;
         [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
@@ -320,30 +307,20 @@ AppDelegate *app;
     }
 }
 
-- (bool)isBoardCompleted {
-    for (Scab *scab in app.scabs)
-        if (![scab isComplete])
-            return false;
-    
-    return true;
-}
-
 - (void)resetBoard {
-    for (Scab *scab in app.scabs)
-        [scab reset];
+    [app.scab reset];
     
     for (CCMotionStreak *streak in [self allBlood])
         [streak removeFromParentAndCleanup:NO];
 
     allBlood = nil;
     
-    [app.scabs removeAllObjects];
-    
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     
     [self updateBackground:nil];
-    [self generateScabs];
+    [self generateScab];
     endSequenceRunning = false;
+    NSLog(@"LEAVING RESET BOARD");
 }
 
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
@@ -386,9 +363,8 @@ AppDelegate *app;
         MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL
     );
         
-    NSMutableArray *removedScabs = [NSMutableArray array];
-    NSMutableArray *activeScabChunks = [self activeScabChunks];
-    for (ScabChunk *scabChunk in activeScabChunks) {
+    NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
+    for (ScabChunk *scabChunk in [app.scab scabChunks]) {
         if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
             [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
             
@@ -399,12 +375,11 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                int numWarningsIssued = 0;
-                for (Scab *scab in app.scabs)
-                    if (scab.isOverpickWarningIssued)
-                        numWarningsIssued++;
-                
-                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && (numWarningsIssued < MAX_NUMBER_OF_OVERPICK_WARNINGS_PER_SESSION))
+                if (
+                    [scabChunk.scab isOverpicked] && 
+                    ![scabChunk.scab isOverpickWarningIssued] &&
+                    ([[app.defaults objectForKey:@"numScabsPicked"] intValue] <= MAX_NUMBER_OF_OVERPICK_WARNINGS)
+                )
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
@@ -419,9 +394,6 @@ AppDelegate *app;
     
     for (ScabChunk *removedScabChunk in removedScabs)
         [self removeScabChunk:removedScabChunk initing:NO];
-    
-    [removedScabs removeAllObjects];
-    [activeScabChunks release];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -434,17 +406,23 @@ AppDelegate *app;
 
 #pragma exit/enter setup
 
+- (void)onEnter {
+    [super onEnter];
+    
+    if (![app.defaults objectForKey:@"scab"]) {
+        NSLog(@"GENERATING NEW BOARD");
+        [self updateBackground:nil];
+        [self generateScab];
+    } else {
+        NSLog(@"USING EXISTING BOARD");
+        [self displayExistingBoard];
+    }
+}
+
 - (void)onExit {
     [super onExit];
     NSLog(@"ON EXIT");
     [app saveState];
-}
-
-- (void)onEnterTransitionDidFinish {
-    [super onEnterTransitionDidFinish];
-    NSLog(@"ON ENTER TRANSITION DID FINISH");
-    if (![app.scabs count])
-        [self displayExistingBoard];
 }
 
 - (void)dealloc {
@@ -472,14 +450,6 @@ AppDelegate *app;
         return looseScabChunks;
     }
     return nil;
-}
-
-- (NSMutableArray *)activeScabChunks {
-    NSMutableArray *scabChunks = [[NSMutableArray alloc] init];
-    for (Scab *scab in app.scabs)
-        [scabChunks addObjectsFromArray:[scab.scabChunks copy]];
-    
-    return scabChunks;
 }
 
 @end

@@ -13,12 +13,10 @@
 @interface MainMenu : IScabCCLayer <UIAlertViewDelegate> {
     CCMenu *menu;
     CCMenuItem *aboutButton;
-    CCMenuItem *jarButton;
 }
 
 @property (nonatomic, retain) CCMenu *menu;
 @property (nonatomic, retain) CCMenuItem *aboutButton;
-@property (nonatomic, retain) CCMenuItem *jarButton;
 
 + (id)scene;
 

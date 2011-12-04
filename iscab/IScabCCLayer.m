@@ -15,8 +15,10 @@
 
 @implementation IScabCCLayer
 
+@synthesize iconMenu, jarButton, backButton;
+
 - (id)init {
-    if((self=[super init] )) {  
+    if ((self = [super init])) {  
         [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
 
         [self setupNavigationIcons];
@@ -33,7 +35,8 @@
 - (void)setupBackground {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
+    if ([self getChildByTag:SKIN_BACKGROUND_TAG])
+        [self removeChildByTag:SKIN_BACKGROUND_TAG cleanup:YES];
 
     CCSprite *skinBG;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
@@ -50,17 +53,18 @@
 }
 
 - (void)setupNavigationIcons {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-    app.backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
-    app.backButton.position = ccp(40, 40);
+    backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
+    backButton.position = ccp(40, 40);
+    [backButton retain];
     
-    app.jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    app.jarButton.position = ccp(280, 40);
+    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
+    jarButton.position = ccp(290, 40);
+    [jarButton retain];
     
-    CCMenu *menu = [CCMenu menuWithItems:app.backButton, app.jarButton, nil];
-    menu.position = CGPointZero;
-    [self addChild:menu z:2];
+    iconMenu = [CCMenu menuWithItems:backButton, jarButton, nil];
+    iconMenu.position = CGPointZero;
+    [self addChild:iconMenu z:2];
+    [iconMenu retain];
 }
 
 - (void)backTapped:(CCMenuItem  *)menuItem {
@@ -81,6 +85,13 @@
 
 - (void)playMenuSound {
     [[SimpleAudioEngine sharedEngine] playEffect:@"button.wav"];
+}
+
+- (void)dealloc {
+    [iconMenu release];
+    [backButton release];
+    [jarButton release];
+    [super dealloc];
 }
 
 @end

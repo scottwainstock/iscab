@@ -28,9 +28,10 @@
         CCMenuItem *stopButton = [CCMenuItemImage itemFromNormalImage:@"Stop-Pickin.png" selectedImage:@"Stop-Pickin-Tap.png" target:self selector:@selector(stopTapped:)];
         stopButton.position = ccp(165, 35);
         
-        CCMenu *iconMenu = [CCMenu menuWithItems:stopButton, nil];
+        iconMenu = [CCMenu menuWithItems:stopButton, nil];
         iconMenu.position = CGPointZero;
         [self addChild:iconMenu z:2];
+        [iconMenu retain];
     }
     
     return self;
@@ -52,6 +53,7 @@
     
     if ([title isEqualToString:@"YES"]) {
         [app.defaults setObject:nil forKey:@"sendNotifications"];
+        [app.defaults setObject:nil forKey:@"numScabsPicked"];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         NSLog(@"STOP");

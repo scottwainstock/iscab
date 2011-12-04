@@ -10,12 +10,15 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 #import "GameKit/GameKit.h"
+#import "AppDelegate.h"
 
 @interface Leaderboard : IScabCCLayer <GKLeaderboardViewControllerDelegate> {
-    UIViewController *leaderboardViewController;
+    GKLeaderboardViewController *leaderboardViewController;
+    UIViewController *viewController;
 }
 
-@property (nonatomic, retain) UIViewController *leaderboardViewController;
+@property (nonatomic, retain) GKLeaderboardViewController *leaderboardViewController;
+@property (nonatomic, retain) UIViewController *viewController;
 
 + (id)scene;
 

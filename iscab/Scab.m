@@ -83,8 +83,9 @@
             shapeCoordinates = [self illuminatiShapeCoordinates:backgroundBoundary];
         }
         
-        for (int x = 0; x < [shapeCoordinates count]; x++)
-            [self createScabChunkAndBorderWithCenter:[[shapeCoordinates objectAtIndex:x] CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
+        for (NSValue *point in shapeCoordinates)
+            if (!CGPointEqualToPoint([point CGPointValue], CGPointZero))
+                [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
         
         [self initializeStatesWithName:specialScabName];
         [shapeCoordinates release];
@@ -108,7 +109,7 @@
             if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
                 [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
         }
-         
+
         int numDarkPatches = (arc4random() % NUM_DARK_PATCHES);
         int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
         int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
@@ -134,7 +135,6 @@
 }
     
 - (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
     int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
 
@@ -143,15 +143,8 @@
         (int)scabCenter.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
     );
     
-    if (
-        CGRectContainsPoint(backgroundBoundary, scabChunkCenter)          && // is inside background boundaries
-        CGRectContainsPoint(scabBoundary, scabChunkCenter)                && // is inside scab boundaries
-        !CGRectContainsPoint(app.backButton.boundingBox, scabChunkCenter) && // is not inside the back icon
-        !CGRectContainsPoint(app.jarButton.boundingBox, scabChunkCenter)     // is not inside the jar icon
-    )
-        return scabChunkCenter;
-     
-    return CGPointZero;
+    return (CGRectContainsPoint(backgroundBoundary, scabChunkCenter) && CGRectContainsPoint(scabBoundary, scabChunkCenter)) ?
+        scabChunkCenter : CGPointZero;
 }
     
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
@@ -182,9 +175,8 @@
 
 - (void)createWoundFromIScabSprite:(IScabSprite *)iscabSprite isClean:(bool)isClean {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-   // [self splatterBlood:scab];
     
-    bool isBleeding = (!isClean && (arc4random() % ((int)ceil(ccpDistance([app centerOfAllScabs], iscabSprite.savedLocation) * 0.10) + 1) == 2)) ? TRUE : FALSE;
+    bool isBleeding = (!isClean && (arc4random() % ((int)ceil(ccpDistance([self center], iscabSprite.savedLocation) * 0.10) + 1) == 2)) ? TRUE : FALSE;
     NSString *woundType = [Wound woundFrameNameForClean:isClean isBleeding:isBleeding scabChunkNo:iscabSprite.scabChunkNo];
     
     Wound *wound = [[Wound alloc] initWithSpriteFrameName:woundType];
@@ -220,14 +212,15 @@
     ScabChunk *scabChunk = [self createScabChunk:scabChunkCenter type:type scabChunkNo:scabChunkNo priority:priority];
     
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"]) {
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
         [self createScabChunkBorderFromIScabSprite:scabChunk];
-    }
     
     [scabChunk release];
 }
 
 - (void)displaySprites {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
     NSLog(@"DISPLAYING SPRITES");
     NSMutableArray *savedScabChunks = [self.scabChunks copy];
     NSMutableArray *savedScabChunkBorders = [self.scabChunkBorders copy];
@@ -237,13 +230,12 @@
     [self.wounds removeAllObjects];
     [self.scabChunkBorders removeAllObjects];
     
-    for (ScabChunk *scabChunk in savedScabChunks) {
+    for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
-    }
-    
-    for (Wound *scabChunkBorder in savedScabChunkBorders) {
-        [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
-    }
+        
+    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
+        for (Wound *scabChunkBorder in savedScabChunkBorders)
+            [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
     
     bool shouldHealUncleanWounds = [[self healDate] compare:[NSDate date]] == NSOrderedAscending ? TRUE : FALSE;
     for (Wound *wound in savedWounds) {
@@ -262,15 +254,14 @@
 }
 
 - (int)scabSize {
-    if (self.sizeAtCreation >= XL_SCAB_SIZE) {
+    if (self.sizeAtCreation >= XL_SCAB_SIZE)
         return XL_SCAB;
-    } else if (self.sizeAtCreation >= LARGE_SCAB_SIZE) {
+    else if (self.sizeAtCreation >= LARGE_SCAB_SIZE)
         return LARGE_SCAB;
-    } else if (self.sizeAtCreation >= MEDIUM_SCAB_SIZE) {
+    else if (self.sizeAtCreation >= MEDIUM_SCAB_SIZE)
         return MEDIUM_SCAB;
-    } else {
+    else
         return SMALL_SCAB;
-    }
 }
 
 - (int)baseHealingInterval {
@@ -317,14 +308,14 @@
 }
    
 - (void)reset {
-   NSMutableArray *removedScabs = [NSMutableArray array];
+   NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
    for (ScabChunk *scabChunk in [self scabChunks])
        [removedScabs addObject:scabChunk];
 
    for (ScabChunk *removedScabChunk in removedScabs)
        [removedScabChunk destroy];
 
-  // [removedScabs removeAllObjects];
+   removedScabs = nil;
    scabChunks = nil;
     
    for (Wound *wound in [self wounds])
@@ -396,9 +387,15 @@
         self.name = (NSString *)[coder decodeObjectForKey:@"name"];
     }
     
+    int numUncleanWounds = 0;
+    for (Wound *wound in self.wounds)
+        if (!wound.isClean)
+            numUncleanWounds += 1;
+    
     NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
     NSLog(@"LOADED NUMBER OF SCAB BORDERS: %d", [self.scabChunkBorders count]);
-    NSLog(@"LOADED NUMBER OF SCAB WOUNDS: %d", [self.wounds count]);
+    NSLog(@"LOADED NUMBER OF TOTAL WOUNDS: %d", [self.wounds count]);
+    NSLog(@"LOADED NUMBER OF UNCLEAN WOUNDS: %d", numUncleanWounds);
     NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
     NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
     NSLog(@"LOADED SCAB HEAL DATE: %@", [self healDate]);
@@ -412,7 +409,7 @@
 
 - (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary {
     CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
-    NSMutableArray *coordinates = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
 
@@ -450,7 +447,7 @@
 
 - (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary {
     CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
-    NSMutableArray *coordinates = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
     
@@ -478,7 +475,7 @@
 
 - (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary {
     CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
-    NSMutableArray *coordinates = [[[NSMutableArray alloc] init] autorelease];
+    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     
     for (int xNumber = 0; xNumber < 3; xNumber++) {    
         int topSwipeLocation = XXX_SCAB_SIZE;

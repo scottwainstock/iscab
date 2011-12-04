@@ -17,7 +17,7 @@
 
 @implementation MainMenu
 
-@synthesize menu, aboutButton, jarButton;
+@synthesize menu, aboutButton;
 
 AppDelegate *app;
 
@@ -33,11 +33,11 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         
         CCSprite *homeLogo = [CCSprite spriteWithFile:@"Home_Logo.png"];
-        homeLogo.position = ccp(150, 300);
+        homeLogo.position = ccp(160, 317);
         [self addChild:homeLogo z:0];
        
         menu = [CCMenu menuWithItems:nil];        
-        menu.position = ccp(160, 160);
+        menu.position = ccp(165, 175);
                 
         [menu addChild:[CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)]];
         
@@ -50,7 +50,6 @@ AppDelegate *app;
         
         [menu addChild:[CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)]];
 
-       
         [menu alignItemsVerticallyWithPadding:5.0f];
         [self addChild:menu];
         
@@ -82,9 +81,9 @@ AppDelegate *app;
     aboutButton.position = ccp(40, 40);
     
     jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(280, 40);
+    jarButton.position = ccp(290, 40);
     
-    CCMenu *iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
+    iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
     iconMenu.position = CGPointZero;
     [self addChild:iconMenu z:2];
 }
@@ -137,7 +136,6 @@ AppDelegate *app;
 - (void) dealloc { 
     [menu release];
     [aboutButton release];
-    [jarButton release];
     [super dealloc];
 } 
 

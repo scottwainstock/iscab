@@ -27,7 +27,7 @@
 
 + (void)reportScore:(int64_t)score forCategory:(NSString*)category {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    if (![app.defaults boolForKey:@"gameCenterEnabled"])
+    if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
         return;
     
     NSLog(@"ABOUT TO REPORT %lld", score);
@@ -52,7 +52,7 @@
 
 - (void)reportAchievementIdentifier:(NSString*)identifier {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    if (![app.defaults boolForKey:@"gameCenterEnabled"])
+    if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
         return;
     
     NSLog(@"CHEEVO: %@", identifier);
