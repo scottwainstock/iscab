@@ -70,13 +70,13 @@
  */
 #define SHKTwitterConsumerKey		@"d714qi74oUjW4h37PjaAnA"
 #define SHKTwitterSecret			@"KqZFo3o81GyhFqG0iUPfhrg78pNsmn7qOpaEdyOwo"
-#define SHKTwitterCallbackUrl		@"" // You need to set this if using OAuth, see note above (xAuth users can skip it)
+#define SHKTwitterCallbackUrl		@"http://scottwainstock.com" // You need to set this if using OAuth, see note above (xAuth users can skip it)
 #define SHKTwitterUseXAuth			0 // To use xAuth, set to 1
-#define SHKTwitterUsername			@"" // Enter your app's twitter account if you'd like to ask the user to follow it when logging in. (Only for xAuth)
+#define SHKTwitterUsername			@"ironylevel2" // Enter your app's twitter account if you'd like to ask the user to follow it when logging in. (Only for xAuth)
 
 // Bit.ly (for shortening URLs on Twitter) - http://bit.ly/account/register - after signup: http://bit.ly/a/your_api_key
-#define SHKBitLyLogin				@""
-#define SHKBitLyKey					@""
+#define SHKBitLyLogin				@"scott.wainstock@gmail.com"
+#define SHKBitLyKey					@"R_36210ca5e8b4b96b1e27f2744990f998"
 
 /*
  UI Configuration : Basic
