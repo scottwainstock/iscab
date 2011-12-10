@@ -19,7 +19,7 @@
 
 - (id)init {
     if ((self = [super init])) {  
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
+        [[SimpleAudioEngine sharedEngine] preloadEffect:@"menu_sound.mp3"];
 
         [self setupNavigationIcons];
     }
@@ -84,7 +84,7 @@
 }
 
 - (void)playMenuSound {
-    [[SimpleAudioEngine sharedEngine] playEffect:@"button.wav"];
+    [[SimpleAudioEngine sharedEngine] playEffect:@"menu_sound.mp3"];
 }
 
 - (void)dealloc {
