@@ -137,7 +137,7 @@ AppDelegate *app;
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
 
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
-    if (((arc4random() % 10) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
+    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
         [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
     else
         [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
