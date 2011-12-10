@@ -157,7 +157,6 @@
     [scabChunk setPriority:priority];
     [scabChunk setType:type];
     [scabChunk setHealth:priority * 2];
-    [scabChunk setScale:0.8];
     [scabChunk setScab:self];
     [app.batchNode addChild:scabChunk z:5];
     [self.scabChunks addObject:scabChunk];
@@ -168,6 +167,7 @@
 - (void)createScabChunkBorderFromIScabSprite:(IScabSprite *)iscabSprite {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     Wound *scabBorder = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab_border%d.png", iscabSprite.scabChunkNo]] autorelease];
+    [scabBorder setScale:1.3];
     [scabBorder setPosition:iscabSprite.savedLocation];
     [app.batchNode addChild:scabBorder z:-2];
     [self.scabChunkBorders addObject:scabBorder];
@@ -185,7 +185,6 @@
     [wound setScabChunkNo:iscabSprite.scabChunkNo];
     [wound setIsClean:isClean];
     [wound setIsBleeding:isBleeding];
-    [wound setScale:0.8];
     
     /*
     if (wound.isBleeding) {
@@ -229,14 +228,15 @@
     [self.scabChunks removeAllObjects];
     [self.wounds removeAllObjects];
     [self.scabChunkBorders removeAllObjects];
-    
+   
+
     for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
-        
+
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
         for (Wound *scabChunkBorder in savedScabChunkBorders)
             [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
-    
+
     bool shouldHealUncleanWounds = [[self healDate] compare:[NSDate date]] == NSOrderedAscending ? TRUE : FALSE;
     for (Wound *wound in savedWounds) {
         if (shouldHealUncleanWounds) {
@@ -247,7 +247,7 @@
             [self createWoundFromIScabSprite:wound isClean:wound.isClean];
         }
     }
-    
+
     [savedWounds release];
     [savedScabChunks release];
     [savedScabChunkBorders release];
