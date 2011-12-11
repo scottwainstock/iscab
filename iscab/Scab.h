@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 
 #define NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS 30
-#define SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS 75
-#define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 40
+#define SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS 100
+#define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 100
 
 #define HEART_SCAB_SIZE 60
 #define HEART_TOP_RADIUS 10
 #define XXX_SCAB_SIZE 30
+#define SASS_SCAB_SIZE 100
 #define ILLUMINATI_SCAB_SIZE 80
 #define ILLUMINATI_EYE_RADIUS (ILLUMINATI_SCAB_SIZE / 8)
 
@@ -26,8 +27,8 @@
 #define LARGE_SCAB_SIZE 300
 #define XL_SCAB_SIZE 301
 
-#define MAX_SCAB_WIDTH 100
-#define MAX_SCAB_HEIGHT 100
+#define MAX_SCAB_WIDTH 300
+#define MAX_SCAB_HEIGHT 300
 
 /*
 #define SMALL_HEALING_TIME 1
@@ -84,6 +85,8 @@
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (void)createWoundFromIScabSprite:(id)iscabSprite isClean:(bool)isClean;
 - (void)initializeStatesWithName:(NSString *)scabName;
+- (NSMutableArray *)drawEarWithTop:(CGPoint)top left:(CGPoint)left right:(CGPoint)right;
+- (NSMutableArray *)drawCircleWithRadius:(int)radius xMidPoint:(int)xMidPoint yMidPoint:(int)yMidPoint;
 - (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
@@ -92,5 +95,6 @@
 - (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary;
 - (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary;
 - (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary;
+- (NSMutableArray *)sassShapeCoordinates:(CGRect)backgroundBoundary;
 
 @end
