@@ -44,7 +44,6 @@ AppDelegate *app;
                 [looseScabChunks removeObject:deleteSprite];
             
             [app.batchNode removeChild:deleteSprite cleanup:YES];
-            [deleteSprite destroy];
         }
         
         //[spritesToDelete release];
