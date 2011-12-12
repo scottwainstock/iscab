@@ -1374,6 +1374,8 @@
 		8E2994FB1495876100AD21B2 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				8EB71AE213F39E1200072593 /* drawSpace.c */,
+				8EB71AE313F39E1200072593 /* drawSpace.h */,
 				8E2994FC1495882100AD21B2 /* CCMenuWideTouch.h */,
 				8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */,
 				8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */,
@@ -2030,8 +2032,6 @@
 				8E2994FB1495876100AD21B2 /* Util */,
 				8E2994FA149586C500AD21B2 /* Pages */,
 				8E2994F81495868A00AD21B2 /* Models */,
-				8EB71AE213F39E1200072593 /* drawSpace.c */,
-				8EB71AE313F39E1200072593 /* drawSpace.h */,
 				8ECA1AD413F397AF006597EA /* AppDelegate.h */,
 				8ECA1AD513F397AF006597EA /* AppDelegate.m */,
 				8ECA1AD713F397AF006597EA /* RootViewController.h */,
