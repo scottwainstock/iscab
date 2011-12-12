@@ -8,16 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "CCMenuWideTouch.h"
 
 #define SKIN_BACKGROUND_TAG 8
 
 @interface IScabCCLayer : CCLayer {
-    CCMenu *iconMenu;
+    CCMenuWideTouch *iconMenu;
     CCMenuItem *backButton;
     CCMenuItem *jarButton;
 }
 
-@property (nonatomic, retain) CCMenu *iconMenu;
+@property (nonatomic, retain) CCMenuWideTouch *iconMenu;
 @property (nonatomic, retain) CCMenuItem *backButton;
 @property (nonatomic, retain) CCMenuItem *jarButton;
 

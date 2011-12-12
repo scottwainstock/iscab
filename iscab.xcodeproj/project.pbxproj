@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */; };
+		8E2994FE1495882100AD21B2 /* CCMenuWideTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */; };
 		8E39A460147CA59A008FC74D /* GKAchievementNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */; };
 		8E39A461147CA59A008FC74D /* GKAchievementHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */; };
 		8E39A468147CA5AE008FC74D /* gk-icon-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A464147CA5AE008FC74D /* gk-icon-hd.png */; };
@@ -538,6 +539,8 @@
 /* Begin PBXFileReference section */
 		8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterBridge.h; sourceTree = "<group>"; };
 		8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterBridge.m; sourceTree = "<group>"; };
+		8E2994FC1495882100AD21B2 /* CCMenuWideTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMenuWideTouch.h; sourceTree = "<group>"; };
+		8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMenuWideTouch.m; sourceTree = "<group>"; };
 		8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementNotification.m; sourceTree = "<group>"; };
 		8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKAchievementNotification.h; sourceTree = "<group>"; };
 		8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementHandler.m; sourceTree = "<group>"; };
@@ -1320,6 +1323,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E2994F81495868A00AD21B2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8EB71A8913F399C200072593 /* CCParticleMyBlood.h */,
+				8EB71A9613F399C200072593 /* CCParticleMyBlood.m */,
+				8EB71A8513F399C200072593 /* IScabSprite.h */,
+				8EB71A9213F399C200072593 /* IScabSprite.m */,
+				8EB71A7E13F399C200072593 /* Wound.h */,
+				8EB71A8B13F399C200072593 /* Wound.m */,
+				8EB71A8013F399C200072593 /* ScabChunk.h */,
+				8EB71A8D13F399C200072593 /* ScabChunk.m */,
+				8EB816F3144BA49C004D2C73 /* Jar.h */,
+				8EB816F4144BA49C004D2C73 /* Jar.m */,
+				8E845488144E1181002F5424 /* Scab.h */,
+				8E845489144E1181002F5424 /* Scab.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		8E2994FA149586C500AD21B2 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				8EB71A8613F399C200072593 /* IScabCCLayer.h */,
+				8EB71A9313F399C200072593 /* IScabCCLayer.m */,
+				8E430E76146F14E1001401E0 /* IScabCCShareLayer.h */,
+				8E430E77146F14E1001401E0 /* IScabCCShareLayer.m */,
+				8EB71A7F13F399C200072593 /* SkinColorPicker.h */,
+				8EB71A8C13F399C200072593 /* SkinColorPicker.m */,
+				8EB71A8213F399C200072593 /* MainMenu.h */,
+				8EB71A8F13F399C200072593 /* MainMenu.m */,
+				8EB71A8313F399C200072593 /* Leaderboard.h */,
+				8EB71A9013F399C200072593 /* Leaderboard.m */,
+				8EB71A8413F399C200072593 /* JarScene.h */,
+				8EB71A9113F399C200072593 /* JarScene.m */,
+				8EB71A8713F399C200072593 /* Help.h */,
+				8EB71A9413F399C200072593 /* Help.m */,
+				8EB71A8A13F399C200072593 /* About.h */,
+				8EB71A9713F399C200072593 /* About.m */,
+				8EB71A8813F399C200072593 /* GamePlay.h */,
+				8EB71A9513F399C200072593 /* GamePlay.m */,
+				8EEC36E9146B76270035C563 /* SpecialScabs.h */,
+				8EEC36EA146B76270035C563 /* SpecialScabs.m */,
+				8E430E73146F0DB1001401E0 /* SpecialScabDetail.h */,
+				8E430E74146F0DB1001401E0 /* SpecialScabDetail.m */,
+			);
+			name = Pages;
+			sourceTree = "<group>";
+		};
+		8E2994FB1495876100AD21B2 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				8E2994FC1495882100AD21B2 /* CCMenuWideTouch.h */,
+				8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */,
+				8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */,
+				8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */,
+				8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */,
+				8E39A45F147CA59A008FC74D /* GKAchievementHandler.h */,
+				8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */,
+				8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		8E39A463147CA5AE008FC74D /* GKAchievementNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -1961,52 +2027,15 @@
 		8ECA192613F397AC006597EA /* iscab */ = {
 			isa = PBXGroup;
 			children = (
-				8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */,
-				8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */,
-				8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */,
-				8E39A45F147CA59A008FC74D /* GKAchievementHandler.h */,
+				8E2994FB1495876100AD21B2 /* Util */,
+				8E2994FA149586C500AD21B2 /* Pages */,
+				8E2994F81495868A00AD21B2 /* Models */,
 				8EB71AE213F39E1200072593 /* drawSpace.c */,
 				8EB71AE313F39E1200072593 /* drawSpace.h */,
-				8EB71A7E13F399C200072593 /* Wound.h */,
-				8EB71A8B13F399C200072593 /* Wound.m */,
-				8EB71A7F13F399C200072593 /* SkinColorPicker.h */,
-				8EB71A8C13F399C200072593 /* SkinColorPicker.m */,
-				8EB71A8013F399C200072593 /* ScabChunk.h */,
-				8EB71A8D13F399C200072593 /* ScabChunk.m */,
-				8EB71A8213F399C200072593 /* MainMenu.h */,
-				8EB71A8F13F399C200072593 /* MainMenu.m */,
-				8EB71A8313F399C200072593 /* Leaderboard.h */,
-				8EB71A9013F399C200072593 /* Leaderboard.m */,
-				8EB71A8413F399C200072593 /* JarScene.h */,
-				8EB71A9113F399C200072593 /* JarScene.m */,
-				8EB71A8513F399C200072593 /* IScabSprite.h */,
-				8EB71A9213F399C200072593 /* IScabSprite.m */,
-				8EB71A8613F399C200072593 /* IScabCCLayer.h */,
-				8EB71A9313F399C200072593 /* IScabCCLayer.m */,
-				8E430E76146F14E1001401E0 /* IScabCCShareLayer.h */,
-				8E430E77146F14E1001401E0 /* IScabCCShareLayer.m */,
-				8EB71A8713F399C200072593 /* Help.h */,
-				8EB71A9413F399C200072593 /* Help.m */,
-				8EB71A8913F399C200072593 /* CCParticleMyBlood.h */,
-				8EB71A9613F399C200072593 /* CCParticleMyBlood.m */,
-				8EB71A8A13F399C200072593 /* About.h */,
-				8EB71A9713F399C200072593 /* About.m */,
-				8EB71A8813F399C200072593 /* GamePlay.h */,
-				8EB71A9513F399C200072593 /* GamePlay.m */,
 				8ECA1AD413F397AF006597EA /* AppDelegate.h */,
 				8ECA1AD513F397AF006597EA /* AppDelegate.m */,
 				8ECA1AD713F397AF006597EA /* RootViewController.h */,
 				8ECA1AD813F397AF006597EA /* RootViewController.m */,
-				8EB816F3144BA49C004D2C73 /* Jar.h */,
-				8EB816F4144BA49C004D2C73 /* Jar.m */,
-				8E845488144E1181002F5424 /* Scab.h */,
-				8E845489144E1181002F5424 /* Scab.m */,
-				8EEC36E9146B76270035C563 /* SpecialScabs.h */,
-				8EEC36EA146B76270035C563 /* SpecialScabs.m */,
-				8E430E73146F0DB1001401E0 /* SpecialScabDetail.h */,
-				8E430E74146F0DB1001401E0 /* SpecialScabDetail.m */,
-				8E1F997D1474AE8B00FCD690 /* GameCenterBridge.h */,
-				8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */,
 				8ECA1ADD13F397AF006597EA /* GameConfig.h */,
 				8ECA192713F397AC006597EA /* Resources */,
 				8ECA193B13F397AC006597EA /* libs */,
@@ -3097,6 +3126,7 @@
 				8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */,
 				8E39A460147CA59A008FC74D /* GKAchievementNotification.m in Sources */,
 				8E39A461147CA59A008FC74D /* GKAchievementHandler.m in Sources */,
+				8E2994FE1495882100AD21B2 /* CCMenuWideTouch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

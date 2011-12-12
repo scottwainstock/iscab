@@ -12,6 +12,7 @@
 #import "About.h"
 #import "SimpleAudioEngine.h"
 #import "AppDelegate.h"
+#import "CCMenuWideTouch.h"
 
 @implementation IScabCCLayer
 
@@ -61,8 +62,9 @@
     jarButton.position = ccp(290, 40);
     [jarButton retain];
     
-    iconMenu = [CCMenu menuWithItems:backButton, jarButton, nil];
-    iconMenu.position = CGPointZero;
+    iconMenu = [CCMenuWideTouch menuWithItems:backButton, jarButton, nil];
+    [iconMenu setMinTouchRect:CGRectMake(0, 0, ICON_TOUCH_AREA_SIZE, ICON_TOUCH_AREA_SIZE)];
+    [iconMenu setPosition:CGPointZero];
     [self addChild:iconMenu z:2];
     [iconMenu retain];
 }

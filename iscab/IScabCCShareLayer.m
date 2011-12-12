@@ -9,6 +9,7 @@
 #import "IScabCCShareLayer.h"
 #import "SpecialScabs.h"
 #import "AppDelegate.h"
+#import "CCMenuWideTouch.h"
 #import "SHK.h"
 
 @implementation IScabCCShareLayer
@@ -17,26 +18,27 @@
 
 - (void)setupBackground {
     CCSprite *skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar_Background.jpg"]];
-    skinBG.anchorPoint = ccp(0, 0);
-    skinBG.position = ccp(0, 0);
+    [skinBG setAnchorPoint:ccp(0, 0)];
+    [skinBG setPosition:ccp(0, 0)];
     [self addChild:skinBG z:-10 tag:SKIN_BACKGROUND_TAG];
 }
 
 - (void)setupNavigationIcons {    
     backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
-    backButton.position = ccp(40, 40);
+    [backButton setPosition:ccp(40, 40)];
     [backButton retain];
     
     specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
-    specialButton.position = ccp(165, 35);
+    [specialButton setPosition:ccp(165, 35)];
     [specialButton retain];
     
     shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
-    shareButton.position = ccp(280, 40);
+    [shareButton setPosition:ccp(280, 40)];
     [shareButton retain];
     
-    iconMenu = [CCMenu menuWithItems:backButton, specialButton, shareButton, nil];
-    iconMenu.position = CGPointZero;
+    iconMenu = [CCMenuWideTouch menuWithItems:backButton, specialButton, shareButton, nil];
+    [iconMenu setPosition:CGPointZero];
+    [iconMenu setMinTouchRect:CGRectMake(0, 0, ICON_TOUCH_AREA_SIZE, ICON_TOUCH_AREA_SIZE)];
     [self addChild:iconMenu z:2];
     [iconMenu retain];
 }
