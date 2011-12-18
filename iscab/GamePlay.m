@@ -161,7 +161,7 @@ AppDelegate *app;
     
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
-
+    
     CCSprite *bg;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
         NSData *imageData = [app.defaults objectForKey:@"photoBackground"];

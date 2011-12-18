@@ -63,6 +63,10 @@
     return CGPointMake(scabXOffset, scabYOffset);
 }
 
+- (CGPoint)generateSpecialScabOrigin {
+    return CGPointMake((arc4random() % 2 == 1) ? 75 : 125, (arc4random() % 2 == 1) ? 75 : 100);
+}
+
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
     if ((self = [super init])) {
         NSString *specialScabName = [[SpecialScabs specialScabNames] objectAtIndex:(arc4random() % ([[SpecialScabs specialScabNames] count] - 1))];
@@ -417,7 +421,7 @@
 #pragma special scab coordinates
 
 - (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    CGPoint scabOrigin = [self generateSpecialScabOrigin];
     NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
@@ -455,7 +459,7 @@
 }
 
 - (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    CGPoint scabOrigin = [self generateSpecialScabOrigin];
     NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
@@ -483,7 +487,7 @@
 }
 
 - (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    CGPoint scabOrigin = [self generateSpecialScabOrigin];
     NSMutableArray *coordinates = [[NSMutableArray alloc] init];
     
     for (int xNumber = 0; xNumber < 3; xNumber++) {    
@@ -510,7 +514,7 @@
 }
 
 - (NSMutableArray *)sassShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
+    CGPoint scabOrigin = [self generateSpecialScabOrigin];
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, SASS_SCAB_SIZE, SASS_SCAB_SIZE);
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
 
