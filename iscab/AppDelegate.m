@@ -156,6 +156,9 @@
 
     if ([self.defaults stringForKey:@"sound"] == NULL)
         [self.defaults setBool:TRUE forKey:@"sound"];
+    
+    if ([self.defaults stringForKey:@"tutorial"] == NULL)
+        [self.defaults setBool:TRUE forKey:@"tutorial"];
         
     [[SimpleAudioEngine sharedEngine] setEffectsVolume:0.1];
     [[CDAudioManager sharedManager] setMute:![self.defaults boolForKey:@"sound"]];    
@@ -235,9 +238,8 @@
     NSLog(@"APPLICATION WENT ACTIVE");
 	[[CCDirector sharedDirector] resume];
     
-    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] displayExistingBoard];
-    }
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -260,10 +262,9 @@
     [self.scab setIsAged:YES];
         
     bool alreadyScheduled = FALSE;
-    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])           
         if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
             alreadyScheduled = TRUE;
-    }
     
     if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
         [self scheduleNotification:[self.scab healDate]];

@@ -22,7 +22,7 @@
 - (id)init {
     if ((self = [super init])) {
         CCSprite *aboutText = [CCSprite spriteWithFile:@"about-text.png"];
-        aboutText.position = ccp(160, 240);
+        aboutText.position = ccp(160, 236);
         [self addChild:aboutText z:-1];
                 
         CCMenuItemImage *ihodor = [CCMenuItemImage itemFromNormalImage:@"iHodor.png" selectedImage: @"iHodor-Tap.png" target:self selector:@selector(ihodorButtonPressed:)];

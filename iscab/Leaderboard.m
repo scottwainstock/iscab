@@ -22,7 +22,7 @@
 }
 
 - (id)init {
-    if ((self=[super init]))
+    if ((self = [super init]))
         [self showLeaderboard];
     
     return self;
@@ -34,7 +34,7 @@
     
     leaderboardViewController = [[GKLeaderboardViewController alloc] init];
     if (leaderboardViewController != nil) {
-        leaderboardViewController.leaderboardDelegate = self;
+        [leaderboardViewController setLeaderboardDelegate:self];
         [viewController presentModalViewController:leaderboardViewController animated:YES];
     }
 }

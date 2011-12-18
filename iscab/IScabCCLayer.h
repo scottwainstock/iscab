@@ -28,6 +28,5 @@
 - (void)backTapped:(CCMenuItem*)menuItem;
 - (void)homeTapped:(CCMenuItem*)menuItem;
 - (void)jarTapped:(CCMenuItem*)menuItem;
-- (void)playMenuSound;
 
 @end

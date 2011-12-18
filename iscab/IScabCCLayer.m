@@ -10,7 +10,6 @@
 #import "MainMenu.h"
 #import "JarScene.h"
 #import "About.h"
-#import "SimpleAudioEngine.h"
 #import "AppDelegate.h"
 #import "CCMenuWideTouch.h"
 
@@ -20,8 +19,6 @@
 
 - (id)init {
     if ((self = [super init])) {  
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"menu_sound.mp3"];
-
         [self setupNavigationIcons];
     }
 
@@ -83,10 +80,6 @@
 
 - (void)jarTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[JarScene scene]]];
-}
-
-- (void)playMenuSound {
-    [[SimpleAudioEngine sharedEngine] playEffect:@"menu_sound.mp3"];
 }
 
 - (void)dealloc {
