@@ -74,6 +74,7 @@
 + (BOOL)gbPointInTriangle:(CGPoint)point pointA:(CGPoint)pointA pointB:(CGPoint)pointB pointC:(CGPoint)pointC;
 
 - (bool)isOverpicked;
+- (bool)isDevoidOfScabsAndNotFullyHealed;
 - (bool)isComplete;
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;

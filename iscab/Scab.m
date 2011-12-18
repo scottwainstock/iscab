@@ -285,6 +285,17 @@
     return [self baseHealingInterval] + (arc4random() % [self baseHealingInterval]);
 }
 
+- (bool)isDevoidOfScabsAndNotFullyHealed {
+    if ([self.scabChunks count])
+        return false;
+    
+    for (Wound *wound in self.wounds)
+        if (!wound.isClean)
+            return true;
+    
+    return false;
+}
+
 - (bool)isComplete {
     if ([self.scabChunks count])
         return false;

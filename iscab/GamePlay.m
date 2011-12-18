@@ -101,7 +101,7 @@ AppDelegate *app;
     if((self = [super init])) {
         NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        self.isTouchEnabled = YES;
+        [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
         NSLog(@"GAMEPLAY SETUP COMPLETE");
         
@@ -173,9 +173,9 @@ AppDelegate *app;
         bg = [CCSprite spriteWithFile:skinBackground];
     }
     
-    bg.tag = BACKGROUND_IMAGE_TAG_ID;
-    bg.anchorPoint = ccp(0, 0);
-    bg.position = ccp(0, 0);
+    [bg setTag:BACKGROUND_IMAGE_TAG_ID];
+    [bg setAnchorPoint:ccp(0, 0)];
+    [bg setPosition:ccp(0, 0)];
     [self addChild:bg z:-1];
     
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
@@ -263,6 +263,12 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
+    if ([app.defaults boolForKey:@"tutorial"]) {
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warning show];
+        [warning release];
+    }
+    
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
@@ -298,6 +304,10 @@ AppDelegate *app;
         [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
+    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warning show];
+        [warning release];
     }
 }
 
@@ -325,7 +335,6 @@ AppDelegate *app;
     [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
     [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
-
 
 - (cpSpace *)createSpace {    
     space = cpSpaceNew();
@@ -369,11 +378,7 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                if (
-                    [scabChunk.scab isOverpicked] && 
-                    ![scabChunk.scab isOverpickWarningIssued] &&
-                    ([[app.defaults objectForKey:@"numScabsPicked"] intValue] <= MAX_NUMBER_OF_OVERPICK_WARNINGS)
-                )
+                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && [app.defaults boolForKey:@"tutorial"])
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
