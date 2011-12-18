@@ -32,7 +32,7 @@
         [self addChild:pickerText];
         
         CCSprite *cameraNotTouched = [CCSprite spriteWithFile:@"camera.png"];
-        [cameraNotTouched setPosition:ccp(228, 181)];
+        [cameraNotTouched setPosition:ccp(230, 190)];
         [cameraNotTouched setTag:CAMERA_NOT_TOUCHED_TAG];
         [self addChild:cameraNotTouched];
     }
@@ -54,26 +54,26 @@
     [circleTapped setTag:CIRCLE_TAP];
     
     if (CGRectContainsPoint(lightSkinBox, touchLocation)) {
-        [circleTapped setPosition:ccp(90, 320)];
+        [circleTapped setPosition:ccp(90, 330)];
         [self addChild:circleTapped];
         
         [app.defaults setObject:@"light" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(mediumSkinBox, touchLocation)) {
-        [circleTapped setPosition:ccp(230, 320)];
+        [circleTapped setPosition:ccp(230, 330)];
         [self addChild:circleTapped];
         
         [app.defaults setObject:@"medium" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(darkSkinBox, touchLocation)) {
-        [circleTapped setPosition:ccp(90, 180)];
+        [circleTapped setPosition:ccp(90, 190)];
         [self addChild:circleTapped];
         
         [app.defaults setObject:@"dark" forKey:@"skinColor"];
     } else if (CGRectContainsPoint(pictureSkinBox, touchLocation)) {
-        [circleTapped setPosition:ccp(230, 180)];
+        [circleTapped setPosition:ccp(230, 190)];
         [self addChild:circleTapped];
         
         CCSprite *cameraTouched = [CCSprite spriteWithFile:@"camera-Tap.png"];
-        [cameraTouched setPosition:ccp(228, 181)];
+        [cameraTouched setPosition:ccp(230, 190)];
         [cameraTouched setTag:CAMERA_TOUCHED_TAG];
         
         [self addChild:cameraTouched];
@@ -108,11 +108,11 @@
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     [self removeChild:[self getChildByTag:CAMERA_TOUCHED_TAG] cleanup:YES];
-    [self removeChild:[self getChildByTag:CIRCLE_TAP] cleanup:YES];
+    [self removeChild:[self getChildByTag:CIRCLE_TAP] cleanup:NO];
 
     if (![self getChildByTag:CAMERA_NOT_TOUCHED_TAG]) {
         CCSprite *cameraNotTouched = [CCSprite spriteWithFile:@"camera.png"];
-        [cameraNotTouched setPosition:ccp(228, 181)];
+        [cameraNotTouched setPosition:ccp(230, 190)];
         [cameraNotTouched setTag:CAMERA_NOT_TOUCHED_TAG];
         [self addChild:cameraNotTouched];
     }
