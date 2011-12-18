@@ -44,6 +44,10 @@
     [iconMenu retain];
 }
 
+- (void)backTapped:(CCMenuItem  *)menuItem {
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionMoveInL class] duration:TRANSITION_SPEED];
+}
+
 - (void) dealloc { 
     [menu release];
     [super dealloc];

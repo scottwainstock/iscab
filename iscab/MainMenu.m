@@ -92,7 +92,7 @@ AppDelegate *app;
 - (void)optionsTapped:(CCMenuItem *)menuItem {
     [super playMenuSound];
     
-    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[OptionMenu scene]]];    
+    [[CCDirector sharedDirector] pushScene:[CCTransitionMoveInR transitionWithDuration:TRANSITION_SPEED scene:[OptionMenu scene]]];    
 }
 
 @end
