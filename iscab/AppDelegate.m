@@ -157,7 +157,8 @@
     if ([self.defaults stringForKey:@"sound"] == NULL)
         [self.defaults setBool:TRUE forKey:@"sound"];
         
-    [CDAudioManager sharedManager].mute = ![self.defaults boolForKey:@"sound"];    
+    [[SimpleAudioEngine sharedEngine] setEffectsVolume:0.1];
+    [[CDAudioManager sharedManager] setMute:![self.defaults boolForKey:@"sound"]];    
 
     cpInitChipmunk();
             
