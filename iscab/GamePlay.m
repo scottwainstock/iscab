@@ -294,7 +294,6 @@ AppDelegate *app;
         [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
         
         endSequenceRunning = true;
-        [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
         [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         
