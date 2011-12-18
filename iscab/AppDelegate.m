@@ -154,10 +154,10 @@
     if ([self.defaults stringForKey:@"skinColor"] == NULL)
         [self.defaults setObject:@"light" forKey:@"skinColor"];
 
-    [self.defaults setBool:[self.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
-    
-    [CDAudioManager sharedManager].mute = [self.defaults boolForKey:@"sound"];    
-//    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
+    if ([self.defaults stringForKey:@"sound"] == NULL)
+        [self.defaults setBool:TRUE forKey:@"sound"];
+        
+    [CDAudioManager sharedManager].mute = ![self.defaults boolForKey:@"sound"];    
 
     cpInitChipmunk();
             

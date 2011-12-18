@@ -117,10 +117,8 @@ AppDelegate *app;
 - (void)soundTapped:(CCMenuItem *)menuItem {
     [self playMenuSound];
     
-    [app.defaults setBool:[app.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
-    [app.defaults synchronize];
-    
-    [[CDAudioManager sharedManager] setMute:[app.defaults boolForKey:@"sound"]];    
+    [app.defaults setBool:[app.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];    
+    [[CDAudioManager sharedManager] setMute:![app.defaults boolForKey:@"sound"]];    
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
@@ -128,9 +126,9 @@ AppDelegate *app;
     CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SoundOff.png" selectedImage:@"SoundOff-Hover.png" target:nil selector:nil] retain];
     
     if (currentSoundState)
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
-    else
         return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:off, on, nil];
+    else
+        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
 }
 
 - (void) dealloc { 
