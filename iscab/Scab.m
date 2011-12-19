@@ -266,9 +266,7 @@
         return SMALL_SCAB;
 }
 
-- (int)baseHealingInterval {
-    return 10;
-    
+- (int)baseHealingInterval {    
     switch ([self scabSize]) {
         case XL_SCAB:
             return XL_HEALING_TIME;

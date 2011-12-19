@@ -228,7 +228,12 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    if ([[CCDirector sharedDirector] runningScene].tag != GAMEPLAY_SCENE_TAG)
+    NSLog(@"RECEIVED LOCAL NOTIFICATION");
+    
+    if (
+        application.applicationState == UIApplicationStateInactive && 
+        [[CCDirector sharedDirector] runningScene].tag != GAMEPLAY_SCENE_TAG
+    )
         [[CCDirector sharedDirector] pushScene:[GamePlay scene]];
 }
 

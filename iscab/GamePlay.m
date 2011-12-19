@@ -425,7 +425,6 @@ AppDelegate *app;
     NSLog(@"GAMEPLAY ON EXIT");
     [app saveState];
     [app.scab reset];
-    [self removeChild:app.batchNode cleanup:YES];
     [super onExit];
 }
 

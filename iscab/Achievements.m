@@ -43,7 +43,7 @@
     [viewController dismissModalViewControllerAnimated:NO];
     [viewController.view removeFromSuperview];
     
-    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:TRANSITION_SPEED];
+    [[CCDirector sharedDirector] popScene];
 }
 
 - (void)dealloc {

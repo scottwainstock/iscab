@@ -27,7 +27,7 @@
         [self setShareImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-email.jpg", scabName]]];
         
         CCSprite *scabImage = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@-detail.jpg", scabName]];
-        scabImage.position = ccp(160, 240);
+        [scabImage setPosition:ccp(160, 240)];
         [self addChild:scabImage z:0];  
     }
     

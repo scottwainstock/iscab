@@ -29,7 +29,7 @@
     [backButton retain];
     
     specialButton = [CCMenuItemImage itemFromNormalImage:@"SpecialStar.png" selectedImage:@"SpecialStar_Tap.png" target:self selector:@selector(specialTapped:)];
-    [specialButton setPosition:ccp(165, 41)];
+    [specialButton setPosition:ccp(160, 41)];
     [specialButton retain];
     
     shareButton = [CCMenuItemImage itemFromNormalImage:@"Share.png" selectedImage:@"Share-Tap.png" target:self selector:@selector(shareTapped:)];
