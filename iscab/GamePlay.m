@@ -111,7 +111,7 @@ AppDelegate *app;
         NSLog(@"CREATED SPACE");
         
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
-                    
+         
         [self addChild:app.batchNode];
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -140,6 +140,8 @@ AppDelegate *app;
         [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
     else
         [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
+    
+    [app scheduleNotifications];
     
     NSLog(@"DONE GENERATING SCAB");
 }
@@ -406,6 +408,7 @@ AppDelegate *app;
 #pragma exit/enter setup
 
 - (void)onEnter {
+    NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
     
     if (![app.defaults objectForKey:@"scab"]) {
@@ -419,9 +422,11 @@ AppDelegate *app;
 }
 
 - (void)onExit {
-    [super onExit];
-    NSLog(@"ON EXIT");
+    NSLog(@"GAMEPLAY ON EXIT");
     [app saveState];
+    [app.scab reset];
+    [self removeChild:app.batchNode cleanup:YES];
+    [super onExit];
 }
 
 - (void)dealloc {

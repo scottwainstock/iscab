@@ -26,19 +26,19 @@ AppDelegate *app;
 
     if ((self = [super init])) {
         CCSprite *bg = [CCSprite spriteWithFile:[self jarBackgroundImage]];
-        bg.position = ccp(160, 240);
+        [bg setPosition:ccp(160, 240)];
         [self addChild:bg z:0];
         
         int numScabLevels = [app.currentJar numScabLevels];
         
         if (numScabLevels > 0) {
             CCSprite *scabLevel = [CCSprite spriteWithFile:[NSString stringWithFormat:@"jarlayer%d.png", numScabLevels]];
-            scabLevel.position = ccp(160, 240);
+            [scabLevel setPosition:ccp(160, 240)];
             [self addChild:scabLevel z:4];
         }
             
         CCSprite *jarCover = [CCSprite spriteWithFile:@"Jar-Front.png"];
-        jarCover.position = ccp(160, 240);
+        [jarCover setPosition:ccp(160, 240)];
         [self addChild:jarCover z:4];
     }
                                

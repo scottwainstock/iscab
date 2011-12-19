@@ -14,7 +14,7 @@
 
 @implementation Scab
 
-@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation, healDate, isAged, isOverpickWarningIssued, name;
+@synthesize scabChunks, wounds, center, scabChunkBorders, birthday, sizeAtCreation, healDate, isOverpickWarningIssued, name;
 
 - (int)pointValue {
     switch ([self scabSize]) {
@@ -64,7 +64,7 @@
 }
 
 - (CGPoint)generateSpecialScabOrigin {
-    return CGPointMake((arc4random() % 2 == 1) ? 75 : 125, (arc4random() % 2 == 1) ? 75 : 100);
+    return CGPointMake((arc4random() % 2 == 1) ? 75 : 125, (arc4random() % 2 == 1) ? 50 : 75);
 }
 
 - (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
@@ -267,6 +267,8 @@
 }
 
 - (int)baseHealingInterval {
+    return 10;
+    
     switch ([self scabSize]) {
         case XL_SCAB:
             return XL_HEALING_TIME;
@@ -312,12 +314,7 @@
 }
 
 - (bool)isOverpicked {
-    if (isAged)
-        return false;
-    else if (((float)[self.wounds count] / (float)self.sizeAtCreation) >= OVERPICKED_THRESHOLD)
-        return true;
-    else
-        return false;
+    return (((float)[self.wounds count] / (float)self.sizeAtCreation) >= OVERPICKED_THRESHOLD);
 }
    
 - (void)reset {
@@ -380,7 +377,6 @@
     [coder encodeObject:self.birthday forKey:@"birthday"];
     [coder encodeObject:self.healDate forKey:@"healDate"];
     [coder encodeInt:self.sizeAtCreation forKey:@"sizeAtCreation"];
-    [coder encodeBool:self.isAged forKey:@"isAged"];
     [coder encodeBool:self.isOverpickWarningIssued forKey:@"isOverpickWarningIssued"];
     [coder encodeObject:(NSString *)self.name forKey:@"name"];
 } 
@@ -395,7 +391,6 @@
         self.birthday = (NSDate *)[coder decodeObjectForKey:@"birthday"];
         self.healDate = (NSDate *)[coder decodeObjectForKey:@"healDate"];
         self.sizeAtCreation = [coder decodeIntForKey:@"sizeAtCreation"];
-        self.isAged = [coder decodeBoolForKey:@"isAged"];
         self.isOverpickWarningIssued = [coder decodeBoolForKey:@"isOverpickWarningIssued"];
         self.name = (NSString *)[coder decodeObjectForKey:@"name"];
     }
@@ -412,7 +407,6 @@
     NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
     NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
     NSLog(@"LOADED SCAB HEAL DATE: %@", [self healDate]);
-    NSLog(@"IS AGED: %d", (int)[self isAged]);
     NSLog(@"NAME: %@", [self name]);
     
     return self; 

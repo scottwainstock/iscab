@@ -49,7 +49,6 @@
 
 @interface Scab : NSObject <NSCoding> {
     int sizeAtCreation;
-    bool isAged;
     bool isOverpickWarningIssued;
     CGPoint center;
     NSMutableArray *scabChunks;
@@ -61,7 +60,6 @@
 }
 
 @property (nonatomic, assign) bool isOverpickWarningIssued;
-@property (nonatomic, assign) bool isAged;
 @property (nonatomic, assign) int sizeAtCreation;
 @property (nonatomic, assign) CGPoint center;
 @property (nonatomic, retain) NSString *name;
