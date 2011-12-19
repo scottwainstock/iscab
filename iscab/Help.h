@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 #import "IScabCCLayer.h"
 
-@interface Help : IScabCCLayer <UIAlertViewDelegate> {
+@interface Help : IScabCCLayer {
 }
 
 + (id)scene;

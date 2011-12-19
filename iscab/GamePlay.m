@@ -44,7 +44,6 @@ AppDelegate *app;
                 [looseScabChunks removeObject:deleteSprite];
             
             [app.batchNode removeChild:deleteSprite cleanup:YES];
-            [deleteSprite destroy];
         }
         
         //[spritesToDelete release];
@@ -102,7 +101,7 @@ AppDelegate *app;
     if((self = [super init])) {
         NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        self.isTouchEnabled = YES;
+        [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
         NSLog(@"GAMEPLAY SETUP COMPLETE");
         
@@ -112,7 +111,7 @@ AppDelegate *app;
         NSLog(@"CREATED SPACE");
         
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
-                    
+         
         [self addChild:app.batchNode];
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -137,10 +136,12 @@ AppDelegate *app;
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
 
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
-    if (((arc4random() % 10) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
+    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
         [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
     else
         [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
+    
+    [app scheduleNotifications];
     
     NSLog(@"DONE GENERATING SCAB");
 }
@@ -162,7 +163,7 @@ AppDelegate *app;
     
     if (skinBackgroundNumber == nil)
         skinBackgroundNumber = [NSString stringWithFormat:@"%d", arc4random() % NUM_BACKGROUNDS];
-
+    
     CCSprite *bg;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"photo"]) {
         NSData *imageData = [app.defaults objectForKey:@"photoBackground"];
@@ -174,9 +175,9 @@ AppDelegate *app;
         bg = [CCSprite spriteWithFile:skinBackground];
     }
     
-    bg.tag = BACKGROUND_IMAGE_TAG_ID;
-    bg.anchorPoint = ccp(0, 0);
-    bg.position = ccp(0, 0);
+    [bg setTag:BACKGROUND_IMAGE_TAG_ID];
+    [bg setAnchorPoint:ccp(0, 0)];
+    [bg setPosition:ccp(0, 0)];
     [self addChild:bg z:-1];
     
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
@@ -264,6 +265,12 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
+    if ([app.defaults boolForKey:@"tutorial"]) {
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warning show];
+        [warning release];
+    }
+    
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
@@ -295,15 +302,14 @@ AppDelegate *app;
         [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
         
         endSequenceRunning = true;
-        [[SimpleAudioEngine sharedEngine] playEffect:@"scabcomplete.wav"];
         
-        CCLabelTTF *title = [CCLabelTTF labelWithString:@"Scab Complete!" fontName:DEFAULT_FONT_NAME fontSize:DEFAULT_FONT_SIZE * 3];
-        title.position =  ccp(-100, 380);
-        [title runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.3 position:ccp(160, 380)], [CCDelayTime actionWithDuration:2  ], [CCMoveTo actionWithDuration:0.3 position:ccp(500, 380)], [CCDelayTime actionWithDuration:1], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
         
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
-        
-        [[[CCDirector sharedDirector] runningScene] addChild:title];
+    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [warning show];
+        [warning release];
     }
 }
 
@@ -331,7 +337,6 @@ AppDelegate *app;
     [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
     [scabToWarnFor setIsOverpickWarningIssued:YES];
 }
-
 
 - (cpSpace *)createSpace {    
     space = cpSpaceNew();
@@ -375,11 +380,7 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                if (
-                    [scabChunk.scab isOverpicked] && 
-                    ![scabChunk.scab isOverpickWarningIssued] &&
-                    ([[app.defaults objectForKey:@"numScabsPicked"] intValue] <= MAX_NUMBER_OF_OVERPICK_WARNINGS)
-                )
+                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && [app.defaults boolForKey:@"tutorial"])
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
@@ -407,6 +408,7 @@ AppDelegate *app;
 #pragma exit/enter setup
 
 - (void)onEnter {
+    NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
     
     if (![app.defaults objectForKey:@"scab"]) {
@@ -420,9 +422,10 @@ AppDelegate *app;
 }
 
 - (void)onExit {
-    [super onExit];
-    NSLog(@"ON EXIT");
+    NSLog(@"GAMEPLAY ON EXIT");
     [app saveState];
+    [app.scab reset];
+    [super onExit];
 }
 
 - (void)dealloc {

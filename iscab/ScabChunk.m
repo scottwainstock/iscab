@@ -20,9 +20,7 @@
     return [NSString stringWithFormat:@"%@_scab%d.png", self.type, self.scabChunkNo];
 }
 
-- (void)ripOffScab {
-    //[[SimpleAudioEngine sharedEngine] playEffect:@"scabrip.wav"];
-        
+- (void)ripOffScab {        
     if (ccpDistance(self.savedLocation, self.scab.center) < DISTANCE_FROM_CENTER_TO_REMAIN_CLEAN) {
         [self.scab createWoundFromIScabSprite:self isClean:NO];
     } else {

@@ -22,13 +22,13 @@
 - (id)init {
     if ((self = [super init])) {
         CCSprite *aboutText = [CCSprite spriteWithFile:@"about-text.png"];
-        aboutText.position = ccp(160, 240);
+        [aboutText setPosition:ccp(160, 236)];
         [self addChild:aboutText z:-1];
                 
         CCMenuItemImage *ihodor = [CCMenuItemImage itemFromNormalImage:@"iHodor.png" selectedImage: @"iHodor-Tap.png" target:self selector:@selector(ihodorButtonPressed:)];
         
         CCMenu *menu = [CCMenu menuWithItems:ihodor, nil];       
-        menu.position = ccp(240, 150);
+        [menu setPosition:ccp(240, 150)];
         [self addChild:menu];        
     }
     

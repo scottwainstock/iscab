@@ -8,49 +8,41 @@
 
 #import "MainMenu.h"
 #import "GamePlay.h"
-#import "Help.h"
-#import "JarScene.h"
-#import "Leaderboard.h"
-#import "SkinColorPicker.h"
-#import "SimpleAudioEngine.h"
 #import "AppDelegate.h"
+#import "SkinColorPicker.h"
+#import "JarScene.h"
+#import "OptionMenu.h"
+#import "SimpleAudioEngine.h"
 
 @implementation MainMenu
-
-@synthesize menu, aboutButton;
 
 AppDelegate *app;
 
 + (id)scene {
     CCScene *scene = [CCScene node];
     MainMenu *layer = [MainMenu node];
-    [scene addChild: layer];
+    [scene addChild:layer];
     return scene;
 }
 
 - (id)init {
     if ((self = [super init])) {
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        
+
         CCSprite *homeLogo = [CCSprite spriteWithFile:@"Home_Logo.png"];
-        homeLogo.position = ccp(160, 317);
+        [homeLogo setPosition:ccp(155, 310)];
         [self addChild:homeLogo z:0];
-       
-        menu = [CCMenu menuWithItems:nil];        
-        menu.position = ccp(165, 175);
-                
+        
         [menu addChild:[CCMenuItemImage itemFromNormalImage:@"StartPickin.png" selectedImage: @"StartPickin-Hover.png" target:self selector:@selector(startPickinTapped:)]];
         
-        if ([app.defaults boolForKey:@"gameCenterEnabled"])
-            [menu addChild:[CCMenuItemImage itemFromNormalImage:@"TopPickers.png" selectedImage: @"TopPickers-Hover.png" target:self selector:@selector(leaderboardsTapped:)]];    
-        
         [menu addChild:[CCMenuItemImage itemFromNormalImage:@"ChooseSkin.png" selectedImage: @"ChooseSkin-Hover.png" target:self selector:@selector(chooseSkinTapped:)]];
-        
-        [menu addChild:[self currentSoundState:[app.defaults boolForKey:@"sound"]]];
-        
-        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"Help.png" selectedImage: @"Help-Hover.png" target:self selector:@selector(helpTapped:)]];
 
-        [menu alignItemsVerticallyWithPadding:5.0f];
+        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"ScabJar.png" selectedImage: @"ScabJar-Hover.png" target:self selector:@selector(scabJarTapped:)]];
+        
+        [menu addChild:[CCMenuItemImage itemFromNormalImage:@"Options.png" selectedImage: @"Options-Hover.png" target:self selector:@selector(optionsTapped:)]];
+        
+        [menu setPosition:ccp(160, 145)];
+        [menu alignItemsVerticallyWithPadding:10.0f];
         [self addChild:menu];
         
         if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
@@ -76,67 +68,31 @@ AppDelegate *app;
         [app.defaults setBool:NO forKey:@"sendNotifications"];
 }
 
-- (void)setupNavigationIcons {
-    aboutButton = [CCMenuItemImage itemFromNormalImage:@"About.png" selectedImage:@"About-Hover.png" target:self selector:@selector(aboutTapped:)];
-    aboutButton.position = ccp(40, 40);
-    
-    jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(290, 40);
-    
-    iconMenu = [CCMenu menuWithItems:aboutButton, jarButton, nil];
-    iconMenu.position = CGPointZero;
-    [self addChild:iconMenu z:2];
-}
+- (void)setupNavigationIcons {}
 
 - (void)startPickinTapped:(CCMenuItem  *)menuItem {
-    [self playMenuSound];
+    [super playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[GamePlay scene]]];
 }
 
-- (void)helpTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[Help scene]]];
-}
-
-- (void)leaderboardsTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[Leaderboard scene]]];
-}
-
 - (void)chooseSkinTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
+    [super playMenuSound];
     
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SkinColorPicker scene]]];
 }
 
-- (void)soundTapped:(CCMenuItem *)menuItem {
-    [self playMenuSound];
+- (void)scabJarTapped:(CCMenuItem *)menuItem {
+    [super playMenuSound];
     
-    [app.defaults setBool:[app.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
-    [app.defaults synchronize];
-    
-    [CDAudioManager sharedManager].mute = [app.defaults boolForKey:@"sound"];    
+    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[JarScene scene]]];    
 }
 
-- (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
-    CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SoundOn.png" selectedImage:@"SoundOn-Hover.png" target:nil selector:nil] retain];
-    CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SoundOff.png" selectedImage:@"SoundOff-Hover.png" target:nil selector:nil] retain];
+- (void)optionsTapped:(CCMenuItem *)menuItem {
+    [super playMenuSound];
     
-    if (currentSoundState) {
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
-    } else {
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:off, on, nil];
-    }
+    [[CCDirector sharedDirector] pushScene:[CCTransitionMoveInR transitionWithDuration:TRANSITION_SPEED scene:[OptionMenu scene]]];    
 }
-
-- (void) dealloc { 
-    [menu release];
-    [aboutButton release];
-    [super dealloc];
-} 
 
 @end

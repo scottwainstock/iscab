@@ -211,7 +211,7 @@
 	// force view to load so we can set textView text
 	[rootView view];
 	
-	rootView.textView.text = [item customValueForKey:@"status"];
+	rootView.textView.text = @"Freshly picked from iScab";//[item customValueForKey:@"status"];
 	rootView.hasAttachment = item.image != nil;
 	
 	[self pushViewController:rootView animated:NO];

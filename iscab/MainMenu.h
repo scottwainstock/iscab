@@ -8,22 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
-#import "IScabCCLayer.h"
+#import "IScabCCMenuLayer.h"
 
-@interface MainMenu : IScabCCLayer <UIAlertViewDelegate> {
-    CCMenu *menu;
-    CCMenuItem *aboutButton;
+@interface MainMenu : IScabCCMenuLayer <UIAlertViewDelegate> {
 }
-
-@property (nonatomic, retain) CCMenu *menu;
-@property (nonatomic, retain) CCMenuItem *aboutButton;
 
 + (id)scene;
 
 - (void)startPickinTapped:(CCMenuItem  *)menuItem;
-- (void)helpTapped:(CCMenuItem *)menuItem;
-- (void)leaderboardsTapped:(CCMenuItem *)menuItem;
 - (void)chooseSkinTapped:(CCMenuItem *)menuItem;
-- (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState;
+- (void)scabJarTapped:(CCMenuItem *)menuItem;
+- (void)optionsTapped:(CCMenuItem *)menuItem;
 
 @end

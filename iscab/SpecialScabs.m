@@ -23,11 +23,11 @@
 - (id)init {    
     if ((self = [super init])) {
         CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
-        petriBottom.position = ccp(160, 240);
+        [petriBottom setPosition:ccp(160, 240)];
         [self addChild:petriBottom z:0];
         
         CCSprite *petriTop = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Top.png"];
-        petriTop.position = ccp(160, 240);
+        [petriTop setPosition:ccp(160, 240)];
         [self addChild:petriTop z:4];
         
         [self addFoundScabs];
@@ -51,25 +51,21 @@
             [scabMenuItem setUserData:scabName];
 
             if ([scabName isEqualToString:@"xxx"])
-                scabMenuItem.position = ccp(120, 205);
-            
-            if ([scabName isEqualToString:@"sass"])
-                scabMenuItem.position = ccp(190, 205);
-            
-            if ([scabName isEqualToString:@"jesus"])
-                scabMenuItem.position = ccp(90, 255);
-            
-            if ([scabName isEqualToString:@"heart"])
-                scabMenuItem.position = ccp(160, 285);
-            
-            if ([scabName isEqualToString:@"illuminati"])
-                scabMenuItem.position = ccp(225, 265);
+                [scabMenuItem setPosition:ccp(120, 205)];
+            else if ([scabName isEqualToString:@"sass"])
+                [scabMenuItem setPosition:ccp(190, 205)];
+            else if ([scabName isEqualToString:@"jesus"])
+                [scabMenuItem setPosition:ccp(90, 255)];
+            else if ([scabName isEqualToString:@"heart"])
+                [scabMenuItem setPosition:ccp(160, 285)];
+            else if ([scabName isEqualToString:@"illuminati"])
+                [scabMenuItem setPosition:ccp(225, 265)];
             
             [scabMenu addChild:scabMenuItem];
         }
     }
     
-    scabMenu.position = CGPointZero;
+    [scabMenu setPosition:CGPointZero];
     [self addChild:scabMenu z:2];
 }
 

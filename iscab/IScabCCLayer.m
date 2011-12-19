@@ -10,19 +10,17 @@
 #import "MainMenu.h"
 #import "JarScene.h"
 #import "About.h"
-#import "SimpleAudioEngine.h"
 #import "AppDelegate.h"
+#import "GamePlay.h"
+#import "CCMenuWideTouch.h"
 
 @implementation IScabCCLayer
 
 @synthesize iconMenu, jarButton, backButton;
 
 - (id)init {
-    if ((self = [super init])) {  
-        [[SimpleAudioEngine sharedEngine] preloadEffect:@"button.wav"];
-
+    if ((self = [super init])) 
         [self setupNavigationIcons];
-    }
 
     return self;
 }
@@ -47,22 +45,23 @@
         skinBG = [CCSprite spriteWithFile:[NSString stringWithFormat:@"%@_skin_background2.jpg", [app.defaults objectForKey:@"skinColor"]]];
     }
     
-    skinBG.anchorPoint = ccp(0, 0);
-    skinBG.position = ccp(0, 0);
+    [skinBG setAnchorPoint:ccp(0, 0)];
+    [skinBG setPosition:ccp(0, 0)];
     [self addChild:skinBG z:-10 tag:SKIN_BACKGROUND_TAG];
 }
 
 - (void)setupNavigationIcons {
     backButton = [CCMenuItemImage itemFromNormalImage:@"Back.png" selectedImage:@"Back-Hover.png" target:self selector:@selector(backTapped:)];
-    backButton.position = ccp(40, 40);
+    [backButton setPosition:ccp(40, 40)];
     [backButton retain];
     
     jarButton = [CCMenuItemImage itemFromNormalImage:@"jar.png" selectedImage:@"Jar-Hover.png" target:self selector:@selector(jarTapped:)];
-    jarButton.position = ccp(290, 40);
+    [jarButton setPosition:ccp(290, 40)];
     [jarButton retain];
     
-    iconMenu = [CCMenu menuWithItems:backButton, jarButton, nil];
-    iconMenu.position = CGPointZero;
+    iconMenu = [CCMenuWideTouch menuWithItems:backButton, jarButton, nil];
+    [iconMenu setMinTouchRect:CGRectMake(0, 0, ICON_TOUCH_AREA_SIZE, ICON_TOUCH_AREA_SIZE)];
+    [iconMenu setPosition:CGPointZero];
     [self addChild:iconMenu z:2];
     [iconMenu retain];
 }
@@ -71,20 +70,8 @@
     [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionCrossFade class] duration:TRANSITION_SPEED];
 }
 
-- (void)aboutTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[About scene]]];
-}
-
-- (void)homeTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] replaceScene:[MainMenu scene]];
-}
-
 - (void)jarTapped:(CCMenuItem  *)menuItem {
     [[CCDirector sharedDirector] pushScene:[CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[JarScene scene]]];
-}
-
-- (void)playMenuSound {
-    [[SimpleAudioEngine sharedEngine] playEffect:@"button.wav"];
 }
 
 - (void)dealloc {

@@ -196,7 +196,7 @@
 	[self sendDidStart];
 
 	[[FBRequest requestWithDelegate:self] call:@"facebook.photos.upload"
-	params:[NSDictionary dictionaryWithObjectsAndKeys:item.title, @"caption", nil]
+	params:[NSDictionary dictionaryWithObjectsAndKeys:@"Freshly picked from iScab", @"caption", nil]
 	dataParam:UIImageJPEGRepresentation(item.image,1.0)];
 }
 

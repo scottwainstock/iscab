@@ -154,10 +154,14 @@
     if ([self.defaults stringForKey:@"skinColor"] == NULL)
         [self.defaults setObject:@"light" forKey:@"skinColor"];
 
-    [self.defaults setBool:[self.defaults boolForKey:@"sound"] ? FALSE : TRUE forKey:@"sound"];
+    if ([self.defaults stringForKey:@"sound"] == NULL)
+        [self.defaults setBool:TRUE forKey:@"sound"];
     
-    [CDAudioManager sharedManager].mute = [self.defaults boolForKey:@"sound"];    
-//    [[SimpleAudioEngine sharedEngine] playEffect:@"startup.wav"];
+    if ([self.defaults stringForKey:@"tutorial"] == NULL)
+        [self.defaults setBool:TRUE forKey:@"tutorial"];
+        
+    [[SimpleAudioEngine sharedEngine] setEffectsVolume:0.1];
+    [[CDAudioManager sharedManager] setMute:![self.defaults boolForKey:@"sound"]];    
 
     cpInitChipmunk();
             
@@ -210,45 +214,53 @@
         return;
     
     UILocalNotification *notification = [[UILocalNotification alloc] init];
-    notification.fireDate = date;
-    notification.timeZone = [NSTimeZone defaultTimeZone];
-    
-    notification.alertBody = @"You've got an itchy scab.";
-    notification.alertAction = @"Take me to it.";
-    notification.soundName = [NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS];
+    [notification setFireDate:date];
+    [notification setTimeZone:[NSTimeZone defaultTimeZone]];
+    [notification setAlertBody:@"You've got an itchy scab."];
+    [notification setAlertAction:@"Take me to it."];
+    [notification setSoundName:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
     [notification release];
     
     NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
-    NSLog(@"NUMBER OF NOTIFICATIONS: %d", [[[UIApplication sharedApplication] scheduledLocalNotifications] count]);
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"RECEIVED LOCAL NOTIFICATION");
+    
+    if (
+        application.applicationState == UIApplicationStateInactive && 
+        [[CCDirector sharedDirector] runningScene].tag != GAMEPLAY_SCENE_TAG
+    )
+        [[CCDirector sharedDirector] pushScene:[GamePlay scene]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    NSLog(@"WILL RESIGN ACTIVE");
 	[[CCDirector sharedDirector] pause];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    NSLog(@"APPLICATION WENT ACTIVE");
 	[[CCDirector sharedDirector] resume];
     
-    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] displayExistingBoard];
-    }
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
--(void) applicationDidEnterBackground:(UIApplication*)application {
+- (void)applicationDidEnterBackground:(UIApplication*)application {
     NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
     
-    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
+    if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
         [self saveState];
+        [self.scab reset];
+        [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
+    }
 }
 
 - (void)scheduleNotifications {
@@ -256,35 +268,28 @@
         return;
     
     NSLog(@"SCHEDULING NOTIFICATION");
-    [self.scab setIsAged:YES];
         
     bool alreadyScheduled = FALSE;
-    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {            
+    for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])           
         if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
             alreadyScheduled = TRUE;
-    }
     
     if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
         [self scheduleNotification:[self.scab healDate]];
 }
 
 - (void)saveState {
-    [self scheduleNotifications];
-    
+    NSLog(@"SAVING STATE");    
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scab]] forKey:@"scab"];
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
-    [self.defaults synchronize];
-    
-    [self.scab reset];
+    [self.defaults synchronize];    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication*)application {
-	[[CCDirector sharedDirector] startAnimation];
+	[[CCDirector sharedDirector] startAnimation];    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    NSLog(@"TERMINATING");
-    
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director openGLView] removeFromSuperview];
 	
@@ -298,7 +303,6 @@
 }
  
 - (void)dealloc {
-    NSLog(@"DEALLOC APP");
 	[[CCDirector sharedDirector] end];
 	[window release];
     [jars release];

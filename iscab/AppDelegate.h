@@ -19,6 +19,7 @@
 #define DEFAULT_FONT_SIZE 10
 #define GAMEPLAY_SCENE_TAG 10
 #define TRANSITION_SPEED 0.125f
+#define ICON_TOUCH_AREA_SIZE 75
 
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
     int screenWidth;
