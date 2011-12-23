@@ -266,7 +266,7 @@ AppDelegate *app;
 
 - (void)addScabToJar:(Scab *)scab {
     if ([app.defaults boolForKey:@"tutorial"]) {
-        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"TUTORIAL: You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
     }
@@ -307,7 +307,7 @@ AppDelegate *app;
         
         [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
     } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
-        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
     }
@@ -330,7 +330,7 @@ AppDelegate *app;
 }
 
 - (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
-    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"TUTORIAL: Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [warning show];
     [warning release];
     
