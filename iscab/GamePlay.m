@@ -371,7 +371,7 @@ AppDelegate *app;
     NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
     for (ScabChunk *scabChunk in [app.scab scabChunks]) {
         if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
-            [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
+            [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS] pitch:1.0 pan:1.0 gain:0.25];
             
             if ([scabChunk health] > 0)
                 scabChunk.health -= 1;
