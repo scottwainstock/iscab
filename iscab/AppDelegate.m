@@ -174,6 +174,7 @@
                 Jar *jar = [[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels];
                                 
                 [self.jars addObject:jar];
+                [jar release];
             }
         }
     } else {
@@ -190,8 +191,12 @@
 - (void)createNewJars {
     NSLog(@"CREATING NEW JARS");
     self.jars = nil;
-    for (int i = 0; i < NUM_JARS_TO_FILL; i++)
-        [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
+    for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
+        Jar *jar = [[Jar alloc] initWithNumScabLevels:0];
+        [self.jars addObject:jar];
+        
+        [jar release];
+    }
     
     [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
     [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"]; 

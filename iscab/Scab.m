@@ -71,7 +71,7 @@
     if ((self = [super init])) {
         NSString *specialScabName = [[SpecialScabs specialScabNames] objectAtIndex:(arc4random() % ([[SpecialScabs specialScabNames] count] - 1))];
         
-        NSMutableArray *shapeCoordinates;
+        NSMutableArray *shapeCoordinates = nil;
     
         if ([specialScabName isEqualToString:@"xxx"])
             shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
@@ -84,6 +84,8 @@
             shapeCoordinates = [self heartShapeCoordinates:backgroundBoundary];
         else if ([specialScabName isEqualToString:@"illuminati"])
             shapeCoordinates = [self illuminatiShapeCoordinates:backgroundBoundary];
+        
+        [shapeCoordinates retain];
         
         for (NSValue *point in shapeCoordinates)
             if (!CGPointEqualToPoint([point CGPointValue], CGPointZero))
@@ -211,6 +213,7 @@
 
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
     ScabChunk *scabChunk = [self createScabChunk:scabChunkCenter type:type scabChunkNo:scabChunkNo priority:priority];
+    [scabChunk retain];
     
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
@@ -316,25 +319,25 @@
 }
    
 - (void)reset {
-   NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
-   for (ScabChunk *scabChunk in [self scabChunks])
-       [removedScabs addObject:scabChunk];
+    NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
+    for (ScabChunk *scabChunk in [self scabChunks])
+        [removedScabs addObject:scabChunk];
 
-   for (ScabChunk *removedScabChunk in removedScabs)
-       [removedScabChunk destroy];
-
-   removedScabs = nil;
-   scabChunks = nil;
+    for (ScabChunk *removedScabChunk in removedScabs)
+        [removedScabChunk destroy];
     
-   for (Wound *wound in [self wounds])
-       [wound destroy];
+    [removedScabs release];
+    scabChunks = nil;
+    
+    for (Wound *wound in [self wounds])
+        [wound destroy];
 
-   wounds = nil;
+    wounds = nil;
 
-   for (Wound *scabChunkBorder in [self scabChunkBorders])
-       [scabChunkBorder destroy];
+    for (Wound *scabChunkBorder in [self scabChunkBorders])
+        [scabChunkBorder destroy];
 
-   scabChunkBorders = nil;    
+    scabChunkBorders = nil;    
 }
 
 #pragma singletons
@@ -530,6 +533,8 @@
     
     [coordinates addObjectsFromArray:[self randomScabChunksForOrigin:CGPointMake(scabOrigin.x - 40, scabOrigin.y - 40) withBoundary:backgroundBoundary]];
     
+    [coordinates release];
+    
     return coordinates;
 }
 
@@ -584,6 +589,8 @@
         [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - x, yMidPoint - y)]];
         [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - y, yMidPoint - x)]];
     }
+    
+    [coordinates release];
     
     return coordinates;
 }

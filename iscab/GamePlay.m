@@ -46,7 +46,7 @@ AppDelegate *app;
             [app.batchNode removeChild:deleteSprite cleanup:YES];
         }
         
-        //[spritesToDelete release];
+        [spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
@@ -135,12 +135,18 @@ AppDelegate *app;
 - (void)generateScab {
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
 
+    Scab *scab = nil;
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
-    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
-        [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
-    else
-        [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
-    
+    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB)) {
+        scab = [[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary];
+        [app setScab:scab];
+        [scab release];
+    } else {
+        scab = [[Scab alloc] createWithBackgroundBoundary:backgroundBoundary];
+        [app setScab:scab];
+        [scab release];
+    }
+            
     [app scheduleNotifications];
     
     NSLog(@"DONE GENERATING SCAB");
@@ -395,6 +401,8 @@ AppDelegate *app;
     
     for (ScabChunk *removedScabChunk in removedScabs)
         [self removeScabChunk:removedScabChunk initing:NO];
+    
+    [removedScabs release];
 }
 
 - (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {

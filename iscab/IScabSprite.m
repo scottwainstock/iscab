@@ -107,10 +107,10 @@
         self.position = location;
         savedLocation = location;
         
-        return self;
+        [self retain];
     }
     
-    return nil;
+    return self;
 }
 
 - (void)destroy {
