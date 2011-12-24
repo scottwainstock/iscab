@@ -45,7 +45,7 @@
 }
 
 - (void)backTapped:(CCMenuItem  *)menuItem {
-    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionMoveInL class] duration:TRANSITION_SPEED];
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionSlideInL class] duration:TRANSITION_SPEED];
 }
 
 - (void) dealloc { 

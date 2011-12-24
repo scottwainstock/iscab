@@ -91,8 +91,8 @@ AppDelegate *app;
 
 - (void)optionsTapped:(CCMenuItem *)menuItem {
     [super playMenuSound];
-    
-    [[CCDirector sharedDirector] pushScene:[CCTransitionMoveInR transitionWithDuration:TRANSITION_SPEED scene:[OptionMenu scene]]];    
+        
+    [[CCDirector sharedDirector] pushScene:[CCTransitionSlideInR transitionWithDuration:TRANSITION_SPEED scene:[OptionMenu scene]]];    
 }
 
 @end
