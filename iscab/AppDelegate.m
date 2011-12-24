@@ -263,6 +263,7 @@
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
         [self saveState];
+        [self scheduleNotifications];
         [self.scab reset];
         [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
     }

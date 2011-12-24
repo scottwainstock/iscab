@@ -146,9 +146,7 @@ AppDelegate *app;
         [app setScab:scab];
         [scab release];
     }
-            
-    [app scheduleNotifications];
-    
+                
     NSLog(@"DONE GENERATING SCAB");
 }
 
