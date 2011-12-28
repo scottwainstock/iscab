@@ -137,6 +137,7 @@ AppDelegate *app;
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         [GKAchievement resetAchievementsWithCompletionHandler:nil];
+        [app.gameCenterBridge resetAchievements];
         NSLog(@"STOP");
     }
 }

@@ -30,5 +30,6 @@
 - (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier;
 - (void)authenticateLocalPlayer;
 - (void)loadAchievements;
+- (void)resetAchievements;
 
 @end

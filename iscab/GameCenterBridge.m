@@ -60,8 +60,7 @@
     GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
     if (achievement) {
         [achievement setPercentComplete:100.0];
-        [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
-         }];
+        [achievement reportAchievementWithCompletionHandler:^(NSError *error) {}];
     }    
 }
 
@@ -99,18 +98,20 @@
             for (GKAchievement *achievement in achievements) {
                 [achievementsDictionary setObject:achievement forKey:achievement.identifier];
                 [achievement setPercentComplete:100.0];
-                [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
-                    if (error != nil) {}
-                }];
+                [achievement reportAchievementWithCompletionHandler:^(NSError *error) {}];
             }
     }];
     
     [GKAchievementDescription loadAchievementDescriptionsWithCompletionHandler:^(NSArray *descriptions, NSError *error) {
-        if (error == nil) {           
+        if (error == nil)          
             for (GKAchievementDescription *achievementDescription in descriptions)
                 [achievementsDescriptionDictionary setObject:achievementDescription forKey:achievementDescription.identifier];
-        }
     }];
+}
+
+- (void)resetAchievements {
+    [achievementsDictionary removeAllObjects];
+    [achievementsDescriptionDictionary removeAllObjects];
 }
 
 - (void)dealloc {
