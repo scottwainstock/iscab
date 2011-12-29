@@ -27,8 +27,10 @@
 #define LARGE_SCAB_SIZE 300
 #define XL_SCAB_SIZE 301
 
-#define MAX_SCAB_WIDTH 250
-#define MAX_SCAB_HEIGHT 250
+#define MIN_SCAB_WIDTH 100
+#define MIN_SCAB_HEIGHT 100
+#define EXTRA_SCAB_WIDTH 250
+#define EXTRA_SCAB_HEIGHT 250
 
 /*
 #define SMALL_HEALING_TIME 1
@@ -86,7 +88,7 @@
 - (void)initializeStatesWithName:(NSString *)scabName;
 - (NSMutableArray *)drawEarWithTop:(CGPoint)top left:(CGPoint)left right:(CGPoint)right;
 - (NSMutableArray *)drawCircleWithRadius:(int)radius xMidPoint:(int)xMidPoint yMidPoint:(int)yMidPoint;
-- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary;
+- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)boundary;
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
 - (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary;

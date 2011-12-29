@@ -31,16 +31,15 @@
     }
 }
 
-- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary {
+- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)boundary {
     NSMutableArray *coordinates = [[[NSMutableArray alloc] init] autorelease];
 
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS, SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS);
 
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
     
-    for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++) { 
-        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin]]];
-    }
+    for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++)
+        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:boundary scabBoundary:scabBoundary scabOrigin:scabOrigin]]];
     
     return coordinates;
 }
@@ -98,19 +97,31 @@
     return self;
 }
 
+- (bool)isNextToExistingScabChunk:(CGPoint)scabChunkCenter {
+    for (ScabChunk *chunk in self.scabChunks)
+        if (CGRectContainsPoint([chunk boundingBox], scabChunkCenter))
+            return TRUE;
+        
+    return FALSE;
+}
+
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
         CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
-        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, (arc4random() % MAX_SCAB_WIDTH) + 1, (arc4random() % MAX_SCAB_HEIGHT) + 1);
-        
+        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, MIN_SCAB_WIDTH + (arc4random() % EXTRA_SCAB_WIDTH), MIN_SCAB_HEIGHT + (arc4random() % EXTRA_SCAB_HEIGHT));
+                
         center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-        
-        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;         
+
+        for (NSValue *point in [self randomScabChunksForOrigin:scabOrigin withBoundary:scabBoundary])
+            if (CGRectContainsPoint(backgroundBoundary, [point CGPointValue]))
+                [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"light" scabChunkNo:3 priority:1];
+
+        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;
         for (int x = 0; x < numScabChunks; x++) { 
             int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
             CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
          
-            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
+            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero) && [self isNextToExistingScabChunk:scabChunkCenter])
                 [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
         }
 
@@ -123,7 +134,7 @@
                 (int)center.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
             );
          
-            for (int x = 0; x < (numScabChunks / 4); x++) {
+            for (int x = 0; x < (numScabChunks / 6); x++) {
                 int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
                 CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
              
