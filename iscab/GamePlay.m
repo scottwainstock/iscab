@@ -185,87 +185,6 @@ AppDelegate *app;
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
 }
 
-- (void)reportAchievementsForScab:(Scab *)scab {
-    if (!scab.isOverpickWarningIssued)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_surgeon"];
-    
-    if (![scab.name isEqualToString:@"standard"])
-        [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
-    
-    if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_goodtime"];
-    
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
-    ) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_biggood"])
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggoodagain"];
-        else
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggood"];
-    }
-   
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-    ) {
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
-        
-        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
-        numBigScabsPickedInMinimumTime += 1;
-        
-        if (numBigScabsPickedInMinimumTime >= 3)
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3big"];
-            
-        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
-    }
-    
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_QUICKLY)
-    )
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigquick"];
-    
-    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
-        else
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
-    }
-    
-    bool allSpecialScabsPicked = true;
-    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:specialScabName] == nil)
-            allSpecialScabsPicked = false;
-    }
-    
-    if (allSpecialScabsPicked)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
-    
-    int jarsFilled = 0;
-    for (Jar *jar in app.jars)
-        if ([jar numScabLevels] == MAX_NUM_SCAB_LEVELS)
-            jarsFilled += 1;
-    
-    switch (jarsFilled) {
-        case 1:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_1filled"];
-            break;
-        case 2:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
-            break;
-        case 3:
-            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)addScabToJar:(Scab *)scab {
     if ([app.defaults boolForKey:@"tutorial"]) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"TUTORIAL: You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -285,7 +204,7 @@ AppDelegate *app;
         [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
     
-    [self reportAchievementsForScab:(Scab *)scab];
+    [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
            
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];

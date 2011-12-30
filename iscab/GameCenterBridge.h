@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GameKit/GameKit.h"
+#import "Scab.h"
 
 #define SPEEDILY_FILLED_JAR_TIME 3600
 #define BIG_SCAB_GOOD_TIME 200
@@ -31,5 +32,6 @@
 - (void)authenticateLocalPlayer;
 - (void)loadAchievements;
 - (void)resetAchievements;
+- (void)reportAchievementsForScab:(Scab *)scab;
 
 @end
