@@ -137,15 +137,13 @@ AppDelegate *app;
 
     Scab *scab = nil;
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
-    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB)) {
+    if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
         scab = [[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary];
-        [app setScab:scab];
-        [scab release];
-    } else {
+    else
         scab = [[Scab alloc] createWithBackgroundBoundary:backgroundBoundary];
-        [app setScab:scab];
-        [scab release];
-    }
+    
+    [app setScab:scab];
+    [scab release];
                 
     NSLog(@"DONE GENERATING SCAB");
 }

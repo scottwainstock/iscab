@@ -12,6 +12,7 @@
 #define SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS 100
 #define SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS 100
 
+#define JESUS_SCAB_SIZE 60
 #define HEART_SCAB_SIZE 60
 #define HEART_TOP_RADIUS 10
 #define XXX_SCAB_SIZE 30
@@ -97,5 +98,6 @@
 - (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary;
 - (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary;
 - (NSMutableArray *)sassShapeCoordinates:(CGRect)backgroundBoundary;
+- (NSMutableArray *)jesusShapeCoordinates:(CGRect)backgroundBoundary;
 
 @end
