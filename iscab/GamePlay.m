@@ -103,12 +103,9 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
-        NSLog(@"GAMEPLAY SETUP COMPLETE");
         
         [self setupSkinBackgroundBoundaries];
-        NSLog(@"SETUP SKINBACKGROUND");
         [self createSpace];
-        NSLog(@"CREATED SPACE");
         
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
          
@@ -320,14 +317,6 @@ AppDelegate *app;
     [removedScabs release];
 }
 
-- (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"TOUCH ENDED");
-}
-
-- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
-    [self ccTouchEnded:touch withEvent:event]; 
-}
-
 #pragma exit/enter setup
 
 - (void)onEnter {
@@ -346,6 +335,7 @@ AppDelegate *app;
 
 - (void)onExit {
     NSLog(@"GAMEPLAY ON EXIT");
+    [app scheduleNotifications];
     [app saveState];
     [app.scab reset];
     [super onExit];

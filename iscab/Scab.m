@@ -244,7 +244,6 @@
     [self.wounds removeAllObjects];
     [self.scabChunkBorders removeAllObjects];
    
-
     for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
 
@@ -329,9 +328,13 @@
 }
    
 - (void)reset {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
     NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
-    for (ScabChunk *scabChunk in [self scabChunks])
+    for (ScabChunk *scabChunk in [self scabChunks]) {
+        [app.batchNode removeChild:scabChunk cleanup:YES];
         [removedScabs addObject:scabChunk];
+    }
 
     for (ScabChunk *removedScabChunk in removedScabs)
         [removedScabChunk destroy];
@@ -339,13 +342,17 @@
     [removedScabs release];
     scabChunks = nil;
     
-    for (Wound *wound in [self wounds])
+    for (Wound *wound in [self wounds]) {
+        [app.batchNode removeChild:wound cleanup:YES];
         [wound destroy];
+    }
 
     wounds = nil;
 
-    for (Wound *scabChunkBorder in [self scabChunkBorders])
+    for (Wound *scabChunkBorder in [self scabChunkBorders]) {
+        [app.batchNode removeChild:scabChunkBorder cleanup:YES];
         [scabChunkBorder destroy];
+    }
 
     scabChunkBorders = nil;    
 }
