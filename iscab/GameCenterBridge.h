@@ -27,7 +27,7 @@
 + (void)reportScore:(int64_t)score forCategory:(NSString *)category;
 + (BOOL)isGameCenterAPIAvailable;
 
-- (void)reportAchievementIdentifier:(NSString *)identifier;
+- (void)reportAchievements:(NSArray *)achievements;
 - (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier;
 - (void)authenticateLocalPlayer;
 - (void)loadAchievements;

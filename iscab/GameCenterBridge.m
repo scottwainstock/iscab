@@ -50,32 +50,34 @@
     return (localPlayerClassAvailable && osVersionSupported);
 }
 
-- (void)reportAchievementIdentifier:(NSString*)identifier {
+- (void)reportAchievements:(NSArray *)achievements {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
         return;
     
-    NSLog(@"CHEEVO: %@", identifier);
-
-    GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
-    if (achievement) {
+    NSMutableArray *achievementsDescriptions = [[NSMutableArray alloc] init];
+    for (NSString *identifier in achievements) {
+        GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
         [achievement setPercentComplete:100.0];
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {}];
-    }    
-}
-
-- (GKAchievement*)getAchievementForIdentifier:(NSString*)identifier {
-    GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
-    
-    if (achievement == nil) {
-        achievement = [[[GKAchievement alloc] initWithIdentifier:identifier] autorelease];
         [achievementsDictionary setObject:achievement forKey:achievement.identifier];
         
         GKAchievementDescription *description = [achievementsDescriptionDictionary objectForKey:identifier];
-        [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievement Unlocked!" andMessage:[description title]];
+        [achievementsDescriptions addObject:[description title]]; 
     }
     
-    return [[achievement retain] autorelease];
+    [[GKAchievementHandler defaultHandler] setImage:nil];        
+    [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:[achievementsDescriptions componentsJoinedByString:@", "]];
+     [achievementsDescriptions release];
+}
+
+- (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier {
+    GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
+    
+    if (achievement == nil)
+        achievement = [[[GKAchievement alloc] initWithIdentifier:identifier] autorelease];
+    
+    return achievement;
 }
 
 - (void)authenticateLocalPlayer {
@@ -111,20 +113,26 @@
 
 - (void)resetAchievements {
     [achievementsDictionary removeAllObjects];
-    [achievementsDescriptionDictionary removeAllObjects];
 }
 
 - (void)reportAchievementsForScab:(Scab *)scab {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    NSMutableArray *achievementsUnlocked = [[NSMutableArray alloc] init];
+    
+    [achievementsUnlocked addObject:@"iscab_power"];
 
+    if ([app.currentJar numScabLevels] >= MAX_NUM_SCAB_LEVELS)   
+        if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
+            [achievementsUnlocked addObject:@"iscab_speedjar"];
+    
     if (!scab.isOverpickWarningIssued)
-        [self reportAchievementIdentifier:@"iscab_surgeon"];
+        [achievementsUnlocked addObject:@"iscab_surgeon"];
     
     if (![scab.name isEqualToString:@"standard"])
-        [self reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
+        [achievementsUnlocked addObject:[NSString stringWithFormat:@"iscab_%@", scab.name]];
     
     if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
-        [self reportAchievementIdentifier:@"iscab_goodtime"];
+        [achievementsUnlocked addObject:@"iscab_goodtime"];
     
     if (
         [scab.name isEqualToString:@"standard"] && 
@@ -132,23 +140,23 @@
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
         ) {
         if ([self.achievementsDictionary objectForKey:@"iscab_biggood"])
-            [self reportAchievementIdentifier:@"iscab_biggoodagain"];
+            [achievementsUnlocked addObject:@"iscab_biggoodagain"];
         else
-            [self reportAchievementIdentifier:@"iscab_biggood"];
+            [achievementsUnlocked addObject:@"iscab_biggood"];
     }
     
     if (
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-        ) {
-        [self reportAchievementIdentifier:@"iscab_bigmin"];
+    ) {
+        [achievementsUnlocked addObject:@"iscab_bigmin"];
         
         int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
         numBigScabsPickedInMinimumTime += 1;
         
         if (numBigScabsPickedInMinimumTime >= 3)
-            [self reportAchievementIdentifier:@"iscab_3big"];
+            [achievementsUnlocked addObject:@"iscab_3big"];
         
         [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
     }
@@ -157,24 +165,23 @@
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_QUICKLY)
-        )
-        [self reportAchievementIdentifier:@"iscab_bigquick"];
+    )
+        [achievementsUnlocked addObject:@"iscab_bigquick"];
     
     if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
         if ([self.achievementsDictionary objectForKey:@"iscab_pityscab"])
-            [self reportAchievementIdentifier:@"iscab_pityagain"];
+            [achievementsUnlocked addObject:@"iscab_pityagain"];
         else
-            [self reportAchievementIdentifier:@"iscab_pity"];
+            [achievementsUnlocked addObject:@"iscab_pity"];
     }
     
     bool allSpecialScabsPicked = true;
-    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
+    for (NSString *specialScabName in [SpecialScabs specialScabNames])
         if ([self.achievementsDictionary objectForKey:specialScabName] == nil)
             allSpecialScabsPicked = false;
-    }
     
     if (allSpecialScabsPicked)
-        [self reportAchievementIdentifier:@"iscab_allspecial"];
+        [achievementsUnlocked addObject:@"iscab_allspecial"];
     
     int jarsFilled = 0;
     for (Jar *jar in app.jars)
@@ -183,18 +190,21 @@
     
     switch (jarsFilled) {
         case 1:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_1filled"];
+            [achievementsUnlocked addObject:@"iscab_1filled"];
             break;
         case 2:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
+            [achievementsUnlocked addObject:@"iscab_2filled"];
             break;
         case 3:
             [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
-            [self reportAchievementIdentifier:@"iscab_3filled"];
+            [achievementsUnlocked addObject:@"iscab_3filled"];
             break;
         default:
             break;
     }
+    
+    [self reportAchievements:achievementsUnlocked];
+    [achievementsUnlocked release];
 }
 
 - (void)dealloc {

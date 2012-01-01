@@ -187,21 +187,17 @@ AppDelegate *app;
         [warning show];
         [warning release];
     }
-    
+
+    [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
+
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
-        
-        if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_speedjar"];
-        
         [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
-    
-    [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
-           
+               
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
     [scorePopup runAction:[CCFadeOut actionWithDuration:3]]; 
@@ -220,9 +216,7 @@ AppDelegate *app;
         
         endSequenceRunning = true;
         
-        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
-        
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
+        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];        
     } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
@@ -337,7 +331,6 @@ AppDelegate *app;
     [app scheduleNotifications];
     [app saveState];
     [app.scab reset];
-    //[self removeChild:app.batchNode cleanup:YES];
     [super onExit];
 }
 

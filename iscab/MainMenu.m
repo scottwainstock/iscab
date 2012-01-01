@@ -45,6 +45,7 @@ AppDelegate *app;
         [menu alignItemsVerticallyWithPadding:10.0f];
         [self addChild:menu];
         
+        NSLog(@"CURRENT NOTIFICATION STATUS: %@", [app.defaults objectForKey:@"sendNotifications"]);
         if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
                                                             message:@"Do you want to allow iScab to send you local notifications?"
