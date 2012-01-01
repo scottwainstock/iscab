@@ -7,7 +7,6 @@
 //
 
 #import "GamePlay.h"
-#import "ScabChunk.h"
 #import "Wound.h"
 #import "Scab.h"
 #import "SimpleAudioEngine.h"
@@ -18,7 +17,7 @@
 #import "drawSpace.h"
 #import "cpSpace.h"
 #import "GameCenterBridge.h"
-#import "SpecialScabs.h"
+#import "SpecialScab.h"
 
 @implementation GamePlay
 
@@ -135,7 +134,7 @@ AppDelegate *app;
     Scab *scab = nil;
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
     if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
-        scab = [[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary];
+        scab = [[SpecialScab alloc] createWithBackgroundBoundary:backgroundBoundary];
     else
         scab = [[Scab alloc] createWithBackgroundBoundary:backgroundBoundary];
     
@@ -205,7 +204,7 @@ AppDelegate *app;
            
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
-    [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
+    [scorePopup runAction:[CCFadeOut actionWithDuration:3]]; 
     [self addChild:scorePopup z:100];
 }
 
@@ -247,13 +246,13 @@ AppDelegate *app;
     NSLog(@"LEAVING RESET BOARD");
 }
 
-- (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
+- (void)warnAboutOverpicking:(Scab *)scab {
     UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"TUTORIAL: Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [warning show];
     [warning release];
     
-    [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
-    [scabToWarnFor setIsOverpickWarningIssued:YES];
+    [scab setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scab maximumHealingInterval]]];
+    [scab setIsOverpickWarningIssued:YES];
 }
 
 - (cpSpace *)createSpace {    
@@ -338,6 +337,7 @@ AppDelegate *app;
     [app scheduleNotifications];
     [app saveState];
     [app.scab reset];
+    //[self removeChild:app.batchNode cleanup:YES];
     [super onExit];
 }
 

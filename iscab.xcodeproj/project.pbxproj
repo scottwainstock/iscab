@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E1F997F1474AE8B00FCD690 /* GameCenterBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */; };
 		8E2994FE1495882100AD21B2 /* CCMenuWideTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */; };
+		8E330B8114AFDADD00A5C8F6 /* SpecialScab.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E330B8014AFDADD00A5C8F6 /* SpecialScab.m */; };
 		8E39A460147CA59A008FC74D /* GKAchievementNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */; };
 		8E39A461147CA59A008FC74D /* GKAchievementHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */; };
 		8E39A468147CA5AE008FC74D /* gk-icon-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 8E39A464147CA5AE008FC74D /* gk-icon-hd.png */; };
@@ -564,6 +565,8 @@
 		8E1F997E1474AE8B00FCD690 /* GameCenterBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameCenterBridge.m; sourceTree = "<group>"; };
 		8E2994FC1495882100AD21B2 /* CCMenuWideTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCMenuWideTouch.h; sourceTree = "<group>"; };
 		8E2994FD1495882100AD21B2 /* CCMenuWideTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCMenuWideTouch.m; sourceTree = "<group>"; };
+		8E330B7F14AFDADD00A5C8F6 /* SpecialScab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialScab.h; sourceTree = "<group>"; };
+		8E330B8014AFDADD00A5C8F6 /* SpecialScab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialScab.m; sourceTree = "<group>"; };
 		8E39A45C147CA59A008FC74D /* GKAchievementNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementNotification.m; sourceTree = "<group>"; };
 		8E39A45D147CA59A008FC74D /* GKAchievementNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKAchievementNotification.h; sourceTree = "<group>"; };
 		8E39A45E147CA59A008FC74D /* GKAchievementHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKAchievementHandler.m; sourceTree = "<group>"; };
@@ -1387,6 +1390,8 @@
 				8EB816F4144BA49C004D2C73 /* Jar.m */,
 				8E845488144E1181002F5424 /* Scab.h */,
 				8E845489144E1181002F5424 /* Scab.m */,
+				8E330B7F14AFDADD00A5C8F6 /* SpecialScab.h */,
+				8E330B8014AFDADD00A5C8F6 /* SpecialScab.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3225,6 +3230,7 @@
 				8E9C4035149E8D7900CE62EC /* OptionMenu.m in Sources */,
 				8E9C4038149E8EFD00CE62EC /* IScabCCMenuLayer.m in Sources */,
 				8E9C403C149E967300CE62EC /* Achievements.m in Sources */,
+				8E330B8114AFDADD00A5C8F6 /* SpecialScab.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

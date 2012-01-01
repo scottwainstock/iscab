@@ -15,10 +15,8 @@
 #import "SimpleAudioEngine.h"
 #import "GamePlay.h"
 #import "Wound.h"
-#import "Jar.h"
 #import "chipmunk.h"
 #import "GameKit/GameKit.h"
-#import "GameCenterBridge.h"
 
 @implementation AppDelegate
 
@@ -266,7 +264,7 @@
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
         [self saveState];
         [self.scab reset];
-        [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
+        //[[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
     }
 }
 
