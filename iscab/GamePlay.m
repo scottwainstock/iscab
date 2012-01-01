@@ -7,7 +7,6 @@
 //
 
 #import "GamePlay.h"
-#import "ScabChunk.h"
 #import "Wound.h"
 #import "Scab.h"
 #import "SimpleAudioEngine.h"
@@ -18,7 +17,7 @@
 #import "drawSpace.h"
 #import "cpSpace.h"
 #import "GameCenterBridge.h"
-#import "SpecialScabs.h"
+#import "SpecialScab.h"
 
 @implementation GamePlay
 
@@ -46,7 +45,7 @@ AppDelegate *app;
             [app.batchNode removeChild:deleteSprite cleanup:YES];
         }
         
-        //[spritesToDelete release];
+        [spritesToDelete release];
         
         for (CCMotionStreak *streak in self.allBlood) {
             if (arc4random() % 2 == 1) {
@@ -103,12 +102,9 @@ AppDelegate *app;
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
-        NSLog(@"GAMEPLAY SETUP COMPLETE");
         
         [self setupSkinBackgroundBoundaries];
-        NSLog(@"SETUP SKINBACKGROUND");
         [self createSpace];
-        NSLog(@"CREATED SPACE");
         
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
          
@@ -135,14 +131,16 @@ AppDelegate *app;
 - (void)generateScab {
     CGRect backgroundBoundary = [[skinBackgroundBoundaries objectForKey:[app.defaults stringForKey:@"skinBackgroundNumber"]] CGRectValue];
 
+    Scab *scab = nil;
     int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
     if ((((arc4random() % 10) + 1) <= CHANCE_OF_GETTING_SPECIAL_SCAB) || (numScabsPicked == FIRST_FORCED_SPECIAL_SCAB))
-        [app setScab:[[Scab alloc] createSpecialWithBackgroundBoundary:backgroundBoundary]];
+        scab = [[SpecialScab alloc] createWithBackgroundBoundary:backgroundBoundary];
     else
-        [app setScab:[[Scab alloc] createWithBackgroundBoundary:backgroundBoundary]];
+        scab = [[Scab alloc] createWithBackgroundBoundary:backgroundBoundary];
     
-    [app scheduleNotifications];
-    
+    [app setScab:scab];
+    [scab release];
+                
     NSLog(@"DONE GENERATING SCAB");
 }
 
@@ -183,111 +181,26 @@ AppDelegate *app;
     [app.defaults setObject:skinBackgroundNumber forKey:@"skinBackgroundNumber"];
 }
 
-- (void)reportAchievementsForScab:(Scab *)scab {
-    if (!scab.isOverpickWarningIssued)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_surgeon"];
-    
-    if (![scab.name isEqualToString:@"standard"])
-        [app.gameCenterBridge reportAchievementIdentifier:[NSString stringWithFormat:@"iscab_%@", scab.name]];
-    
-    if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_goodtime"];
-    
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
-    ) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_biggood"])
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggoodagain"];
-        else
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_biggood"];
-    }
-   
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-    ) {
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigmin"];
-        
-        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
-        numBigScabsPickedInMinimumTime += 1;
-        
-        if (numBigScabsPickedInMinimumTime >= 3)
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3big"];
-            
-        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
-    }
-    
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_QUICKLY)
-    )
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_bigquick"];
-    
-    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:@"iscab_pityscab"])
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pityagain"];
-        else
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_pity"];
-    }
-    
-    bool allSpecialScabsPicked = true;
-    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:specialScabName] == nil)
-            allSpecialScabsPicked = false;
-    }
-    
-    if (allSpecialScabsPicked)
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_allspecial"];
-    
-    int jarsFilled = 0;
-    for (Jar *jar in app.jars)
-        if ([jar numScabLevels] == MAX_NUM_SCAB_LEVELS)
-            jarsFilled += 1;
-    
-    switch (jarsFilled) {
-        case 1:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_1filled"];
-            break;
-        case 2:
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_2filled"];
-            break;
-        case 3:
-            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_3filled"];
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)addScabToJar:(Scab *)scab {
     if ([app.defaults boolForKey:@"tutorial"]) {
-        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"TUTORIAL: You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
     }
-    
+
+    [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
+
     NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
-        
-        if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
-            [app.gameCenterBridge reportAchievementIdentifier:@"iscab_speedjar"];
-        
         [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
-    
-    [self reportAchievementsForScab:(Scab *)scab];
-           
+               
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
-    [scorePopup runAction:[CCFadeOut actionWithDuration:4]]; 
+    [scorePopup runAction:[CCFadeOut actionWithDuration:3]]; 
     [self addChild:scorePopup z:100];
 }
 
@@ -303,11 +216,9 @@ AppDelegate *app;
         
         endSequenceRunning = true;
         
-        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
-        
-        [app.gameCenterBridge reportAchievementIdentifier:@"iscab_power"];
+        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];        
     } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
-        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
     }
@@ -329,13 +240,13 @@ AppDelegate *app;
     NSLog(@"LEAVING RESET BOARD");
 }
 
-- (void)warnAboutOverpicking:(Scab *)scabToWarnFor {
-    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+- (void)warnAboutOverpicking:(Scab *)scab {
+    UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"TUTORIAL: Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [warning show];
     [warning release];
     
-    [scabToWarnFor setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scabToWarnFor maximumHealingInterval]]];
-    [scabToWarnFor setIsOverpickWarningIssued:YES];
+    [scab setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scab maximumHealingInterval]]];
+    [scab setIsOverpickWarningIssued:YES];
 }
 
 - (cpSpace *)createSpace {    
@@ -371,7 +282,7 @@ AppDelegate *app;
     NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
     for (ScabChunk *scabChunk in [app.scab scabChunks]) {
         if (CGRectContainsPoint(touchRect, scabChunk.savedLocation)) {
-            [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS]];
+            [[SimpleAudioEngine sharedEngine] playEffect:[NSString stringWithFormat:@"Scratch%d.m4a", arc4random() % NUM_SCRATCH_SOUNDS] pitch:1.0 pan:1.0 gain:0.25];
             
             if ([scabChunk health] > 0)
                 scabChunk.health -= 1;
@@ -395,14 +306,8 @@ AppDelegate *app;
     
     for (ScabChunk *removedScabChunk in removedScabs)
         [self removeScabChunk:removedScabChunk initing:NO];
-}
-
-- (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
-    NSLog(@"TOUCH ENDED");
-}
-
-- (void)ccTouchCancelled:(UITouch *)touch withEvent:(UIEvent *)event {
-    [self ccTouchEnded:touch withEvent:event]; 
+    
+    [removedScabs release];
 }
 
 #pragma exit/enter setup
@@ -423,6 +328,7 @@ AppDelegate *app;
 
 - (void)onExit {
     NSLog(@"GAMEPLAY ON EXIT");
+    [app scheduleNotifications];
     [app saveState];
     [app.scab reset];
     [super onExit];

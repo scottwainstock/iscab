@@ -10,7 +10,10 @@
 #import "IScabCCShareLayer.h"
 
 @interface SpecialScabs : IScabCCShareLayer {
+    CCMenu *scabMenu;
 }
+
+@property(nonatomic, retain) CCMenu *scabMenu;
 
 + (id)scene;
 + (NSArray *)specialScabNames;

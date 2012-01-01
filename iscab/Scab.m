@@ -31,16 +31,15 @@
     }
 }
 
-- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)backgroundBoundary {
+- (NSMutableArray *)randomScabChunksForOrigin:(CGPoint)scabOrigin withBoundary:(CGRect)boundary {
     NSMutableArray *coordinates = [[[NSMutableArray alloc] init] autorelease];
 
     CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, SPECIAL_SCAB_WIDTH_FOR_EXTRA_SCAB_CHUNKS, SPECIAL_SCAB_HEIGHT_FOR_EXTRA_SCAB_CHUNKS);
 
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
     
-    for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++) { 
-        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin]]];
-    }
+    for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++)
+        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:boundary scabBoundary:scabBoundary scabOrigin:scabOrigin]]];
     
     return coordinates;
 }
@@ -63,52 +62,31 @@
     return CGPointMake(scabXOffset, scabYOffset);
 }
 
-- (CGPoint)generateSpecialScabOrigin {
-    return CGPointMake((arc4random() % 2 == 1) ? 75 : 125, (arc4random() % 2 == 1) ? 50 : 75);
-}
-
-- (id)createSpecialWithBackgroundBoundary:(CGRect)backgroundBoundary {
-    if ((self = [super init])) {
-        NSString *specialScabName = [[SpecialScabs specialScabNames] objectAtIndex:(arc4random() % ([[SpecialScabs specialScabNames] count] - 1))];
+- (bool)isNextToExistingScabChunk:(CGPoint)scabChunkCenter {
+    for (ScabChunk *chunk in self.scabChunks)
+        if (CGRectContainsPoint([chunk boundingBox], scabChunkCenter))
+            return TRUE;
         
-        NSMutableArray *shapeCoordinates;
-    
-        if ([specialScabName isEqualToString:@"xxx"])
-            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
-        else if ([specialScabName isEqualToString:@"sass"])
-            shapeCoordinates = [self sassShapeCoordinates:backgroundBoundary];
-        else if ([specialScabName isEqualToString:@"jesus"])
-            //shapeCoordinates = [self jesusShapeCoordinates:backgroundBoundary];
-            shapeCoordinates = [self xShapeCoordinates:backgroundBoundary];
-        else if ([specialScabName isEqualToString:@"heart"])    
-            shapeCoordinates = [self heartShapeCoordinates:backgroundBoundary];
-        else if ([specialScabName isEqualToString:@"illuminati"])
-            shapeCoordinates = [self illuminatiShapeCoordinates:backgroundBoundary];
-        
-        for (NSValue *point in shapeCoordinates)
-            if (!CGPointEqualToPoint([point CGPointValue], CGPointZero))
-                [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"dark" scabChunkNo:(arc4random() % NUM_SHAPE_TYPES) priority:2];
-        
-        [self initializeStatesWithName:specialScabName];
-        [shapeCoordinates release];
-    }
-    
-    return self;
+    return FALSE;
 }
 
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary {   
     if ((self = [super init])) {
         CGPoint scabOrigin = [self generateScabOrigin:backgroundBoundary];
-        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, (arc4random() % MAX_SCAB_WIDTH) + 1, (arc4random() % MAX_SCAB_HEIGHT) + 1);
-        
+        CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, MIN_SCAB_WIDTH + (arc4random() % EXTRA_SCAB_WIDTH), MIN_SCAB_HEIGHT + (arc4random() % EXTRA_SCAB_HEIGHT));
+                
         center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-        
-        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;         
+
+        for (NSValue *point in [self randomScabChunksForOrigin:scabOrigin withBoundary:scabBoundary])
+            if (CGRectContainsPoint(backgroundBoundary, [point CGPointValue]))
+                [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"light" scabChunkNo:3 priority:1];
+
+        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;
         for (int x = 0; x < numScabChunks; x++) { 
             int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
             CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
          
-            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
+            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero) && [self isNextToExistingScabChunk:scabChunkCenter])
                 [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
         }
 
@@ -121,7 +99,7 @@
                 (int)center.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
             );
          
-            for (int x = 0; x < (numScabChunks / 4); x++) {
+            for (int x = 0; x < (numScabChunks / 6); x++) {
                 int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
                 CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
              
@@ -211,6 +189,7 @@
 
 - (void)createScabChunkAndBorderWithCenter:(CGPoint)scabChunkCenter type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
     ScabChunk *scabChunk = [self createScabChunk:scabChunkCenter type:type scabChunkNo:scabChunkNo priority:priority];
+    [scabChunk retain];
     
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
@@ -231,7 +210,6 @@
     [self.wounds removeAllObjects];
     [self.scabChunkBorders removeAllObjects];
    
-
     for (ScabChunk *scabChunk in savedScabChunks)
         [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
 
@@ -316,25 +294,31 @@
 }
    
 - (void)reset {
-   NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
-   for (ScabChunk *scabChunk in [self scabChunks])
-       [removedScabs addObject:scabChunk];
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-   for (ScabChunk *removedScabChunk in removedScabs)
-       [removedScabChunk destroy];
+    NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
+    for (ScabChunk *scabChunk in [self scabChunks])
+        [removedScabs addObject:scabChunk];
 
-   removedScabs = nil;
-   scabChunks = nil;
+    for (ScabChunk *removedScabChunk in removedScabs)
+        [removedScabChunk destroy];
     
-   for (Wound *wound in [self wounds])
-       [wound destroy];
+    [removedScabs release];
+    scabChunks = nil;
+    
+    for (Wound *wound in [self wounds]) {
+        [app.batchNode removeChild:wound cleanup:YES];
+        [wound destroy];
+    }
 
-   wounds = nil;
+    wounds = nil;
 
-   for (Wound *scabChunkBorder in [self scabChunkBorders])
-       [scabChunkBorder destroy];
+    for (Wound *scabChunkBorder in [self scabChunkBorders]) {
+        [app.batchNode removeChild:scabChunkBorder cleanup:YES];
+        [scabChunkBorder destroy];
+    }
 
-   scabChunkBorders = nil;    
+    scabChunkBorders = nil;    
 }
 
 #pragma singletons
@@ -408,211 +392,6 @@
     NSLog(@"NAME: %@", [self name]);
     
     return self; 
-}
-
-#pragma special scab coordinates
-
-- (NSMutableArray *)heartShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateSpecialScabOrigin];
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-    CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
-    center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-
-    CGPoint bottom = CGPointMake((HEART_SCAB_SIZE / 2) + scabOrigin.x, scabOrigin.y);
-    CGPoint left = CGPointMake(scabOrigin.x, HEART_SCAB_SIZE + scabOrigin.y);
-    CGPoint right = CGPointMake(ILLUMINATI_SCAB_SIZE + scabOrigin.x, HEART_SCAB_SIZE + scabOrigin.y);
-    
-    for (int x = 0; x < HEART_SCAB_SIZE * 10; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
-        
-        if (
-            !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
-            [Scab gbPointInTriangle:scabChunkCenter pointA:left pointB:bottom pointC:right]
-        )
-            [coordinates addObject:[NSValue valueWithCGPoint:scabChunkCenter]];
-    }
-    
-    CGPoint leftHeart = CGPointMake(scabOrigin.x + (HEART_SCAB_SIZE / 4), (HEART_SCAB_SIZE + scabOrigin.y));
-    CGPoint rightHeart = CGPointMake(scabOrigin.x + HEART_SCAB_SIZE, (HEART_SCAB_SIZE + scabOrigin.y));
-    for (int i = 0; i < 5000; i++) {
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
-        
-        if (
-            !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
-            (
-             (ccpLengthSQ(ccpSub(leftHeart, scabChunkCenter)) < (HEART_TOP_RADIUS * HEART_TOP_RADIUS)) ||
-             (ccpLengthSQ(ccpSub(rightHeart, scabChunkCenter)) < (HEART_TOP_RADIUS * HEART_TOP_RADIUS))
-            )
-        )
-            [coordinates addObject:[NSValue valueWithCGPoint:scabChunkCenter]];
-    }
-
-    return coordinates;
-}
-
-- (NSMutableArray *)illuminatiShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateSpecialScabOrigin];
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-    CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, ILLUMINATI_SCAB_SIZE, ILLUMINATI_SCAB_SIZE);
-    center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-    
-    CGPoint eyeCenter = CGPointMake(scabOrigin.x + (ILLUMINATI_SCAB_SIZE / 2), (ILLUMINATI_SCAB_SIZE + scabOrigin.y) - 30);
-    
-    CGPoint top = CGPointMake((ILLUMINATI_SCAB_SIZE / 2) + scabOrigin.x, ILLUMINATI_SCAB_SIZE + scabOrigin.y);
-    CGPoint left = CGPointMake(scabOrigin.x, scabOrigin.y);
-    CGPoint right = CGPointMake(ILLUMINATI_SCAB_SIZE + scabOrigin.x, scabOrigin.y);
-    
-    for (int x = 0; x < ILLUMINATI_SCAB_SIZE * 10; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
-        
-        if (
-            !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
-            [Scab gbPointInTriangle:scabChunkCenter pointA:left pointB:top pointC:right] &&
-            (ccpLengthSQ(ccpSub(eyeCenter, scabChunkCenter)) > (ILLUMINATI_EYE_RADIUS * ILLUMINATI_EYE_RADIUS))
-        )
-            [coordinates addObject:[NSValue valueWithCGPoint:scabChunkCenter]];
-    }
-    
-    [coordinates addObject:[NSValue valueWithCGPoint:eyeCenter]];
-    
-    return coordinates;
-}
-
-- (NSMutableArray *)xShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateSpecialScabOrigin];
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-    
-    for (int xNumber = 0; xNumber < 3; xNumber++) {    
-        int topSwipeLocation = XXX_SCAB_SIZE;
-        for (int bottomSwipeLocation = 0; bottomSwipeLocation < XXX_SCAB_SIZE; bottomSwipeLocation++) {
-            int adjustedBottomSwipeLocation = bottomSwipeLocation + (xNumber * XXX_SCAB_SIZE);
-            
-            [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(
-                                                                         adjustedBottomSwipeLocation + scabOrigin.x, 
-                                                                         bottomSwipeLocation + scabOrigin.y
-                                                                         )]];
-            [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(
-                                                                         adjustedBottomSwipeLocation + scabOrigin.x,
-                                                                         topSwipeLocation + scabOrigin.y
-                                                                         )]];
-            
-            topSwipeLocation--;
-        }
-    }
-    
-    [coordinates addObjectsFromArray:[self randomScabChunksForOrigin:scabOrigin withBoundary:backgroundBoundary]];
-    
-    return coordinates;
-}
-
-- (NSMutableArray *)sassShapeCoordinates:(CGRect)backgroundBoundary {
-    CGPoint scabOrigin = [self generateSpecialScabOrigin];
-    CGRect scabBoundary = CGRectMake((int)scabOrigin.x, (int)scabOrigin.y, SASS_SCAB_SIZE, SASS_SCAB_SIZE);
-    center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
-
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-    
-    //face loops
-    [coordinates addObjectsFromArray:[self drawCircleWithRadius:40 xMidPoint:scabOrigin.x yMidPoint:scabOrigin.y]];
-    [coordinates addObjectsFromArray:[self drawCircleWithRadius:35 xMidPoint:scabOrigin.x yMidPoint:scabOrigin.y]];
-    
-    //left eye
-    [coordinates addObjectsFromArray:[self drawCircleWithRadius:5 xMidPoint:(scabOrigin.x - 15) yMidPoint:(scabOrigin.y + 5)]];
-    
-    //right eye
-    [coordinates addObjectsFromArray:[self drawCircleWithRadius:5 xMidPoint:(scabOrigin.x + 15) yMidPoint:(scabOrigin.y + 5)]];
-    
-    //beard
-    [coordinates addObjectsFromArray:[self drawCircleWithRadius:5 xMidPoint:(scabOrigin.x + 5) yMidPoint:(scabOrigin.y - 25)]];
-
-    [coordinates addObjectsFromArray:[self drawEarWithTop:CGPointMake(scabOrigin.x - 45, scabOrigin.y + 65) left:CGPointMake(scabOrigin.x - 40, scabOrigin.y + 20) right:CGPointMake(scabOrigin.x - 10, scabOrigin.y + 40)]];
-    [coordinates addObjectsFromArray:[self drawEarWithTop:CGPointMake(scabOrigin.x + 45, scabOrigin.y + 60) left:CGPointMake(scabOrigin.x + 20, scabOrigin.y + 30) right:CGPointMake(scabOrigin.x + 35, scabOrigin.y + 25)]];
-    
-    [coordinates addObjectsFromArray:[self randomScabChunksForOrigin:CGPointMake(scabOrigin.x - 40, scabOrigin.y - 40) withBoundary:backgroundBoundary]];
-    
-    return coordinates;
-}
-
-- (NSMutableArray *)drawEarWithTop:(CGPoint)top left:(CGPoint)left right:(CGPoint)right {
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-
-    CGPoint earCenter = CGPointMake((int)((top.x + left.x + right.x) / 3), (int)((top.y + left.y + right.y) / 3));    
-    for (int x = 0; x < 400; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:earCenter backgroundBoundary:CGRectMake(left.x, left.y, 300, 300) scabBoundary:CGRectMake(left.x, left.y, 300, 300) scabOrigin:earCenter];
-     
-        if (
-            !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
-            [Scab gbPointInTriangle:scabChunkCenter pointA:left pointB:top pointC:right]
-        )
-            [coordinates addObject:[NSValue valueWithCGPoint:scabChunkCenter]];
-    }
-    
-    return coordinates;
-}
-
-- (NSMutableArray *)drawCircleWithRadius:(int)radius xMidPoint:(int)xMidPoint yMidPoint:(int)yMidPoint {
-    NSMutableArray *coordinates = [[NSMutableArray alloc] init];
-
-    int f = 1 - radius;
-    int ddF_x = 1;
-    int ddF_y = -2 * radius;
-    int x = 0;
-    int y = radius;
-    
-    [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint, yMidPoint + radius)]];
-    [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint, yMidPoint - radius)]];
-    [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint + radius, yMidPoint)]];
-    [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - radius, yMidPoint)]];
-
-    while(x < y){
-        if(f >= 0) {
-            y--;
-            ddF_y += 2;
-            f += ddF_y;
-        }
-        
-        x++;
-        ddF_x += 2;
-        f += ddF_x;    
-         
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint + x, yMidPoint + y)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint + y, yMidPoint + x)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - x, yMidPoint + y)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - y, yMidPoint + x)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint + x, yMidPoint - y)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint + y, yMidPoint - x)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - x, yMidPoint - y)]];
-        [coordinates addObject:[NSValue valueWithCGPoint:CGPointMake(xMidPoint - y, yMidPoint - x)]];
-    }
-    
-    return coordinates;
-}
-
-+ (CGFloat)gbDotWithV1:(CGPoint)v1 v2:(CGPoint)v2 {
-	return v1.x * v2.x + v1.y * v2.y;
-}
-
-+ (CGPoint)gbSubWithV1:(CGPoint)v1 v2:(CGPoint)v2 {
-	return CGPointMake(v1.x - v2.x, v1.y - v2.y);
-}
-
-+ (BOOL)gbPointInTriangle:(CGPoint)point pointA:(CGPoint)pointA pointB:(CGPoint)pointB pointC:(CGPoint)pointC {  
-    //http://www.blackpawn.com/texts/pointinpoly/default.html
-	CGPoint v0 = [self gbSubWithV1:pointC v2:pointA];
-	CGPoint v1 = [self gbSubWithV1:pointB v2:pointA];
-    CGPoint v2 = [self gbSubWithV1:point v2:pointA];
-    
-	CGFloat dot00 = [self gbDotWithV1:v0 v2:v0];
-	CGFloat dot01 = [self gbDotWithV1:v0 v2:v1];
-	CGFloat dot02 = [self gbDotWithV1:v0 v2:v2];
-	CGFloat dot11 = [self gbDotWithV1:v1 v2:v1];
-	CGFloat dot12 = [self gbDotWithV1:v1 v2:v2];
-    
-	CGFloat invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-	CGFloat u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-	CGFloat v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-    
-	return (u > 0) && (v > 0) && (u + v < 1);
 }
 
 - (void)dealloc {

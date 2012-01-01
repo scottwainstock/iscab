@@ -12,6 +12,13 @@
 
 @implementation SpecialScabs
 
+@synthesize scabMenu;
+
+- (void)dealloc {
+    [scabMenu release];
+    [super dealloc];
+}
+
 + (id)scene {
     CCScene *scene = [CCScene node];
     SpecialScabs *layer = [SpecialScabs node];
@@ -29,20 +36,29 @@
         CCSprite *petriTop = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Top.png"];
         [petriTop setPosition:ccp(160, 240)];
         [self addChild:petriTop z:4];
-        
-        [self addFoundScabs];
     }
     
     return self;
 }
 
+- (void)onEnter {
+    [self addFoundScabs];
+    [super onEnter];
+}
+
+- (void)onExit {
+    [scabMenu removeAllChildrenWithCleanup:YES];
+    [super onExit];
+}
+
 + (NSArray *)specialScabNames {
-    return [NSArray arrayWithObjects: @"xxx",@"heart",@"illuminati",@"jesus",@"sass",nil];
+    return [NSArray arrayWithObjects: @"xxx", @"heart", @"illuminati", @"jesus", @"sass", nil];
 }
 
 - (void)addFoundScabs {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    CCMenu *scabMenu = [CCMenu menuWithItems:nil];
+    scabMenu = [CCMenu menuWithItems:nil];
+    [scabMenu retain];
     
     for (NSString *scabName in [SpecialScabs specialScabNames]) {
         if ([app.gameCenterBridge.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", scabName]]) {

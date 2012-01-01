@@ -41,7 +41,7 @@
 + (id)scene;
 
 - (void)displayExistingBoard;
-- (void)warnAboutOverpicking:(Scab *)scabToWarnFor;
+- (void)warnAboutOverpicking:(Scab *)scab;
 - (void)setupSkinBackgroundBoundaries;
 - (void)generateScab;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing;

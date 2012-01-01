@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "GameKit/GameKit.h"
+#import "Scab.h"
 
 #define SPEEDILY_FILLED_JAR_TIME 3600
 #define BIG_SCAB_GOOD_TIME 200
@@ -26,9 +27,11 @@
 + (void)reportScore:(int64_t)score forCategory:(NSString *)category;
 + (BOOL)isGameCenterAPIAvailable;
 
-- (void)reportAchievementIdentifier:(NSString *)identifier;
+- (void)reportAchievements:(NSArray *)achievements;
 - (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier;
 - (void)authenticateLocalPlayer;
 - (void)loadAchievements;
+- (void)resetAchievements;
+- (void)reportAchievementsForScab:(Scab *)scab;
 
 @end

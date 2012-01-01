@@ -92,20 +92,30 @@ AppDelegate *app;
     CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"SoundChecked.png" selectedImage:@"Sound-Hover.png" target:nil selector:nil] retain];
     CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"SoundBlank.png" selectedImage:@"Sound-Hover.png" target:nil selector:nil] retain];
     
+    CCMenuItemToggle *toggle;
     if (currentSoundState)
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
+        toggle = [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:on, off, nil];
     else
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:off, on, nil];
+        toggle = [CCMenuItemToggle itemWithTarget:self selector:@selector(soundTapped:) items:off, on, nil];
+    
+    [on release];
+    [off release];
+    return toggle;
 }
 
 - (CCMenuItemToggle *)currentTutorialState:(bool)currentTutorialState {
     CCMenuItemImage *on = [[CCMenuItemImage itemFromNormalImage:@"TutorialChecked.png" selectedImage:@"Tutorial-Hover.png" target:nil selector:nil] retain];
     CCMenuItemImage *off = [[CCMenuItemImage itemFromNormalImage:@"TutorialBlank.png" selectedImage:@"Tutorial-Hover.png" target:nil selector:nil] retain];
     
+    CCMenuItemToggle *toggle;
     if (currentTutorialState)
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(tutorialTapped:) items:on, off, nil];
+        toggle = [CCMenuItemToggle itemWithTarget:self selector:@selector(tutorialTapped:) items:on, off, nil];
     else
-        return [CCMenuItemToggle itemWithTarget:self selector:@selector(tutorialTapped:) items:off, on, nil];
+        toggle = [CCMenuItemToggle itemWithTarget:self selector:@selector(tutorialTapped:) items:off, on, nil];
+
+    [on release];
+    [off release];
+    return toggle;
 }
 
 - (IBAction)stopTapped:(id)sender {    
@@ -126,6 +136,8 @@ AppDelegate *app;
         [app.defaults setObject:nil forKey:@"numScabsPicked"];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
+        [GKAchievement resetAchievementsWithCompletionHandler:nil];
+        [app.gameCenterBridge resetAchievements];
         NSLog(@"STOP");
     }
 }

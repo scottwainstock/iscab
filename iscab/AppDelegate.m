@@ -15,10 +15,8 @@
 #import "SimpleAudioEngine.h"
 #import "GamePlay.h"
 #import "Wound.h"
-#import "Jar.h"
 #import "chipmunk.h"
 #import "GameKit/GameKit.h"
-#import "GameCenterBridge.h"
 
 @implementation AppDelegate
 
@@ -174,6 +172,7 @@
                 Jar *jar = [[Jar alloc] initWithNumScabLevels:savedJar.numScabLevels];
                                 
                 [self.jars addObject:jar];
+                [jar release];
             }
         }
     } else {
@@ -190,8 +189,12 @@
 - (void)createNewJars {
     NSLog(@"CREATING NEW JARS");
     self.jars = nil;
-    for (int i = 0; i < NUM_JARS_TO_FILL; i++)
-        [self.jars addObject:[[Jar alloc] initWithNumScabLevels:0]];
+    for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
+        Jar *jar = [[Jar alloc] initWithNumScabLevels:0];
+        [self.jars addObject:jar];
+        
+        [jar release];
+    }
     
     [self.defaults setObject:[NSDate date] forKey:@"gameStartTime"];
     [self.defaults setObject:[NSDate date] forKey:@"jarStartTime"]; 
@@ -255,11 +258,13 @@
 - (void)applicationDidEnterBackground:(UIApplication*)application {
     NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
+
+    [self scheduleNotifications];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
         [self saveState];
         [self.scab reset];
-        [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
+        //[[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
     }
 }
 
