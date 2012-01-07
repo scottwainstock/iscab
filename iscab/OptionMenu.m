@@ -132,6 +132,7 @@ AppDelegate *app;
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
     if ([title isEqualToString:@"YES"]) {
+        [app.defaults setObject:nil forKey:@"sendNotifications"];
         [app.defaults setObject:nil forKey:@"numScabsPicked"];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
