@@ -109,9 +109,6 @@ AppDelegate *app;
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
          
         
-        //NEED TO REMOVE/ADD THIS ON EXIT/ENTER
-        [self addChild:app.batchNode];
-        
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
         
@@ -263,8 +260,6 @@ AppDelegate *app;
     return space;
 }
 
-#pragma touch_elements
-
 - (void)registerWithTouchDispatcher {
     [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
 }
@@ -297,6 +292,7 @@ AppDelegate *app;
                 if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && [app.defaults boolForKey:@"tutorial"])
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
+                NSLog(@"LOOSE SCAB COUNT %d", [looseScabChunks count]);
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
                     IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.position filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
                     
@@ -313,11 +309,11 @@ AppDelegate *app;
     [removedScabs release];
 }
 
-#pragma exit/enter setup
-
 - (void)onEnter {
     NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
+    
+    [self addChild:app.batchNode];
     
     if (![app.defaults objectForKey:@"scab"]) {
         NSLog(@"GENERATING NEW BOARD");
@@ -335,6 +331,9 @@ AppDelegate *app;
     [app cleanupBatchNode];
     [app saveState];
     [app.scab reset];
+
+    [self removeChild:app.batchNode cleanup:YES];
+    
     [super onExit];
 }
 
@@ -344,8 +343,6 @@ AppDelegate *app;
     [skinBackgroundBoundaries release];
     [super dealloc];
 }
-
-#pragma singletons
 
 - (NSMutableArray *)allBlood { 
     @synchronized(allBlood) {
