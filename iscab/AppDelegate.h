@@ -41,6 +41,7 @@
 @property (nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property (nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
+- (void)cleanupBatchNode;
 - (void)saveState;
 - (void)scheduleNotification:(NSDate *)date;
 - (void)scheduleNotifications;

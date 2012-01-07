@@ -63,10 +63,7 @@ AppDelegate *app;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
-    if ([title isEqualToString:@"YES"])
-        [app.defaults setBool:YES forKey:@"sendNotifications"];
-    else if ([title isEqualToString:@"NO"])
-        [app.defaults setBool:NO forKey:@"sendNotifications"];
+    [app.defaults setBool:[title isEqualToString:@"YES"] forKey:@"sendNotifications"];
 }
 
 - (void)setupNavigationIcons {}
