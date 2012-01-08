@@ -227,6 +227,8 @@ AppDelegate *app;
     [app cleanupBatchNode];
     [app.scab reset];
     
+    [looseScabChunks removeAllObjects];
+    
     for (CCMotionStreak *streak in [self allBlood])
         [streak removeFromParentAndCleanup:NO];
 
