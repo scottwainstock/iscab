@@ -294,7 +294,6 @@ AppDelegate *app;
                 if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && [app.defaults boolForKey:@"tutorial"])
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
-                NSLog(@"LOOSE SCAB COUNT %d", [looseScabChunks count]);
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
                     IScabSprite *looseScab = [[IScabSprite alloc] initWithSpace:space location:scabChunk.position filename:[scabChunk filename] shapeNo:scabChunk.scabChunkNo];
                     
