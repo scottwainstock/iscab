@@ -35,7 +35,8 @@ static GKAchievementHandler *defaultHandler = nil;
         [notification setImage:nil];
     }
 
-    [_topView addSubview:notification];
+    //[_topView addSubview:notification];
+    [[[UIApplication sharedApplication] keyWindow] addSubview:notification];
     [notification animateIn];
 }
 

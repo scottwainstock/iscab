@@ -108,7 +108,6 @@ AppDelegate *app;
         
         //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
          
-        [self addChild:app.batchNode];
         
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
@@ -225,7 +224,10 @@ AppDelegate *app;
 }
 
 - (void)resetBoard {
+    [app cleanupBatchNode];
     [app.scab reset];
+    
+    [looseScabChunks removeAllObjects];
     
     for (CCMotionStreak *streak in [self allBlood])
         [streak removeFromParentAndCleanup:NO];
@@ -259,8 +261,6 @@ AppDelegate *app;
     
     return space;
 }
-
-#pragma touch_elements
 
 - (void)registerWithTouchDispatcher {
     [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
@@ -310,11 +310,11 @@ AppDelegate *app;
     [removedScabs release];
 }
 
-#pragma exit/enter setup
-
 - (void)onEnter {
     NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
+    
+    [self addChild:app.batchNode];
     
     if (![app.defaults objectForKey:@"scab"]) {
         NSLog(@"GENERATING NEW BOARD");
@@ -329,8 +329,12 @@ AppDelegate *app;
 - (void)onExit {
     NSLog(@"GAMEPLAY ON EXIT");
     [app scheduleNotifications];
+    [app cleanupBatchNode];
     [app saveState];
     [app.scab reset];
+
+    [self removeChild:app.batchNode cleanup:YES];
+    
     [super onExit];
 }
 
@@ -340,8 +344,6 @@ AppDelegate *app;
     [skinBackgroundBoundaries release];
     [super dealloc];
 }
-
-#pragma singletons
 
 - (NSMutableArray *)allBlood { 
     @synchronized(allBlood) {

@@ -11,7 +11,18 @@
 
 @implementation Wound
 
-@synthesize isBleeding, isClean;
+@synthesize isBleeding, isClean, scab;
+
+- (void)dealloc {
+    [scab release];
+    [super dealloc];
+}
+
+- (void)destroy {
+    [self.scab.wounds removeObject:self];
+    [self.scab.scabChunkBorders removeObject:self];
+    [super destroy];
+}
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeInt:self.position.x forKey:@"xPos"]; 

@@ -44,17 +44,6 @@ AppDelegate *app;
         [menu setPosition:ccp(160, 145)];
         [menu alignItemsVerticallyWithPadding:10.0f];
         [self addChild:menu];
-        
-        NSLog(@"CURRENT NOTIFICATION STATUS: %@", [app.defaults objectForKey:@"sendNotifications"]);
-        if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
-                                                            message:@"Do you want to allow iScab to send you local notifications?"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"NO" 
-                                                  otherButtonTitles:@"YES", nil];
-            [alert show];
-            [alert release];
-        }        
     }
     
     return self;
@@ -63,10 +52,22 @@ AppDelegate *app;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
     
-    if ([title isEqualToString:@"YES"])
-        [app.defaults setBool:YES forKey:@"sendNotifications"];
-    else if ([title isEqualToString:@"NO"])
-        [app.defaults setBool:NO forKey:@"sendNotifications"];
+    [app.defaults setBool:[title isEqualToString:@"YES"] forKey:@"sendNotifications"];
+}
+
+- (void)onEnter {
+    NSLog(@"CURRENT NOTIFICATION STATUS: %@", [app.defaults objectForKey:@"sendNotifications"]);
+    if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
+                                                        message:@"Do you want to allow iScab to send you local notifications?"
+                                                       delegate:self
+                                              cancelButtonTitle:@"NO" 
+                                              otherButtonTitles:@"YES", nil];
+        [alert show];
+        [alert release];
+    }        
+    
+    [super onEnter];
 }
 
 - (void)setupNavigationIcons {}

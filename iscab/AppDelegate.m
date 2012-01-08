@@ -17,6 +17,7 @@
 #import "Wound.h"
 #import "chipmunk.h"
 #import "GameKit/GameKit.h"
+#import "IScabSprite.h"
 
 @implementation AppDelegate
 
@@ -263,9 +264,20 @@
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
         [self saveState];
+        [self cleanupBatchNode];
         [self.scab reset];
-        //[[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
     }
+}
+
+- (void)cleanupBatchNode {
+    NSMutableArray *removedSprites = [[NSMutableArray alloc] init];
+    for (IScabSprite *sprite in [self.batchNode children])
+        [removedSprites addObject:sprite];
+    
+    for (ScabChunk *sprite in removedSprites)
+        [self.batchNode removeChild:sprite cleanup:YES];
+    
+    [removedSprites release];
 }
 
 - (void)scheduleNotifications {

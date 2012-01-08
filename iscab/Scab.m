@@ -163,6 +163,7 @@
     [wound setPosition:iscabSprite.savedLocation];
     [wound setSavedLocation:iscabSprite.savedLocation];
     [wound setScabChunkNo:iscabSprite.scabChunkNo];
+    [wound setScab:self];
     [wound setIsClean:isClean];
     [wound setIsBleeding:isBleeding];
     
@@ -294,8 +295,6 @@
 }
    
 - (void)reset {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
     NSMutableArray *removedScabs = [[NSMutableArray alloc] init];
     for (ScabChunk *scabChunk in [self scabChunks])
         [removedScabs addObject:scabChunk];
@@ -306,17 +305,13 @@
     [removedScabs release];
     scabChunks = nil;
     
-    for (Wound *wound in [self wounds]) {
-        [app.batchNode removeChild:wound cleanup:YES];
-        [wound destroy];
-    }
+   // for (Wound *wound in [self wounds])
+   //     [wound destroy];
 
     wounds = nil;
 
-    for (Wound *scabChunkBorder in [self scabChunkBorders]) {
-        [app.batchNode removeChild:scabChunkBorder cleanup:YES];
+    for (Wound *scabChunkBorder in [self scabChunkBorders])
         [scabChunkBorder destroy];
-    }
 
     scabChunkBorders = nil;    
 }
