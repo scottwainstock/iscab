@@ -14,7 +14,7 @@
 
 @implementation GameCenterBridge
 
-@synthesize achievementsDictionary, achievementsDescriptionDictionary;
+@synthesize achievementsDictionary, achievementsDescriptionDictionary, unlockedAchievementsDescriptions;
 
 - (id)init {
     if ((self = [super init])) {
@@ -55,28 +55,29 @@
     if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
         return;
     
-    NSMutableArray *achievementsDescriptions = [[NSMutableArray alloc] init];
+    unlockedAchievementsDescriptions = [[NSMutableArray alloc] init];
     for (NSString *identifier in achievements) {
         GKAchievement *achievement = [self getAchievementForIdentifier:identifier];
         [achievement setPercentComplete:100.0];
         [achievement reportAchievementWithCompletionHandler:^(NSError *error) {}];
-        [achievementsDictionary setObject:achievement forKey:achievement.identifier];
-        
-        GKAchievementDescription *description = [achievementsDescriptionDictionary objectForKey:identifier];
-        [achievementsDescriptions addObject:[description title]]; 
+        [achievementsDictionary setObject:achievement forKey:achievement.identifier];        
     }
     
-    [[GKAchievementHandler defaultHandler] setImage:nil];        
-    [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:[achievementsDescriptions componentsJoinedByString:@", "]];
-     [achievementsDescriptions release];
+    if ([unlockedAchievementsDescriptions count]) {
+        [[GKAchievementHandler defaultHandler] setImage:nil];        
+        [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:[unlockedAchievementsDescriptions componentsJoinedByString:@", "]];
+    }
 }
 
 - (GKAchievement *)getAchievementForIdentifier:(NSString *)identifier {
     GKAchievement *achievement = [achievementsDictionary objectForKey:identifier];
     
-    if (achievement == nil)
+    if (achievement == nil) {
         achievement = [[[GKAchievement alloc] initWithIdentifier:identifier] autorelease];
-    
+        GKAchievementDescription *description = [achievementsDescriptionDictionary objectForKey:identifier];
+        [unlockedAchievementsDescriptions addObject:[description title]];
+    }
+        
     return achievement;
 }
 
@@ -208,6 +209,7 @@
 }
 
 - (void)dealloc {
+    [unlockedAchievementsDescriptions release];
     [achievementsDictionary release];
     [achievementsDescriptionDictionary release];
     [super dealloc];

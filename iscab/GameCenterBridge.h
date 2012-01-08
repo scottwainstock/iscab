@@ -19,10 +19,12 @@
 @interface GameCenterBridge : NSObject {
     NSMutableDictionary *achievementsDictionary;
     NSMutableDictionary *achievementsDescriptionDictionary;
+    NSMutableArray *unlockedAchievementsDescriptions;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *achievementsDictionary;
-@property (nonatomic, retain) NSMutableDictionary *achievementsDescriptionDictionary;
+@property(nonatomic, retain) NSMutableDictionary *achievementsDictionary;
+@property(nonatomic, retain) NSMutableDictionary *achievementsDescriptionDictionary;
+@property(nonatomic, retain) NSMutableArray *unlockedAchievementsDescriptions;
 
 + (void)reportScore:(int64_t)score forCategory:(NSString *)category;
 + (BOOL)isGameCenterAPIAvailable;
