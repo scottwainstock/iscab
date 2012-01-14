@@ -150,7 +150,7 @@
 - (void)createScabChunkBorderFromIScabSprite:(IScabSprite *)iscabSprite {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     Wound *scabBorder = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab_border%d.png", iscabSprite.scabChunkNo]] autorelease];
-    [scabBorder setScale:1.3];
+    [scabBorder setScale:1.6];
     [scabBorder setPosition:iscabSprite.savedLocation];
     [app.batchNode addChild:scabBorder z:-2];
     [self.scabChunkBorders addObject:scabBorder];
@@ -286,9 +286,13 @@
     if ([self.scabChunks count])
         return false;
     
+    int numClean = 0;
     for (Wound *wound in self.wounds)
-        if (!wound.isClean)
-            return false;
+        if (wound.isClean)
+            numClean += 1;
+
+    if ((numClean / [self.wounds count]) < PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE)
+        return false;
     
     return true;
 }
