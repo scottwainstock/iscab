@@ -68,6 +68,7 @@
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
+- (bool)isHealed;
 - (bool)isOverpicked;
 - (bool)isDevoidOfScabsAndNotFullyHealed;
 - (bool)isComplete;

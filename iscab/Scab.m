@@ -275,6 +275,9 @@
     if ([self.scabChunks count])
         return false;
     
+    if (![self isHealed])
+        return true;
+
     for (Wound *wound in self.wounds)
         if (!wound.isClean)
             return true;
@@ -282,16 +285,23 @@
     return false;
 }
 
-- (bool)isComplete {
-    if ([self.scabChunks count])
-        return false;
-    
+- (bool)isHealed {
     int numClean = 0;
     for (Wound *wound in self.wounds)
         if (wound.isClean)
             numClean += 1;
-
+    
     if ((numClean / [self.wounds count]) < PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE)
+        return false;
+
+    return true;
+}
+
+- (bool)isComplete {
+    if ([self.scabChunks count])
+        return false;
+    
+    if (![self isHealed])
         return false;
     
     return true;

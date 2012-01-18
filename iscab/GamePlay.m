@@ -291,7 +291,12 @@ AppDelegate *app;
                 [removedScabs addObject:scabChunk];
                 [scabChunk ripOffScab];
                 
-                if ([scabChunk.scab isOverpicked] && ![scabChunk.scab isOverpickWarningIssued] && [app.defaults boolForKey:@"tutorial"])
+                if (
+                    [scabChunk.scab isOverpicked] && 
+                    ![scabChunk.scab isOverpickWarningIssued] && 
+                    [app.defaults boolForKey:@"tutorial"] &&
+                    ![scabChunk.scab isHealed]
+                )
                     [self warnAboutOverpicking:scabChunk.scab];
                                 
                 if ([looseScabChunks count] < MAXIMUM_NUMBER_OF_LOOSE_SCAB_CHUNKS) {
