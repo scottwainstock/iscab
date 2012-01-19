@@ -263,9 +263,12 @@
     [self scheduleNotifications];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
-        [self saveState];
+        NSLog(@"CLEANING UP SCENE FROM APP DELEGATE");
         [self cleanupBatchNode];
+        [self saveState];
         [self.scab reset];
+        
+        [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
     }
 }
 
