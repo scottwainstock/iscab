@@ -146,11 +146,7 @@
             [achievementsUnlocked addObject:@"iscab_biggood"];
     }
     
-    if (
-        [scab.name isEqualToString:@"standard"] && 
-        (scab.scabSize == XL_SCAB) &&
-        ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)
-    ) {
+    if ((scab.scabSize == XL_SCAB) && ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)) {
         [achievementsUnlocked addObject:@"iscab_bigmin"];
         
         int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
@@ -177,9 +173,11 @@
     }
     
     bool allSpecialScabsPicked = true;
-    for (NSString *specialScabName in [SpecialScabs specialScabNames])
-        if ([self.achievementsDictionary objectForKey:specialScabName] == nil)
+    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
+        NSLog(@"SPECIAL NAME %@", specialScabName);
+        if ([self.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", specialScabName]] == nil)
             allSpecialScabsPicked = false;
+    }
     
     if (allSpecialScabsPicked)
         [achievementsUnlocked addObject:@"iscab_allspecial"];
