@@ -85,6 +85,6 @@
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
 - (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary;
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin;
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabOrigin:(CGPoint)scabOrigin;
 
 @end

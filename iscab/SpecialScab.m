@@ -116,7 +116,7 @@
     CGPoint right = CGPointMake(HEART_SCAB_SIZE + scabOrigin.x + 10, HEART_SCAB_SIZE * 1.1 + scabOrigin.y);
 
     for (int x = 0; x < HEART_SCAB_SIZE * 50; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
+        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabOrigin:scabOrigin];
         
         if (
             !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
@@ -128,7 +128,7 @@
     CGPoint leftHeart = CGPointMake(scabOrigin.x + (HEART_SCAB_SIZE / 4), (HEART_SCAB_SIZE + scabOrigin.y + 10));
     CGPoint rightHeart = CGPointMake(scabOrigin.x + HEART_SCAB_SIZE, (HEART_SCAB_SIZE + scabOrigin.y + 10));
     for (int i = 0; i < 2000; i++) {
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
+        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabOrigin:scabOrigin];
         
         if (
             !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
@@ -156,7 +156,7 @@
     CGPoint right = CGPointMake(ILLUMINATI_SCAB_SIZE + scabOrigin.x, scabOrigin.y);
     
     for (int x = 0; x < ILLUMINATI_SCAB_SIZE * 10; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
+        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabOrigin:scabOrigin];
         
         if (
             !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
@@ -231,7 +231,7 @@
     
     CGPoint earCenter = CGPointMake((int)((top.x + left.x + right.x) / 3), (int)((top.y + left.y + right.y) / 3));    
     for (int x = 0; x < 400; x++) { 
-        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:earCenter backgroundBoundary:CGRectMake(left.x, left.y, 300, 300) scabBoundary:CGRectMake(left.x, left.y, 300, 300) scabOrigin:earCenter];
+        CGPoint scabChunkCenter = [self getScabChunkCenterFrom:earCenter backgroundBoundary:CGRectMake(left.x, left.y, 300, 300) scabOrigin:earCenter];
         
         if (
             !CGPointEqualToPoint(scabChunkCenter, CGPointZero) &&
