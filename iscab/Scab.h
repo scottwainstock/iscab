@@ -16,6 +16,10 @@
 #define NUM_DARK_PATCHES 4
 #define OVERPICKED_THRESHOLD 0.5
 
+#define PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE 0.90
+
+#define MINIMUM_SCAB_SIZE 100
+
 #define MEDIUM_SCAB_SIZE 200
 #define LARGE_SCAB_SIZE 300
 #define XL_SCAB_SIZE 301
@@ -64,6 +68,7 @@
 @property (nonatomic, retain) NSMutableArray *scabChunks;
 @property (nonatomic, retain) NSMutableArray *scabChunkBorders;
 
+- (bool)isHealed;
 - (bool)isOverpicked;
 - (bool)isDevoidOfScabsAndNotFullyHealed;
 - (bool)isComplete;
@@ -80,6 +85,6 @@
 - (NSTimeInterval)maximumHealingInterval;
 - (NSTimeInterval)healingInterval;
 - (CGPoint)generateScabOrigin:(CGRect)backgroundBoundary;
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin;
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabOrigin:(CGPoint)scabOrigin;
 
 @end

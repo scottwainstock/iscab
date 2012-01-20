@@ -52,7 +52,7 @@
 }
 
 + (NSArray *)specialScabNames {
-    return [NSArray arrayWithObjects: @"xxx", @"heart", @"illuminati", @"jesus", @"sass", nil];
+    return [NSArray arrayWithObjects:@"xxx", @"heart", @"illuminati", @"jesus", @"sass", nil];
 }
 
 - (void)addFoundScabs {

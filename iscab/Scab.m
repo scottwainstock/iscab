@@ -39,7 +39,7 @@
     center = CGPointMake((int)scabBoundary.origin.x + (int)(scabBoundary.size.width / 2), (int)scabBoundary.origin.y + (int)(scabBoundary.size.height / 2));
     
     for (int x = 0; x < NUM_SPECIAL_SCAB_EXTRA_SCAB_CHUNKS; x++)
-        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:boundary scabBoundary:scabBoundary scabOrigin:scabOrigin]]];
+        [coordinates addObject:[NSValue valueWithCGPoint:[self getScabChunkCenterFrom:center backgroundBoundary:boundary scabOrigin:scabOrigin]]];
     
     return coordinates;
 }
@@ -81,40 +81,43 @@
             if (CGRectContainsPoint(backgroundBoundary, [point CGPointValue]))
                 [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"light" scabChunkNo:3 priority:1];
 
-        int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;
-        for (int x = 0; x < numScabChunks; x++) { 
-            int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
-            CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
-         
-            if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero) && [self isNextToExistingScabChunk:scabChunkCenter])
-                [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
-        }
-
-        int numDarkPatches = (arc4random() % NUM_DARK_PATCHES);
-        int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
-        int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
-        for (int x = 0; x < numDarkPatches; x++) {
-            CGPoint patchOrigin = CGPointMake(
-                (int)center.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
-                (int)center.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
-            );
-         
-            for (int x = 0; x < (numScabChunks / 6); x++) {
+        while ([self.scabChunks count] <= MINIMUM_SCAB_SIZE) {
+            NSLog(@"MAKING SOME SCAB CHUNKS");
+            int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;
+            for (int x = 0; x < numScabChunks; x++) { 
                 int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
-                CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundBoundary:backgroundBoundary scabBoundary:scabBoundary scabOrigin:scabOrigin];
+                CGPoint scabChunkCenter = [self getScabChunkCenterFrom:center backgroundBoundary:backgroundBoundary scabOrigin:scabOrigin];
              
-                if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
-                    [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"dark" scabChunkNo:scabChunkNo priority:2];
+                if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero) && [self isNextToExistingScabChunk:scabChunkCenter])
+                    [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"light" scabChunkNo:scabChunkNo priority:1];
+            }
+
+            int numDarkPatches = (arc4random() % NUM_DARK_PATCHES);
+            int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
+            int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
+            for (int x = 0; x < numDarkPatches; x++) {
+                CGPoint patchOrigin = CGPointMake(
+                    (int)center.x + (int)(arc4random() % (maxDistanceToXEdge * 2) - maxDistanceToXEdge), 
+                    (int)center.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
+                );
+             
+                for (int x = 0; x < (numScabChunks / 6); x++) {
+                    int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
+                    CGPoint scabChunkCenter = [self getScabChunkCenterFrom:patchOrigin backgroundBoundary:backgroundBoundary scabOrigin:scabOrigin];
+                 
+                    if (!CGPointEqualToPoint(scabChunkCenter, CGPointZero))
+                        [self createScabChunkAndBorderWithCenter:scabChunkCenter type:@"dark" scabChunkNo:scabChunkNo priority:2];
+                }
             }
         }
-        
+                
         [self initializeStatesWithName:@"standard"];
     }
     
     return self;
 }
     
-- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabBoundary:(CGRect)scabBoundary scabOrigin:(CGPoint)scabOrigin {
+- (CGPoint)getScabChunkCenterFrom:(CGPoint)scabCenter backgroundBoundary:(CGRect)backgroundBoundary scabOrigin:(CGPoint)scabOrigin {
     int maxDistanceToXEdge = (center.x - scabOrigin.x) + 1;
     int maxDistanceToYEdge = (center.y - scabOrigin.y) + 1;
 
@@ -123,8 +126,7 @@
         (int)scabCenter.y + (int)(arc4random() % (maxDistanceToYEdge * 2) - maxDistanceToYEdge)
     );
     
-    return (CGRectContainsPoint(backgroundBoundary, scabChunkCenter) && CGRectContainsPoint(scabBoundary, scabChunkCenter)) ?
-        scabChunkCenter : CGPointZero;
+    return CGRectContainsPoint(backgroundBoundary, scabChunkCenter) ? scabChunkCenter : CGPointZero;
 }
     
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority {
@@ -147,7 +149,7 @@
 - (void)createScabChunkBorderFromIScabSprite:(IScabSprite *)iscabSprite {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     Wound *scabBorder = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab_border%d.png", iscabSprite.scabChunkNo]] autorelease];
-    [scabBorder setScale:1.3];
+    [scabBorder setScale:1.6];
     [scabBorder setPosition:iscabSprite.savedLocation];
     [app.batchNode addChild:scabBorder z:-2];
     [self.scabChunkBorders addObject:scabBorder];
@@ -272,6 +274,9 @@
     if ([self.scabChunks count])
         return false;
     
+    if (![self isHealed])
+        return true;
+
     for (Wound *wound in self.wounds)
         if (!wound.isClean)
             return true;
@@ -279,13 +284,24 @@
     return false;
 }
 
+- (bool)isHealed {
+    int numClean = 0;
+    for (Wound *wound in self.wounds)
+        if (wound.isClean)
+            numClean += 1;
+    
+    if ((numClean / [self.wounds count]) < PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE)
+        return false;
+
+    return true;
+}
+
 - (bool)isComplete {
     if ([self.scabChunks count])
         return false;
     
-    for (Wound *wound in self.wounds)
-        if (!wound.isClean)
-            return false;
+    if (![self isHealed])
+        return false;
     
     return true;
 }
