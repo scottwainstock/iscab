@@ -170,7 +170,7 @@
         [achievementsUnlocked addObject:@"iscab_bigquick"];
     
     if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
-        if ([self.achievementsDictionary objectForKey:@"iscab_pityscab"])
+        if ([self.achievementsDictionary objectForKey:@"iscab_pity"])
             [achievementsUnlocked addObject:@"iscab_pityagain"];
         else
             [achievementsUnlocked addObject:@"iscab_pity"];
