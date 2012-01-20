@@ -180,6 +180,11 @@
         [self createNewJars];
     }
     
+    //call each possible menu background so they are cached when you select them in skin picking screen
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"light_skin_background2.jpg"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"medium_skin_background2.jpg"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"dark_skin_background2.jpg"]];
+    
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
