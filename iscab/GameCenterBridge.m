@@ -64,8 +64,10 @@
     }
     
     if ([unlockedAchievementsDescriptions count]) {
-        [[GKAchievementHandler defaultHandler] setImage:nil];        
-        [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:[unlockedAchievementsDescriptions componentsJoinedByString:@", "]];
+        [[GKAchievementHandler defaultHandler] setImage:nil]; 
+        
+        for (NSString *message in unlockedAchievementsDescriptions)
+            [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:message];
     }
 }
 
