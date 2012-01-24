@@ -149,7 +149,7 @@
 - (void)createScabChunkBorderFromIScabSprite:(IScabSprite *)iscabSprite {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     Wound *scabBorder = [[[Wound alloc] initWithSpriteFrameName:[NSString stringWithFormat:@"scab_border%d.png", iscabSprite.scabChunkNo]] autorelease];
-    [scabBorder setScale:1.6];
+    [scabBorder setScale:1.3];
     [scabBorder setPosition:iscabSprite.savedLocation];
     [app.batchNode addChild:scabBorder z:-2];
     [self.scabChunkBorders addObject:scabBorder];
