@@ -197,7 +197,7 @@ AppDelegate *app;
                
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
-    [scorePopup runAction:[CCFadeOut actionWithDuration:3]]; 
+    [scorePopup runAction:[CCSequence actions:[CCDelayTime actionWithDuration:3], [CCHide action], nil]];        
     [self addChild:scorePopup z:100];
 }
 
