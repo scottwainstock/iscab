@@ -13,7 +13,7 @@
 #import "cocos2d.h"
 #import "chipmunk.h"
 
-#define NUM_BACKGROUNDS 6
+#define NUM_BACKGROUNDS 7
 #define NUM_SCRATCH_SOUNDS 3
 #define MINIMUM_DISTANCE_FOR_CLOSE_SCAB_CHUNK_REMOVAL 20.0
 #define GRAVITY_FACTOR 750
