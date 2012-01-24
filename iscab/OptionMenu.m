@@ -120,7 +120,7 @@ AppDelegate *app;
 
 - (IBAction)stopTapped:(id)sender {    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Stop Pickin'" 
-                                                    message:@"Are you sure you want to stop Pickin' and empty all jars and start all over?"
+                                                    message:@"Are you sure you want to Stop Pickin' and empty all jars and start all over?"
                                                    delegate:self
                                           cancelButtonTitle:@"NO" 
                                           otherButtonTitles:@"YES", nil];
