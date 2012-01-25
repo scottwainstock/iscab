@@ -197,7 +197,6 @@
 		8EB71AA013F399C200072593 /* IScabCCLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9313F399C200072593 /* IScabCCLayer.m */; };
 		8EB71AA113F399C200072593 /* Help.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9413F399C200072593 /* Help.m */; };
 		8EB71AA213F399C200072593 /* GamePlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9513F399C200072593 /* GamePlay.m */; };
-		8EB71AA313F399C200072593 /* CCParticleMyBlood.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9613F399C200072593 /* CCParticleMyBlood.m */; };
 		8EB71AA413F399C200072593 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71A9713F399C200072593 /* About.m */; };
 		8EB71AC813F399F600072593 /* drew.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EB71AAE13F399F600072593 /* drew.ttf */; };
 		8EB71AE413F39E1200072593 /* drawSpace.c in Sources */ = {isa = PBXBuildFile; fileRef = 8EB71AE213F39E1200072593 /* drawSpace.c */; };
@@ -821,7 +820,6 @@
 		8EB71A8613F399C200072593 /* IScabCCLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScabCCLayer.h; sourceTree = "<group>"; };
 		8EB71A8713F399C200072593 /* Help.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Help.h; sourceTree = "<group>"; };
 		8EB71A8813F399C200072593 /* GamePlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePlay.h; sourceTree = "<group>"; };
-		8EB71A8913F399C200072593 /* CCParticleMyBlood.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCParticleMyBlood.h; sourceTree = "<group>"; };
 		8EB71A8A13F399C200072593 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
 		8EB71A8B13F399C200072593 /* Wound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Wound.m; sourceTree = "<group>"; };
 		8EB71A8C13F399C200072593 /* SkinColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SkinColorPicker.m; sourceTree = "<group>"; };
@@ -833,7 +831,6 @@
 		8EB71A9313F399C200072593 /* IScabCCLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IScabCCLayer.m; sourceTree = "<group>"; };
 		8EB71A9413F399C200072593 /* Help.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Help.m; sourceTree = "<group>"; };
 		8EB71A9513F399C200072593 /* GamePlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePlay.m; sourceTree = "<group>"; };
-		8EB71A9613F399C200072593 /* CCParticleMyBlood.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCParticleMyBlood.m; sourceTree = "<group>"; };
 		8EB71A9713F399C200072593 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		8EB71AAE13F399F600072593 /* drew.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = drew.ttf; path = Resources/drew.ttf; sourceTree = "<group>"; };
 		8EB71AE213F39E1200072593 /* drawSpace.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = drawSpace.c; sourceTree = "<group>"; };
@@ -1378,8 +1375,6 @@
 		8E2994F81495868A00AD21B2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8EB71A8913F399C200072593 /* CCParticleMyBlood.h */,
-				8EB71A9613F399C200072593 /* CCParticleMyBlood.m */,
 				8EB71A8513F399C200072593 /* IScabSprite.h */,
 				8EB71A9213F399C200072593 /* IScabSprite.m */,
 				8EB71A7E13F399C200072593 /* Wound.h */,
@@ -3160,7 +3155,6 @@
 				8EB71AA013F399C200072593 /* IScabCCLayer.m in Sources */,
 				8EB71AA113F399C200072593 /* Help.m in Sources */,
 				8EB71AA213F399C200072593 /* GamePlay.m in Sources */,
-				8EB71AA313F399C200072593 /* CCParticleMyBlood.m in Sources */,
 				8EB71AA413F399C200072593 /* About.m in Sources */,
 				8EB71AE413F39E1200072593 /* drawSpace.c in Sources */,
 				8EB816F5144BA49C004D2C73 /* Jar.m in Sources */,

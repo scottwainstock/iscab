@@ -311,11 +311,7 @@
         [removedScabChunk destroy];
     
     [removedScabs release];
-    scabChunks = nil;
-    
-   // for (Wound *wound in [self wounds])
-   //     [wound destroy];
-
+    scabChunks = nil;    
     wounds = nil;
 
     for (Wound *scabChunkBorder in [self scabChunkBorders])

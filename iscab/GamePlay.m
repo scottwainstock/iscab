@@ -12,7 +12,6 @@
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
 #import "JarScene.h"
-#import "CCParticleMyBlood.h"
 #import "AppDelegate.h"
 #import "drawSpace.h"
 #import "cpSpace.h"
