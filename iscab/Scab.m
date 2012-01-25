@@ -202,11 +202,8 @@
 }
 
 - (void)displaySprites {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
     NSLog(@"DISPLAYING SPRITES");
     NSMutableArray *savedScabChunks = [self.scabChunks copy];
-    NSMutableArray *savedScabChunkBorders = [self.scabChunkBorders copy];
     NSMutableArray *savedWounds = [self.wounds copy];
 
     [self.scabChunks removeAllObjects];
@@ -214,17 +211,13 @@
     [self.scabChunkBorders removeAllObjects];
    
     for (ScabChunk *scabChunk in savedScabChunks)
-        [self createScabChunk:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
-
-    if ([[app.defaults objectForKey:@"skinColor"] isEqualToString:@"light"])
-        for (Wound *scabChunkBorder in savedScabChunkBorders)
-            [self createScabChunkBorderFromIScabSprite:scabChunkBorder];
+        [self createScabChunkAndBorderWithCenter:scabChunk.savedLocation type:scabChunk.type scabChunkNo:scabChunk.scabChunkNo priority:scabChunk.priority];
 
     bool shouldHealUncleanWounds = [[self healDate] compare:[NSDate date]] == NSOrderedAscending ? TRUE : FALSE;
     for (Wound *wound in savedWounds) {
         if (shouldHealUncleanWounds) {
             if (!wound.isClean)
-                [self createScabChunk:wound.savedLocation type:@"light" scabChunkNo:wound.scabChunkNo priority:1];
+                [self createScabChunkAndBorderWithCenter:wound.savedLocation type:@"light" scabChunkNo:wound.scabChunkNo priority:1];
             [self createWoundFromIScabSprite:wound isClean:TRUE];
         } else {
             [self createWoundFromIScabSprite:wound isClean:wound.isClean];
@@ -233,7 +226,6 @@
 
     [savedWounds release];
     [savedScabChunks release];
-    [savedScabChunkBorders release];
 }
 
 - (int)scabSize {
@@ -365,7 +357,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.scabChunks forKey:@"scabChunks"];
-    [coder encodeObject:self.scabChunkBorders forKey:@"scabChunkBorders"];
     [coder encodeObject:self.wounds forKey:@"wounds"];
     [coder encodeObject:self.birthday forKey:@"birthday"];
     [coder encodeObject:self.healDate forKey:@"healDate"];
@@ -379,7 +370,6 @@
     
     if (self != nil) {
         self.scabChunks = (NSMutableArray *)[coder decodeObjectForKey:@"scabChunks"];
-        self.scabChunkBorders = (NSMutableArray *)[coder decodeObjectForKey:@"scabChunkBorders"];
         self.wounds = (NSMutableArray *)[coder decodeObjectForKey:@"wounds"];
         self.birthday = (NSDate *)[coder decodeObjectForKey:@"birthday"];
         self.healDate = (NSDate *)[coder decodeObjectForKey:@"healDate"];
@@ -394,7 +384,6 @@
             numUncleanWounds += 1;
     
     NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
-    NSLog(@"LOADED NUMBER OF SCAB BORDERS: %d", [self.scabChunkBorders count]);
     NSLog(@"LOADED NUMBER OF TOTAL WOUNDS: %d", [self.wounds count]);
     NSLog(@"LOADED NUMBER OF UNCLEAN WOUNDS: %d", numUncleanWounds);
     NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
