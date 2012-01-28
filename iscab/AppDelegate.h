@@ -32,15 +32,16 @@
     RootViewController *viewController;
 }
 
-@property (nonatomic) int screenWidth;
-@property (nonatomic) int screenHeight;
-@property (nonatomic, retain) NSUserDefaults *defaults;
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) NSMutableArray *jars;
-@property (nonatomic, retain) Scab *scab;
-@property (nonatomic, retain) CCSpriteBatchNode *batchNode;
-@property (nonatomic, retain) GameCenterBridge *gameCenterBridge;
+@property(nonatomic) int screenWidth;
+@property(nonatomic) int screenHeight;
+@property(nonatomic, retain) NSUserDefaults *defaults;
+@property(nonatomic, retain) UIWindow *window;
+@property(nonatomic, retain) NSMutableArray *jars;
+@property(nonatomic, retain) Scab *scab;
+@property(nonatomic, retain) CCSpriteBatchNode *batchNode;
+@property(nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
+- (void)cacheLargeImages;
 - (void)cleanupBatchNode;
 - (void)saveState;
 - (void)scheduleNotification:(NSDate *)date;

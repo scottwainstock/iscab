@@ -12,7 +12,6 @@
 #import "SimpleAudioEngine.h"
 #import "MainMenu.h"
 #import "JarScene.h"
-#import "CCParticleMyBlood.h"
 #import "AppDelegate.h"
 #import "drawSpace.h"
 #import "cpSpace.h"
@@ -84,6 +83,7 @@ AppDelegate *app;
 }
 
 - (void)didRotate {
+    NSLog(@"ROTATED");
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft))
         space->gravity = ccp(-GRAVITY_FACTOR, 0);
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight))
@@ -91,7 +91,7 @@ AppDelegate *app;
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait))
         space->gravity = ccp(0, -GRAVITY_FACTOR);
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortraitUpsideDown))
-        space->gravity = ccp(0, GRAVITY_FACTOR);
+        space->gravity = ccp(0, -GRAVITY_FACTOR);
 
     self.gravity = space->gravity;
 }
@@ -105,10 +105,7 @@ AppDelegate *app;
         
         [self setupSkinBackgroundBoundaries];
         [self createSpace];
-        
-        //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
-         
-        
+                 
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
         
@@ -199,7 +196,7 @@ AppDelegate *app;
                
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
-    [scorePopup runAction:[CCFadeOut actionWithDuration:3]]; 
+    [scorePopup runAction:[CCSequence actions:[CCDelayTime actionWithDuration:3], [CCHide action], nil]];        
     [self addChild:scorePopup z:100];
 }
 
@@ -319,6 +316,8 @@ AppDelegate *app;
     NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
     [self addChild:app.batchNode];
     
     if (![app.defaults objectForKey:@"scab"]) {
@@ -333,6 +332,9 @@ AppDelegate *app;
 
 - (void)onExit {
     NSLog(@"GAMEPLAY ON EXIT");
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+
     [app scheduleNotifications];
     [app cleanupBatchNode];
     [app saveState];

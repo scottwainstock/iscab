@@ -64,8 +64,10 @@
     }
     
     if ([unlockedAchievementsDescriptions count]) {
-        [[GKAchievementHandler defaultHandler] setImage:nil];        
-        [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievements Unlocked!" andMessage:[unlockedAchievementsDescriptions componentsJoinedByString:@", "]];
+        [[GKAchievementHandler defaultHandler] setImage:nil]; 
+        
+        for (NSString *message in unlockedAchievementsDescriptions)
+            [[GKAchievementHandler defaultHandler] notifyAchievementTitle:@"Achievement Unlocked!" andMessage:message];
     }
 }
 
@@ -90,12 +92,6 @@
 }
 
 - (void)loadAchievements {
-    /*[self reportAchievementIdentifier:@"iscab_xxx"];
-    [self reportAchievementIdentifier:@"iscab_jesus"];
-    [self reportAchievementIdentifier:@"iscab_heart"];
-    [self reportAchievementIdentifier:@"iscab_sass"];
-    [self reportAchievementIdentifier:@"iscab_illuminati"];*/
-    
     [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
         if (error == nil)
             for (GKAchievement *achievement in achievements) {

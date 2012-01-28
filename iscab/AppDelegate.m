@@ -179,17 +179,28 @@
     } else {
         [self createNewJars];
     }
-    
-    //call each possible menu background so they are cached when you select them in skin picking screen
-    [CCSprite spriteWithFile:[NSString stringWithFormat:@"light_skin_background2.jpg"]];
-    [CCSprite spriteWithFile:[NSString stringWithFormat:@"medium_skin_background2.jpg"]];
-    [CCSprite spriteWithFile:[NSString stringWithFormat:@"dark_skin_background2.jpg"]];
+
+    [self cacheLargeImages];
     
     screenWidth = [UIScreen mainScreen].bounds.size.width;
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
     [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+}
+
+- (void)cacheLargeImages {
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"light_skin_background2.jpg"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"medium_skin_background2.jpg"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"dark_skin_background2.jpg"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"help-text.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"Choose_Skin.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"Home_Logo.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"about-text.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar-Back.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"Jar-Front.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"one-full.png"]];
+    [CCSprite spriteWithFile:[NSString stringWithFormat:@"two-full.png"]];
 }
 
 - (void)createNewJars {
