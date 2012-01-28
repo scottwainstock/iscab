@@ -282,7 +282,7 @@
         if (wound.isClean)
             numClean += 1;
     
-    if ((numClean / [self.wounds count]) < PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE)
+    if (((float)numClean / (float)[self.wounds count]) < PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE)
         return false;
 
     return true;
