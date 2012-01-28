@@ -191,7 +191,11 @@
             [achievementsUnlocked addObject:@"iscab_2filled"];
             break;
         case 3:
-            [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
+            if (![app.defaults boolForKey:@"score_reported"]) {
+                [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
+                [app.defaults setBool:YES forKey:@"score_reported"];
+            }
+            
             [achievementsUnlocked addObject:@"iscab_3filled"];
             break;
         default:
