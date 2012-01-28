@@ -10,11 +10,11 @@
 #import "GameKit/GameKit.h"
 #import "Scab.h"
 
-#define SPEEDILY_FILLED_JAR_TIME 3600
-#define BIG_SCAB_GOOD_TIME 200
-#define BIG_SCAB_QUICKLY 180
-#define BIG_SCAB_MIN_TIME 150
-#define SCAB_GOOD_TIME 120
+#define SPEEDILY_FILLED_JAR_TIME 1000000
+#define BIG_SCAB_GOOD_TIME 45000
+#define BIG_SCAB_QUICKLY 50000
+#define BIG_SCAB_MIN_TIME 30000
+#define SCAB_GOOD_TIME 35000
 
 @interface GameCenterBridge : NSObject {
     NSMutableDictionary *achievementsDictionary;
