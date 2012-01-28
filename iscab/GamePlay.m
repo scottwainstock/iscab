@@ -330,19 +330,25 @@ AppDelegate *app;
     }
 }
 
-- (void)onExit {
-    NSLog(@"GAMEPLAY ON EXIT");
+- (void)backTapped:(CCMenuItem  *)menuItem {
+    [self cleanupScreen];
+    [super backTapped:menuItem];
+}
 
+- (void)jarTapped:(CCMenuItem  *)menuItem {
+    [self cleanupScreen];
+    [super jarTapped:menuItem];
+}
+
+- (void)cleanupScreen {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-
+    
     [app scheduleNotifications];
     [app cleanupBatchNode];
     [app saveState];
     [app.scab reset];
-
-    [self removeChild:app.batchNode cleanup:YES];
     
-    [super onExit];
+    [self removeChild:app.batchNode cleanup:YES];
 }
 
 - (void)dealloc {

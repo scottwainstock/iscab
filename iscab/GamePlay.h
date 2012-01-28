@@ -32,14 +32,15 @@
     NSMutableDictionary *skinBackgroundBoundaries;
 }
 
-@property (nonatomic) bool endSequenceRunning;
-@property (nonatomic, assign) cpVect gravity;
-@property (nonatomic, retain) NSMutableArray *allBlood;
-@property (nonatomic, retain) NSMutableArray *looseScabChunks;
-@property (nonatomic, retain) NSMutableDictionary *skinBackgroundBoundaries;
+@property(nonatomic) bool endSequenceRunning;
+@property(nonatomic, assign) cpVect gravity;
+@property(nonatomic, retain) NSMutableArray *allBlood;
+@property(nonatomic, retain) NSMutableArray *looseScabChunks;
+@property(nonatomic, retain) NSMutableDictionary *skinBackgroundBoundaries;
 
 + (id)scene;
 
+- (void)cleanupScreen;
 - (void)displayExistingBoard;
 - (void)warnAboutOverpicking:(Scab *)scab;
 - (void)setupSkinBackgroundBoundaries;

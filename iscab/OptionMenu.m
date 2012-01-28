@@ -137,6 +137,7 @@ AppDelegate *app;
         [app.defaults removeObjectForKey:@"scab"];
         [app.defaults setObject:nil forKey:@"sendNotifications"];
         [app.defaults setObject:nil forKey:@"numScabsPicked"];
+        [app.defaults setBool:NO forKey:@"score_reported"];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         [GKAchievement resetAchievementsWithCompletionHandler:nil];
