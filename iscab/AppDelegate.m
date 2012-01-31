@@ -265,7 +265,7 @@
 	[[CCDirector sharedDirector] resume];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
-        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] displayExistingBoard];
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] createOrUseExistingBoard];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {

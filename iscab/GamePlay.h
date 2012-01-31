@@ -40,6 +40,7 @@
 
 + (id)scene;
 
+- (void)createOrUseExistingBoard;
 - (void)cleanupScreen;
 - (void)displayExistingBoard;
 - (void)warnAboutOverpicking:(Scab *)scab;

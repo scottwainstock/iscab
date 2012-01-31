@@ -320,6 +320,10 @@ AppDelegate *app;
     
     [self addChild:app.batchNode];
     
+    [self createOrUseExistingBoard];    
+}
+
+- (void)createOrUseExistingBoard {
     if (![app.defaults objectForKey:@"scab"]) {
         NSLog(@"GENERATING NEW BOARD");
         [self updateBackground:nil];
