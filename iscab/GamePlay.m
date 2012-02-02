@@ -203,7 +203,7 @@ AppDelegate *app;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
     [scabChunk destroy];
 
-    if ([app.scab isComplete]) {
+    if ([app.scab isHealed]) {
         [self addScabToJar:app.scab];
         
         int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
@@ -211,8 +211,7 @@ AppDelegate *app;
         [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
         
         endSequenceRunning = true;
-        
-        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];        
+        [self resetBoard];
     } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];

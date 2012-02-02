@@ -16,7 +16,7 @@
 #define NUM_DARK_PATCHES 4
 #define OVERPICKED_THRESHOLD 0.5
 
-#define PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE 0.90
+#define SCABS_LEFT_TO_BE_CONSIDERED_COMPLETE 25
 
 #define MINIMUM_SCAB_SIZE 100
 
@@ -64,7 +64,6 @@
 - (bool)isHealed;
 - (bool)isOverpicked;
 - (bool)isDevoidOfScabsAndNotFullyHealed;
-- (bool)isComplete;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (int)pointValue;

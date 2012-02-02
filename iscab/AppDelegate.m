@@ -310,7 +310,7 @@
         if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
             alreadyScheduled = TRUE;
     
-    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
+    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isHealed])
         [self scheduleNotification:[self.scab healDate]];
 }
 

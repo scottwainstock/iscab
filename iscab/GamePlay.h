@@ -40,6 +40,7 @@
 
 + (id)scene;
 
+- (void)resetBoard;
 - (void)createOrUseExistingBoard;
 - (void)cleanupScreen;
 - (void)displayExistingBoard;
