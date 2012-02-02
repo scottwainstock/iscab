@@ -41,6 +41,7 @@
 @property(nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property(nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
+- (void)cleanupAndSave;
 - (void)cacheLargeImages;
 - (void)cleanupBatchNode;
 - (void)saveState;

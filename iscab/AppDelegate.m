@@ -258,7 +258,10 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+    NSLog(@"RESIGN ACTIVE");
 	[[CCDirector sharedDirector] pause];
+    
+    [self cleanupAndSave];    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -272,10 +275,7 @@
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication*)application {
-    NSLog(@"DID ENTER BACKGROUND");
-	[[CCDirector sharedDirector] stopAnimation];
-
+- (void)cleanupAndSave {
     [self scheduleNotifications];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
@@ -285,7 +285,12 @@
         [self.scab reset];
         
         [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
-    }
+    }    
+}
+
+- (void)applicationDidEnterBackground:(UIApplication*)application {
+    NSLog(@"DID ENTER BACKGROUND");
+	[[CCDirector sharedDirector] stopAnimation];
 }
 
 - (void)cleanupBatchNode {
@@ -326,6 +331,7 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    NSLog(@"TERMINATE");
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director openGLView] removeFromSuperview];
 	
