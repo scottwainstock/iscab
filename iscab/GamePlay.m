@@ -178,10 +178,11 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
-    if ([app.defaults boolForKey:@"tutorial"]) {
+    if ([app.defaults boolForKey:@"tutorial"] && ![app.defaults boolForKey:@"tutorial_added_to_jar"]) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"TUTORIAL: You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
+        [app.defaults setBool:YES forKey:@"tutorial_added_to_jar"];
     }
 
     [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
@@ -212,10 +213,14 @@ AppDelegate *app;
         
         endSequenceRunning = true;
         [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
-    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
+    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"] && [app.defaults integerForKey:@"wait_to_heal_notification"] < MAX_WAIT_TO_HEAL_NOTIFICATIONS) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
+        
+        int numNotifications = [app.defaults integerForKey:@"wait_to_heal_notification"];
+        numNotifications += 1;
+        [app.defaults setInteger:numNotifications forKey:@"wait_to_heal_notification"];
     }
 }
 
@@ -242,6 +247,10 @@ AppDelegate *app;
     UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"OVERPICK WARNING" message:@"TUTORIAL: Don't over-pick!\nIt'll take longer to heal and longer to fill up you scab jar!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [warning show];
     [warning release];
+    
+    int numOverpicks = [app.defaults integerForKey:@"overpick_warning"];
+    numOverpicks += 1;
+    [app.defaults setInteger:numOverpicks forKey:@"overpick_warning"];
     
     [scab setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scab maximumHealingInterval]]];
     [scab setIsOverpickWarningIssued:YES];
@@ -291,6 +300,7 @@ AppDelegate *app;
                     [scabChunk.scab isOverpicked] && 
                     ![scabChunk.scab isOverpickWarningIssued] && 
                     [app.defaults boolForKey:@"tutorial"] &&
+                    ([app.defaults integerForKey:@"overpick_warning"] < MAX_OVERPICK_WARNINGS) &&
                     ![scabChunk.scab isHealed]
                 )
                     [self warnAboutOverpicking:scabChunk.scab];
