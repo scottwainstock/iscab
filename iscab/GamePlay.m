@@ -203,7 +203,7 @@ AppDelegate *app;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
     [scabChunk destroy];
 
-    if ([app.scab isHealed]) {
+    if ([app.scab isHealed] && !endSequenceRunning) {
         [self addScabToJar:app.scab];
         
         int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
