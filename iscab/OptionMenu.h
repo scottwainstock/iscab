@@ -15,6 +15,7 @@
 
 + (id)scene;
 
+- (void)resetTutorialLimits;
 - (void)helpTapped:(CCMenuItem *)menuItem;
 - (void)leaderboardsTapped:(CCMenuItem *)menuItem;
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState;
