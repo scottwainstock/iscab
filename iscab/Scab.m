@@ -19,11 +19,11 @@
 - (int)pointValue {
     switch ([self scabSize]) {
         case XL_SCAB:
-            return 4;
-        case LARGE_SCAB:
-            return 3;
-        case MEDIUM_SCAB:
             return 2;
+        case LARGE_SCAB:
+            return 2;
+        case MEDIUM_SCAB:
+            return 1;
         case SMALL_SCAB:
             return 1;
         default:
