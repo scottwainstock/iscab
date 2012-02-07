@@ -29,6 +29,10 @@
 
 - (id)init {    
     if ((self = [super init])) {
+        CCSprite *label = [CCSprite spriteWithFile:@"SpecialScabsTitle.png"];
+        [label setPosition:ccp(160, 420)];
+        [self addChild:label z:0];
+        
         CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
         [petriBottom setPosition:ccp(160, 240)];
         [self addChild:petriBottom z:0];
