@@ -42,6 +42,7 @@
 
 + (id)scene;
 
+- (void)determineIfTutorialShouldBeTurnedOff;
 - (void)resetBoard;
 - (void)createOrUseExistingBoard;
 - (void)cleanupScreen;

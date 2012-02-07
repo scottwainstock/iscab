@@ -183,6 +183,7 @@ AppDelegate *app;
         [warning show];
         [warning release];
         [app.defaults setBool:YES forKey:@"tutorial_added_to_jar"];
+        [self determineIfTutorialShouldBeTurnedOff];
     }
 
     [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
@@ -224,6 +225,7 @@ AppDelegate *app;
         int numNotifications = [app.defaults integerForKey:@"wait_to_heal_notification"];
         numNotifications += 1;
         [app.defaults setInteger:numNotifications forKey:@"wait_to_heal_notification"];
+        [self determineIfTutorialShouldBeTurnedOff];
     }
 }
 
@@ -255,8 +257,19 @@ AppDelegate *app;
     numOverpicks += 1;
     [app.defaults setInteger:numOverpicks forKey:@"overpick_warning"];
     
+    [self determineIfTutorialShouldBeTurnedOff];
+    
     [scab setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scab maximumHealingInterval]]];
     [scab setIsOverpickWarningIssued:YES];
+}
+
+- (void)determineIfTutorialShouldBeTurnedOff {
+    if (
+        ([app.defaults integerForKey:@"overpick_warning"] >= MAX_OVERPICK_WARNINGS) &&
+        ([app.defaults integerForKey:@"wait_to_heal_notification"] >= MAX_WAIT_TO_HEAL_NOTIFICATIONS) &&
+        [app.defaults boolForKey:@"tutorial_added_to_jar"]
+    )
+        [app.defaults setBool:FALSE forKey:@"tutorial"];
 }
 
 - (cpSpace *)createSpace {    
