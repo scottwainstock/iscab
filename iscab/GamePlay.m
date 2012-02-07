@@ -194,6 +194,9 @@ AppDelegate *app;
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
         [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
+    
+    if (![app.scab.name isEqualToString:@"standard"])
+        [app.defaults setBool:YES forKey:app.scab.name];
                
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];

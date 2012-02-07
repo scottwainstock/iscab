@@ -61,7 +61,7 @@
     [scabMenu retain];
     
     for (NSString *scabName in [SpecialScabs specialScabNames]) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", scabName]]) {
+        if ([app.defaults boolForKey:scabName]) {
             CCMenuItem *scabMenuItem = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"%@.png", scabName] selectedImage:[NSString stringWithFormat:@"%@_Tap.png", scabName] target:self selector:@selector(specialScabTapped:)];
             
             [scabMenuItem setUserData:scabName];
