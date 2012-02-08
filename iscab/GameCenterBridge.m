@@ -30,7 +30,6 @@
     if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
         return;
     
-    NSLog(@"ABOUT TO REPORT %lld", score);
     GKScore *scoreReporter = [[[GKScore alloc] initWithCategory:category] autorelease];
     scoreReporter.value = score;
     
@@ -135,12 +134,11 @@
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
-        ) {
+    )
         if ([self.achievementsDictionary objectForKey:@"iscab_biggood"])
             [achievementsUnlocked addObject:@"iscab_biggoodagain"];
         else
             [achievementsUnlocked addObject:@"iscab_biggood"];
-    }
     
     if ((scab.scabSize == XL_SCAB) && ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)) {
         [achievementsUnlocked addObject:@"iscab_bigmin"];
@@ -161,19 +159,16 @@
     )
         [achievementsUnlocked addObject:@"iscab_bigquick"];
     
-    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB) {
+    if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB)
         if ([self.achievementsDictionary objectForKey:@"iscab_pity"])
             [achievementsUnlocked addObject:@"iscab_pityagain"];
         else
             [achievementsUnlocked addObject:@"iscab_pity"];
-    }
     
     bool allSpecialScabsPicked = true;
-    for (NSString *specialScabName in [SpecialScabs specialScabNames]) {
-        NSLog(@"SPECIAL NAME %@", specialScabName);
+    for (NSString *specialScabName in [SpecialScabs specialScabNames])
         if ([self.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", specialScabName]] == nil)
             allSpecialScabsPicked = false;
-    }
     
     if (allSpecialScabsPicked)
         [achievementsUnlocked addObject:@"iscab_allspecial"];

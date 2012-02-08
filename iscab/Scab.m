@@ -48,9 +48,7 @@
     [self setName:scabName];
     [self setIsOverpickWarningIssued:NO];
     [self setSizeAtCreation:[self.scabChunks count]];
-    
-    NSLog(@"NUM SCAB CHUNKS IN THIS SCAB: %d", [self sizeAtCreation]);
-    
+        
     [self setBirthday:[NSDate date]];
     [self setHealDate:[[NSDate date] dateByAddingTimeInterval:[self healingInterval]]];
 }
@@ -82,7 +80,6 @@
                 [self createScabChunkAndBorderWithCenter:[point CGPointValue] type:@"light" scabChunkNo:3 priority:1];
 
         while ([self.scabChunks count] <= MINIMUM_SCAB_SIZE) {
-            NSLog(@"MAKING SOME SCAB CHUNKS");
             int numScabChunks = (scabBoundary.size.height + scabBoundary.size.width) * 2;
             for (int x = 0; x < numScabChunks; x++) { 
                 int scabChunkNo = arc4random() % NUM_SHAPE_TYPES;
@@ -168,22 +165,7 @@
     [wound setScab:self];
     [wound setIsClean:isClean];
     [wound setIsBleeding:isBleeding];
-    
-    /*
-    if (wound.isBleeding) {
-        for (Wound *savedWound in self.wounds) {
-            if (savedWound.isBleeding && (ccpDistance(savedWound.savedLocation, wound.savedLocation) < 5.0) && (arc4random() % 100 == 1)) {
-                CCMotionStreak *streak = [[CCMotionStreak streakWithFade:10000.0f minSeg:1 image:@"blood_streak.png" width:10 length:10 color:ccc4(255,255,255,255)] autorelease];
-                
-                streak.position = wound.savedLocation;
-                [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] addChild:streak z:10];
-                [[(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:1] allBlood] addObject:streak];
-                
-                [streak release];
-            }
-        }
-    }*/
-    
+        
     [self.wounds addObject:wound];
     [app.batchNode addChild:wound z:-1];
     
@@ -202,7 +184,6 @@
 }
 
 - (void)displaySprites {
-    NSLog(@"DISPLAYING SPRITES");
     NSMutableArray *savedScabChunks = [self.scabChunks copy];
     NSMutableArray *savedWounds = [self.wounds copy];
 
@@ -363,14 +344,6 @@
     for (Wound *wound in self.wounds)
         if (!wound.isClean)
             numUncleanWounds += 1;
-    
-    NSLog(@"LOADED NUMBER OF SCAB CHUNKS: %d", [self.scabChunks count]);
-    NSLog(@"LOADED NUMBER OF TOTAL WOUNDS: %d", [self.wounds count]);
-    NSLog(@"LOADED NUMBER OF UNCLEAN WOUNDS: %d", numUncleanWounds);
-    NSLog(@"LOADED SCAB SIZE AT CREATION: %d", [self sizeAtCreation]);
-    NSLog(@"LOADED SCAB BIRTHDAY: %@", [self birthday]);
-    NSLog(@"LOADED SCAB HEAL DATE: %@", [self healDate]);
-    NSLog(@"NAME: %@", [self name]);
     
     return self; 
 }

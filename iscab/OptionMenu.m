@@ -144,16 +144,14 @@ AppDelegate *app;
         [app.defaults setObject:nil forKey:@"iscab_3big"];
         [app.defaults setBool:NO forKey:@"score_reported"];
         
-        for (NSString *scabName in [SpecialScabs specialScabNames]) {
+        for (NSString *scabName in [SpecialScabs specialScabNames])
             [app.defaults setBool:NO forKey:scabName];
-        }
         
         [self resetTutorialLimits];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         [GKAchievement resetAchievementsWithCompletionHandler:nil];
         [app.gameCenterBridge resetAchievements];
-        NSLog(@"STOP");
     }
 }
 

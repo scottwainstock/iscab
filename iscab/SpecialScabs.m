@@ -90,7 +90,6 @@
 }
 
 - (void)specialScabTapped:(CCMenuItem  *)menuItem {
-    NSLog(@"TAPPY %@", (NSString *)menuItem.userData);
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
 }

@@ -146,9 +146,7 @@
 }
 
 - (void)dealloc
-{
-    NSLog(@"dealloc: GKAchievementNotification");
-    
+{    
     self.handlerDelegate = nil;
     self.logo = nil;
     

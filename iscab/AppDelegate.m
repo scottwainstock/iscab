@@ -64,7 +64,6 @@
 }
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application {
-    NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -166,7 +165,6 @@
             
     NSData *mJars = [self.defaults objectForKey:@"jars"];
     if (mJars != nil) {
-        NSLog(@"LOADING SAVED JARS");
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
         if (oldSavedArray != nil) {                
             for (Jar *savedJar in oldSavedArray) {
@@ -204,7 +202,6 @@
 }
 
 - (void)createNewJars {
-    NSLog(@"CREATING NEW JARS");
     self.jars = nil;
     for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
         Jar *jar = [[Jar alloc] initWithNumScabLevels:0];
@@ -242,14 +239,10 @@
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-    [notification release];
-    
-    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+    [notification release];    
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    NSLog(@"RECEIVED LOCAL NOTIFICATION");
-    
     if (
         application.applicationState == UIApplicationStateInactive && 
         [[CCDirector sharedDirector] runningScene].tag != GAMEPLAY_SCENE_TAG
@@ -258,7 +251,6 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    NSLog(@"RESIGN ACTIVE");
 	[[CCDirector sharedDirector] pause];
     
     [self cleanupAndSave];    
@@ -279,7 +271,6 @@
     [self scheduleNotifications];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
-        NSLog(@"CLEANING UP SCENE FROM APP DELEGATE");
         [self cleanupBatchNode];
         [self saveState];
         [self.scab reset];
@@ -289,7 +280,6 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication*)application {
-    NSLog(@"DID ENTER BACKGROUND");
 	[[CCDirector sharedDirector] stopAnimation];
 }
 
@@ -308,8 +298,6 @@
     if (![defaults boolForKey:@"sendNotifications"])    
         return;
     
-    NSLog(@"SCHEDULING NOTIFICATION");
-        
     bool alreadyScheduled = FALSE;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])           
         if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
@@ -320,7 +308,6 @@
 }
 
 - (void)saveState {
-    NSLog(@"SAVING STATE");    
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scab]] forKey:@"scab"];
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [self.defaults synchronize];    
@@ -331,7 +318,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    NSLog(@"TERMINATE");
 	CCDirector *director = [CCDirector sharedDirector];
 	[[director openGLView] removeFromSuperview];
 	

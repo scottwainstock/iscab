@@ -83,7 +83,6 @@ AppDelegate *app;
 }
 
 - (void)didRotate {
-    NSLog(@"ROTATED");
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft))
         space->gravity = ccp(-GRAVITY_FACTOR, 0);
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight))
@@ -98,7 +97,6 @@ AppDelegate *app;
 
 - (id)init {
     if((self = [super init])) {
-        NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
@@ -108,16 +106,12 @@ AppDelegate *app;
                  
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
-        
-        NSLog(@"DONE INITING");
     }
             
     return self;
 }
 
 - (void)displayExistingBoard {
-    NSLog(@"DISPLAY EXISTING BOARD");
-
     [app setScab:(Scab *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scab"]]];
     [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
@@ -136,8 +130,6 @@ AppDelegate *app;
     
     [app setScab:scab];
     [scab release];
-                
-    NSLog(@"DONE GENERATING SCAB");
 }
 
 - (void)setupSkinBackgroundBoundaries {
@@ -165,7 +157,6 @@ AppDelegate *app;
         bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
     } else {
         NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [app.defaults objectForKey:@"skinColor"], skinBackgroundNumber];
-        NSLog(@"SETTING BACKGROUND: %@", skinBackground);
         bg = [CCSprite spriteWithFile:skinBackground];
     }
     
@@ -188,7 +179,6 @@ AppDelegate *app;
 
     [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
 
-    NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
@@ -245,7 +235,6 @@ AppDelegate *app;
     [self updateBackground:nil];
     [self generateScab];
     endSequenceRunning = false;
-    NSLog(@"LEAVING RESET BOARD");
 }
 
 - (void)warnAboutOverpicking:(Scab *)scab {
@@ -338,7 +327,6 @@ AppDelegate *app;
 }
 
 - (void)onEnter {
-    NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -350,11 +338,9 @@ AppDelegate *app;
 
 - (void)createOrUseExistingBoard {
     if (![app.defaults objectForKey:@"scab"]) {
-        NSLog(@"GENERATING NEW BOARD");
         [self updateBackground:nil];
         [self generateScab];
     } else {
-        NSLog(@"USING EXISTING BOARD");
         [self displayExistingBoard];
     }
 }
