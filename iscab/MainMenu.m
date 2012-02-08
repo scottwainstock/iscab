@@ -56,7 +56,6 @@ AppDelegate *app;
 }
 
 - (void)onEnter {
-    NSLog(@"CURRENT NOTIFICATION STATUS: %@", [app.defaults objectForKey:@"sendNotifications"]);
     if ([app.defaults objectForKey:@"sendNotifications"] == nil) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Local Notifications" 
                                                         message:@"Do you want to allow iScab to send you local notifications?"

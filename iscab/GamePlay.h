@@ -21,7 +21,9 @@
 #define BACKGROUND_IMAGE_TAG_ID 777
 #define PHOTO_BACKGROUND @"50"
 #define FIRST_FORCED_SPECIAL_SCAB 2
-#define CHANCE_OF_GETTING_SPECIAL_SCAB 2
+#define CHANCE_OF_GETTING_SPECIAL_SCAB 1
+#define MAX_OVERPICK_WARNINGS 2
+#define MAX_WAIT_TO_HEAL_NOTIFICATIONS 2
 
 @interface GamePlay : IScabCCLayer {
     cpSpace *space;
@@ -40,6 +42,9 @@
 
 + (id)scene;
 
+- (void)determineIfTutorialShouldBeTurnedOff;
+- (void)resetBoard;
+- (void)createOrUseExistingBoard;
 - (void)cleanupScreen;
 - (void)displayExistingBoard;
 - (void)warnAboutOverpicking:(Scab *)scab;

@@ -16,7 +16,7 @@
 #define NUM_DARK_PATCHES 4
 #define OVERPICKED_THRESHOLD 0.5
 
-#define PERCENT_HEALED_TO_BE_CONSIDERED_COMPLETE 0.90
+#define SCABS_LEFT_TO_BE_CONSIDERED_COMPLETE 5
 
 #define MINIMUM_SCAB_SIZE 100
 
@@ -29,17 +29,10 @@
 #define EXTRA_SCAB_WIDTH 250
 #define EXTRA_SCAB_HEIGHT 250
 
-#define SMALL_HEALING_TIME 3600
-#define MEDIUM_HEALING_TIME 7200
-#define LARGE_HEALING_TIME 18000
-#define XL_HEALING_TIME 28800
-
-/*
-#define SMALL_HEALING_TIME 60
-#define MEDIUM_HEALING_TIME 120
-#define LARGE_HEALING_TIME 180
-#define XL_HEALING_TIME 240
-*/
+#define SMALL_HEALING_TIME 60 * 2
+#define MEDIUM_HEALING_TIME 120 * 2
+#define LARGE_HEALING_TIME 180 * 2
+#define XL_HEALING_TIME 240 * 2
  
 #define SMALL_SCAB 0
 #define MEDIUM_SCAB 1
@@ -71,7 +64,6 @@
 - (bool)isHealed;
 - (bool)isOverpicked;
 - (bool)isDevoidOfScabsAndNotFullyHealed;
-- (bool)isComplete;
 - (id)createWithBackgroundBoundary:(CGRect)backgroundBoundary;
 - (id)createScabChunk:(CGPoint)coordinates type:(NSString *)type scabChunkNo:(int)scabChunkNo priority:(int)priority;
 - (int)pointValue;

@@ -79,7 +79,6 @@
         [self addChild:cameraTouched];
         
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            NSLog(@"PIX");
             imagePicker = [[UIImagePickerController alloc] init];        
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             [imagePicker setDelegate:self];
@@ -95,9 +94,6 @@
                 [viewWrapper setPosition:ccp(app.screenWidth / 2, app.screenHeight / 2)];
             
             [self addChild:viewWrapper];
-            NSLog(@"WRAPPER ADDED");
-        } else {
-            NSLog(@"NO CAMERA");
         }
         
         [self removeChild:[self getChildByTag:CAMERA_NOT_TOUCHED_TAG] cleanup:YES];
@@ -147,9 +143,7 @@
     
     [app.defaults setObject:UIImagePNGRepresentation(newImage) forKey:@"photoBackground"];
     [app.defaults setObject:@"photo" forKey:@"skinColor"];    
-    
-    NSLog(@"SAVED");
-    
+        
     [self setupBackground];
 }
 

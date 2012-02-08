@@ -36,7 +36,7 @@
 }
 
 - (IBAction)ihodorButtonPressed:(id)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://beefbrain.com"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:IHODOR_URL]];
 }
 
 - (void)dealloc {

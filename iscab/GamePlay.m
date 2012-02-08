@@ -83,7 +83,6 @@ AppDelegate *app;
 }
 
 - (void)didRotate {
-    NSLog(@"ROTATED");
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft))
         space->gravity = ccp(-GRAVITY_FACTOR, 0);
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight))
@@ -98,7 +97,6 @@ AppDelegate *app;
 
 - (id)init {
     if((self = [super init])) {
-        NSLog(@"INSIDE GAMEPLAY INIT");
         app = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [self setIsTouchEnabled:YES];
         endSequenceRunning = false;
@@ -108,16 +106,12 @@ AppDelegate *app;
                  
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [self scheduleUpdate];
-        
-        NSLog(@"DONE INITING");
     }
             
     return self;
 }
 
 - (void)displayExistingBoard {
-    NSLog(@"DISPLAY EXISTING BOARD");
-
     [app setScab:(Scab *)[NSKeyedUnarchiver unarchiveObjectWithData:[app.defaults objectForKey:@"scab"]]];
     [self updateBackground:[app.defaults stringForKey:@"skinBackgroundNumber"]];
     
@@ -136,8 +130,6 @@ AppDelegate *app;
     
     [app setScab:scab];
     [scab release];
-                
-    NSLog(@"DONE GENERATING SCAB");
 }
 
 - (void)setupSkinBackgroundBoundaries {
@@ -165,7 +157,6 @@ AppDelegate *app;
         bg = [CCSprite spriteWithCGImage:image.CGImage key:[NSString stringWithFormat:@"%d", (arc4random() % 1000) + 1]];
     } else {
         NSString *skinBackground = [NSString stringWithFormat:@"%@_skin_background%@.jpg", [app.defaults objectForKey:@"skinColor"], skinBackgroundNumber];
-        NSLog(@"SETTING BACKGROUND: %@", skinBackground);
         bg = [CCSprite spriteWithFile:skinBackground];
     }
     
@@ -178,21 +169,25 @@ AppDelegate *app;
 }
 
 - (void)addScabToJar:(Scab *)scab {
-    if ([app.defaults boolForKey:@"tutorial"]) {
+    if ([app.defaults boolForKey:@"tutorial"] && ![app.defaults boolForKey:@"tutorial_added_to_jar"]) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Added" message:@"TUTORIAL: You've just added a scab to your jar. You can check out your collection and share it with friends as you fill it up!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
+        [app.defaults setBool:YES forKey:@"tutorial_added_to_jar"];
+        [self determineIfTutorialShouldBeTurnedOff];
     }
 
     [app.gameCenterBridge reportAchievementsForScab:(Scab *)scab];
 
-    NSLog(@"SCORE: %d", [scab pointValue]);
     Jar *currentJar = [app currentJar];
     currentJar.numScabLevels += [scab pointValue];
     if (currentJar.numScabLevels >= MAX_NUM_SCAB_LEVELS) {
         currentJar.numScabLevels = MAX_NUM_SCAB_LEVELS;
         [app.defaults setObject:[NSDate date] forKey:@"jarStartTime"];
     }
+    
+    if (![app.scab.name isEqualToString:@"standard"])
+        [app.defaults setBool:YES forKey:app.scab.name];
                
     CCSprite *scorePopup = [CCSprite spriteWithFile:@"scab_added.png"];
     [scorePopup setPosition:ccp(195, 40)];
@@ -203,7 +198,7 @@ AppDelegate *app;
 - (void)removeScabChunk:(ScabChunk *)scabChunk initing:(bool)initing {
     [scabChunk destroy];
 
-    if ([app.scab isComplete]) {
+    if ([app.scab isHealed] && !endSequenceRunning) {
         [self addScabToJar:app.scab];
         
         int numScabsPicked = [[app.defaults objectForKey:@"numScabsPicked"] intValue];
@@ -211,12 +206,16 @@ AppDelegate *app;
         [app.defaults setObject:(NSNumber *)[NSNumber numberWithInt:numScabsPicked] forKey:@"numScabsPicked"];
         
         endSequenceRunning = true;
-        
-        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];        
-    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"]) {
+        [self runAction:[CCSequence actions:[CCDelayTime actionWithDuration:2], [CCCallFunc actionWithTarget:self selector:@selector(resetBoard)], nil]];
+    } else if ([app.scab isDevoidOfScabsAndNotFullyHealed] && [app.defaults boolForKey:@"tutorial"] && [app.defaults integerForKey:@"wait_to_heal_notification"] < MAX_WAIT_TO_HEAL_NOTIFICATIONS) {
         UIAlertView *warning = [[UIAlertView alloc] initWithTitle:@"Scab Needs Healing" message:@"TUTORIAL: You have to wait for it to heal and you'll get an itchy notification." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [warning show];
         [warning release];
+        
+        int numNotifications = [app.defaults integerForKey:@"wait_to_heal_notification"];
+        numNotifications += 1;
+        [app.defaults setInteger:numNotifications forKey:@"wait_to_heal_notification"];
+        [self determineIfTutorialShouldBeTurnedOff];
     }
 }
 
@@ -236,7 +235,6 @@ AppDelegate *app;
     [self updateBackground:nil];
     [self generateScab];
     endSequenceRunning = false;
-    NSLog(@"LEAVING RESET BOARD");
 }
 
 - (void)warnAboutOverpicking:(Scab *)scab {
@@ -244,8 +242,23 @@ AppDelegate *app;
     [warning show];
     [warning release];
     
+    int numOverpicks = [app.defaults integerForKey:@"overpick_warning"];
+    numOverpicks += 1;
+    [app.defaults setInteger:numOverpicks forKey:@"overpick_warning"];
+    
+    [self determineIfTutorialShouldBeTurnedOff];
+    
     [scab setHealDate:[NSDate dateWithTimeIntervalSinceNow:[scab maximumHealingInterval]]];
     [scab setIsOverpickWarningIssued:YES];
+}
+
+- (void)determineIfTutorialShouldBeTurnedOff {
+    if (
+        ([app.defaults integerForKey:@"overpick_warning"] >= MAX_OVERPICK_WARNINGS) &&
+        ([app.defaults integerForKey:@"wait_to_heal_notification"] >= MAX_WAIT_TO_HEAL_NOTIFICATIONS) &&
+        [app.defaults boolForKey:@"tutorial_added_to_jar"]
+    )
+        [app.defaults setBool:FALSE forKey:@"tutorial"];
 }
 
 - (cpSpace *)createSpace {    
@@ -292,6 +305,7 @@ AppDelegate *app;
                     [scabChunk.scab isOverpicked] && 
                     ![scabChunk.scab isOverpickWarningIssued] && 
                     [app.defaults boolForKey:@"tutorial"] &&
+                    ([app.defaults integerForKey:@"overpick_warning"] < MAX_OVERPICK_WARNINGS) &&
                     ![scabChunk.scab isHealed]
                 )
                     [self warnAboutOverpicking:scabChunk.scab];
@@ -313,19 +327,20 @@ AppDelegate *app;
 }
 
 - (void)onEnter {
-    NSLog(@"GAMEPLAY ONENTER");
     [super onEnter];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [self addChild:app.batchNode];
     
+    [self createOrUseExistingBoard];    
+}
+
+- (void)createOrUseExistingBoard {
     if (![app.defaults objectForKey:@"scab"]) {
-        NSLog(@"GENERATING NEW BOARD");
         [self updateBackground:nil];
         [self generateScab];
     } else {
-        NSLog(@"USING EXISTING BOARD");
         [self displayExistingBoard];
     }
 }

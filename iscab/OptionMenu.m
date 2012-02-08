@@ -13,6 +13,7 @@
 #import "Leaderboard.h"
 #import "Achievements.h"
 #import "CDAudioManager.h"
+#import "SpecialScabs.h"
 
 @implementation OptionMenu
 
@@ -85,7 +86,10 @@ AppDelegate *app;
 - (void)tutorialTapped:(CCMenuItem *)menuItem {
     [super playMenuSound];
     
-    [app.defaults setBool:[app.defaults boolForKey:@"tutorial"] ? FALSE : TRUE forKey:@"tutorial"];    
+    [app.defaults setBool:[app.defaults boolForKey:@"tutorial"] ? FALSE : TRUE forKey:@"tutorial"];
+    
+    if ([app.defaults boolForKey:@"tutorial"])
+        [self resetTutorialLimits];
 }
 
 - (CCMenuItemToggle *)currentSoundState:(bool)currentSoundState {
@@ -137,13 +141,24 @@ AppDelegate *app;
         [app.defaults removeObjectForKey:@"scab"];
         [app.defaults setObject:nil forKey:@"sendNotifications"];
         [app.defaults setObject:nil forKey:@"numScabsPicked"];
+        [app.defaults setObject:nil forKey:@"iscab_3big"];
         [app.defaults setBool:NO forKey:@"score_reported"];
+        
+        for (NSString *scabName in [SpecialScabs specialScabNames])
+            [app.defaults setBool:NO forKey:scabName];
+        
+        [self resetTutorialLimits];
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
         [app createNewJars];
         [GKAchievement resetAchievementsWithCompletionHandler:nil];
         [app.gameCenterBridge resetAchievements];
-        NSLog(@"STOP");
     }
+}
+
+- (void)resetTutorialLimits {
+    [app.defaults setObject:nil forKey:@"tutorial_added_to_jar"];
+    [app.defaults setObject:nil forKey:@"overpick_warning"];
+    [app.defaults setObject:nil forKey:@"wait_to_heal_notification"];
 }
 
 @end

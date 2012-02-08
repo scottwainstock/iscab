@@ -29,6 +29,10 @@
 
 - (id)init {    
     if ((self = [super init])) {
+        CCSprite *label = [CCSprite spriteWithFile:@"SpecialScabsTitle.png"];
+        [label setPosition:ccp(160, 420)];
+        [self addChild:label z:0];
+        
         CCSprite *petriBottom = [CCSprite spriteWithFile:@"SpecialScabs_Petri_Bottom.png"];
         [petriBottom setPosition:ccp(160, 240)];
         [self addChild:petriBottom z:0];
@@ -61,7 +65,7 @@
     [scabMenu retain];
     
     for (NSString *scabName in [SpecialScabs specialScabNames]) {
-        if ([app.gameCenterBridge.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", scabName]]) {
+        if ([app.defaults boolForKey:scabName]) {
             CCMenuItem *scabMenuItem = [CCMenuItemImage itemFromNormalImage:[NSString stringWithFormat:@"%@.png", scabName] selectedImage:[NSString stringWithFormat:@"%@_Tap.png", scabName] target:self selector:@selector(specialScabTapped:)];
             
             [scabMenuItem setUserData:scabName];
@@ -86,7 +90,6 @@
 }
 
 - (void)specialScabTapped:(CCMenuItem  *)menuItem {
-    NSLog(@"TAPPY %@", (NSString *)menuItem.userData);
     [[CCDirector sharedDirector] pushScene:
 	 [CCTransitionCrossFade transitionWithDuration:TRANSITION_SPEED scene:[SpecialScabDetail nodeWithScabName:menuItem.userData]]];
 }

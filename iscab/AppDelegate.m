@@ -64,7 +64,6 @@
 }
 
 - (void) applicationDidFinishLaunching:(UIApplication*)application {
-    NSLog(@"STARTING APPLICATION DID FINISH LAUNCHING");
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -114,7 +113,7 @@
 //#endif
 	
 	[director setAnimationInterval:1.0/60];
-	[director setDisplayFPS:YES];
+	//[director setDisplayFPS:YES];
 	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
@@ -166,7 +165,6 @@
             
     NSData *mJars = [self.defaults objectForKey:@"jars"];
     if (mJars != nil) {
-        NSLog(@"LOADING SAVED JARS");
         NSMutableArray *oldSavedArray = [NSKeyedUnarchiver unarchiveObjectWithData:mJars];
         if (oldSavedArray != nil) {                
             for (Jar *savedJar in oldSavedArray) {
@@ -204,7 +202,6 @@
 }
 
 - (void)createNewJars {
-    NSLog(@"CREATING NEW JARS");
     self.jars = nil;
     for (int i = 0; i < NUM_JARS_TO_FILL; i++) {
         Jar *jar = [[Jar alloc] initWithNumScabLevels:0];
@@ -242,14 +239,10 @@
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-    [notification release];
-    
-    NSLog(@"NOTIFICATION SCHEDULED FOR: %@", date);
+    [notification release];    
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    NSLog(@"RECEIVED LOCAL NOTIFICATION");
-    
     if (
         application.applicationState == UIApplicationStateInactive && 
         [[CCDirector sharedDirector] runningScene].tag != GAMEPLAY_SCENE_TAG
@@ -259,33 +252,35 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];
+    
+    [self cleanupAndSave];    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
-        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] displayExistingBoard];
+        [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] createOrUseExistingBoard];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication*)application {
-    NSLog(@"DID ENTER BACKGROUND");
-	[[CCDirector sharedDirector] stopAnimation];
-
+- (void)cleanupAndSave {
     [self scheduleNotifications];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG) {
-        NSLog(@"CLEANING UP SCENE FROM APP DELEGATE");
         [self cleanupBatchNode];
         [self saveState];
         [self.scab reset];
         
         [[[CCDirector sharedDirector] runningScene] removeChild:self.batchNode cleanup:YES];
-    }
+    }    
+}
+
+- (void)applicationDidEnterBackground:(UIApplication*)application {
+	[[CCDirector sharedDirector] stopAnimation];
 }
 
 - (void)cleanupBatchNode {
@@ -303,19 +298,16 @@
     if (![defaults boolForKey:@"sendNotifications"])    
         return;
     
-    NSLog(@"SCHEDULING NOTIFICATION");
-        
     bool alreadyScheduled = FALSE;
     for (UILocalNotification *localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications])           
         if ([[localNotification fireDate] compare:[self.scab healDate]] == NSOrderedSame)
             alreadyScheduled = TRUE;
     
-    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isComplete])
+    if (!alreadyScheduled && ([[self.scab healDate] compare:[NSDate date]] == NSOrderedDescending) && ![self.scab isHealed])
         [self scheduleNotification:[self.scab healDate]];
 }
 
 - (void)saveState {
-    NSLog(@"SAVING STATE");    
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self scab]] forKey:@"scab"];
     [self.defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[self jars]] forKey:@"jars"];
     [self.defaults synchronize];    
