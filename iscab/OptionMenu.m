@@ -14,6 +14,7 @@
 #import "Achievements.h"
 #import "CDAudioManager.h"
 #import "SpecialScabs.h"
+#import "GameCenterBridge.h"
 
 @implementation OptionMenu
 
@@ -141,7 +142,7 @@ AppDelegate *app;
         [app.defaults removeObjectForKey:@"scab"];
         [app.defaults setObject:nil forKey:@"sendNotifications"];
         [app.defaults setObject:nil forKey:@"numScabsPicked"];
-        [app.defaults setObject:nil forKey:@"iscab_3big"];
+        [app.defaults setObject:nil forKey:[GameCenterBridge massagedAchievementName:@"3big"]];
         [app.defaults setBool:NO forKey:@"score_reported"];
         
         for (NSString *scabName in [SpecialScabs specialScabNames])

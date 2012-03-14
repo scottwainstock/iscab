@@ -49,6 +49,16 @@
     return (localPlayerClassAvailable && osVersionSupported);
 }
 
++ (NSString *)massagedAchievementName:(NSString *)rawAchievementName {
+    NSString *achievementPrefix = @"iscab";
+    
+    #ifdef FREE_VERSION
+    achievementPrefix = @"iscab_free";
+    #endif
+    
+    return [NSString stringWithFormat:@"%@_%@", achievementPrefix, rawAchievementName];
+}
+
 - (void)reportAchievements:(NSArray *)achievements {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     if ((![app.defaults boolForKey:@"gameCenterEnabled"]) || (![[GKLocalPlayer localPlayer] isAuthenticated]))
@@ -115,41 +125,41 @@
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     NSMutableArray *achievementsUnlocked = [[NSMutableArray alloc] init];
     
-    [achievementsUnlocked addObject:@"iscab_power"];
+    [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"power"]];
 
     if ([app.currentJar numScabLevels] >= MAX_NUM_SCAB_LEVELS)   
         if ([[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"jarStartTime"]] <= SPEEDILY_FILLED_JAR_TIME)
-            [achievementsUnlocked addObject:@"iscab_speedjar"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"speedjar"]];
     
     if (!scab.isOverpickWarningIssued)
-        [achievementsUnlocked addObject:@"iscab_surgeon"];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"surgeon"]];
     
     if (![scab.name isEqualToString:@"standard"])
-        [achievementsUnlocked addObject:[NSString stringWithFormat:@"iscab_%@", scab.name]];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:scab.name]];
     
     if ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= SCAB_GOOD_TIME)
-        [achievementsUnlocked addObject:@"iscab_goodtime"];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"goodtime"]];
     
     if (
         [scab.name isEqualToString:@"standard"] && 
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_GOOD_TIME)
     )
-        if ([self.achievementsDictionary objectForKey:@"iscab_biggood"])
-            [achievementsUnlocked addObject:@"iscab_biggoodagain"];
+        if ([self.achievementsDictionary objectForKey:[GameCenterBridge massagedAchievementName:@"biggood"]])
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"biggoodagain"]];
         else
-            [achievementsUnlocked addObject:@"iscab_biggood"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"biggood"]];
     
     if ((scab.scabSize == XL_SCAB) && ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_MIN_TIME)) {
-        [achievementsUnlocked addObject:@"iscab_bigmin"];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"bigmin"]];
         
-        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:@"iscab_3big"] intValue];
+        int numBigScabsPickedInMinimumTime = [[app.defaults objectForKey:[GameCenterBridge massagedAchievementName:@"3big"]] intValue];
         numBigScabsPickedInMinimumTime += 1;
         
         if (numBigScabsPickedInMinimumTime >= 3)
-            [achievementsUnlocked addObject:@"iscab_3big"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"3big"]];
         
-        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:@"iscab_3big"];
+        [app.defaults setObject:[NSNumber numberWithInt:numBigScabsPickedInMinimumTime] forKey:[GameCenterBridge massagedAchievementName:@"3big"]];
     }
     
     if (
@@ -157,41 +167,47 @@
         (scab.scabSize == XL_SCAB) &&
         ([[NSDate date] timeIntervalSinceDate:scab.birthday] <= BIG_SCAB_QUICKLY)
     )
-        [achievementsUnlocked addObject:@"iscab_bigquick"];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"bigquick"]];
     
     if ([scab.name isEqualToString:@"standard"] && scab.scabSize == SMALL_SCAB)
-        if ([self.achievementsDictionary objectForKey:@"iscab_pity"])
-            [achievementsUnlocked addObject:@"iscab_pityagain"];
+        if ([self.achievementsDictionary objectForKey:[GameCenterBridge massagedAchievementName:@"pity"]])
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"pityagain"]];
         else
-            [achievementsUnlocked addObject:@"iscab_pity"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"pity"]];
     
     bool allSpecialScabsPicked = true;
     for (NSString *specialScabName in [SpecialScabs specialScabNames])
-        if ([self.achievementsDictionary objectForKey:[NSString stringWithFormat:@"iscab_%@", specialScabName]] == nil)
+        if ([self.achievementsDictionary objectForKey:[GameCenterBridge massagedAchievementName:specialScabName]] == nil)
             allSpecialScabsPicked = false;
     
     if (allSpecialScabsPicked)
-        [achievementsUnlocked addObject:@"iscab_allspecial"];
+        [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"allspecial"]];
     
     int jarsFilled = 0;
     for (Jar *jar in app.jars)
         if ([jar numScabLevels] == MAX_NUM_SCAB_LEVELS)
             jarsFilled += 1;
-    
+ 
     switch (jarsFilled) {
         case 1:
-            [achievementsUnlocked addObject:@"iscab_1filled"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"1filled"]];
             break;
         case 2:
-            [achievementsUnlocked addObject:@"iscab_2filled"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"2filled"]];
             break;
         case 3:
             if (![app.defaults boolForKey:@"score_reported"]) {
-                [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:@"iscab_leaderboard"];
+                NSString *leaderboard = @"iscab_leaderboard";
+                
+                #ifdef FREE_VERSION
+                    leaderboard = @"iscab_free_leaderboard";
+                #endif
+                
+                [GameCenterBridge reportScore:[[NSDate date] timeIntervalSinceDate:[app.defaults objectForKey:@"gameStartTime"]] forCategory:leaderboard];
                 [app.defaults setBool:YES forKey:@"score_reported"];
             }
             
-            [achievementsUnlocked addObject:@"iscab_3filled"];
+            [achievementsUnlocked addObject:[GameCenterBridge massagedAchievementName:@"3filled"]];
             break;
         default:
             break;

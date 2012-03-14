@@ -12,6 +12,10 @@
 #import "Scab.h"
 #import "GameCenterBridge.h"
 
+#ifdef FREE_VERSION
+#import "iAd/ADBannerView.h"
+#endif
+
 @class RootViewController;
 
 #define NUM_JARS_TO_FILL 3
@@ -19,7 +23,11 @@
 #define TRANSITION_SPEED 0.125f
 #define ICON_TOUCH_AREA_SIZE 75
 
+#ifdef FREE_VERSION
+@interface AppDelegate : NSObject <UIApplicationDelegate, ADBannerViewDelegate> {
+#else
 @interface AppDelegate : NSObject <UIApplicationDelegate> {
+#endif
     int screenWidth;
     int screenHeight;
 	UIWindow *window;
@@ -30,6 +38,10 @@
     CCSpriteBatchNode *batchNode;
     GameCenterBridge *gameCenterBridge;
     RootViewController *viewController;
+    
+    #ifdef FREE_VERSION
+    ADBannerView *adView;
+    #endif
 }
 
 @property(nonatomic) int screenWidth;
@@ -41,6 +53,11 @@
 @property(nonatomic, retain) CCSpriteBatchNode *batchNode;
 @property(nonatomic, retain) GameCenterBridge *gameCenterBridge;
 
+    
+#ifdef FREE_VERSION
+@property(nonatomic, retain) ADBannerView *adView;
+#endif
+    
 - (void)cleanupAndSave;
 - (void)cacheLargeImages;
 - (void)cleanupBatchNode;
