@@ -23,6 +23,10 @@
 
 @synthesize window, jars, screenWidth, screenHeight, batchNode, scab, gameCenterBridge, defaults;
 
+#ifdef FREE_VERSION
+@synthesize adView;
+#endif
+
 - (NSMutableArray *)jars { 
     @synchronized(jars) {
         if (jars == nil)
@@ -78,7 +82,7 @@
 	// Init the View Controller
 	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.wantsFullScreenLayout = YES;
-	
+
 	//
 	// Create the EAGLView manually
 	//  1. Create a RGB565 format. Alternative: RGBA8
@@ -119,6 +123,22 @@
 	[viewController setView:glView];
 	
 	// make the View Controller a child of the main window
+    #ifdef FREE_VERSION
+    adView = [[[ADBannerView alloc] initWithFrame:CGRectZero] retain]; 
+    
+    if (&ADBannerContentSizeIdentifierPortrait != nil) {
+        [adView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, nil]];
+        [adView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
+    } else {
+        [adView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, nil]];
+        [adView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifier320x50];
+    }
+    
+    [adView setDelegate:self];
+    [adView setHidden:YES];
+    [viewController.view addSubview:adView];
+    #endif
+    
 	[window addSubview:viewController.view];
 	[window makeKeyAndVisible];
 	
@@ -143,7 +163,13 @@
     }
 
     if ([self.defaults objectForKey:@"highScore"]) {
-        [GameCenterBridge reportScore:[[self.defaults objectForKey:@"highScore"] longLongValue] forCategory:@"iscab_leaderboard"];
+        NSString *leaderboard = @"iscab_leaderboard";
+        
+        #ifdef FREE_VERSION
+        leaderboard = @"iscab_free_leaderboard";
+        #endif
+
+        [GameCenterBridge reportScore:[[self.defaults objectForKey:@"highScore"] longLongValue] forCategory:leaderboard];
         [self.defaults removeObjectForKey:@"highScore"];
     }
 
@@ -184,7 +210,7 @@
     screenHeight = [UIScreen mainScreen].bounds.size.height;
     self.batchNode = [CCSpriteBatchNode batchNodeWithFile:@"scabs.png"];
     
-    [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];
+    [[CCDirector sharedDirector] runWithScene:[MainMenu scene]];    
 }
 
 - (void)cacheLargeImages {
@@ -260,6 +286,9 @@
 	[[CCDirector sharedDirector] resume];
     
     if ([[CCDirector sharedDirector] runningScene].tag == GAMEPLAY_SCENE_TAG)
+        #ifdef FREE_VERSION
+        [self.adView setHidden:NO];
+        #endif
         [(GamePlay *)[[[CCDirector sharedDirector] runningScene] getChildByTag:GAMEPLAY_SCENE_TAG] createOrUseExistingBoard];
 }
 
@@ -329,9 +358,18 @@
 - (void)applicationSignificantTimeChange:(UIApplication *)application {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
- 
+
+#ifdef FREE_VERSION
+- (void)bannerViewDidLoadAd:(ADBannerView *)banner {}
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {}
+#endif
+
 - (void)dealloc {
-	[[CCDirector sharedDirector] end];
+    #ifdef FREE_VERSION
+    [adView release];
+    #endif
+	
+    [[CCDirector sharedDirector] end];
 	[window release];
     [jars release];
     [batchNode release];

@@ -82,7 +82,7 @@ AppDelegate *app;
     drawSpace(space, &options);
 }
 
-- (void)didRotate {
+- (void)didRotate {    
     if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeLeft))
         space->gravity = ccp(-GRAVITY_FACTOR, 0);
     else if (([[UIDevice currentDevice] orientation] == UIDeviceOrientationLandscapeRight))
@@ -329,6 +329,10 @@ AppDelegate *app;
 - (void)onEnter {
     [super onEnter];
     
+    #ifdef FREE_VERSION
+    [app.adView setHidden:NO];
+    #endif
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [self addChild:app.batchNode];
@@ -356,6 +360,10 @@ AppDelegate *app;
 }
 
 - (void)cleanupScreen {
+    #ifdef FREE_VERSION
+    [app.adView setHidden:YES];
+    #endif
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [app scheduleNotifications];
