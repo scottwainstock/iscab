@@ -86,7 +86,9 @@
     if (achievement == nil) {
         achievement = [[[GKAchievement alloc] initWithIdentifier:identifier] autorelease];
         GKAchievementDescription *description = [achievementsDescriptionDictionary objectForKey:identifier];
-        [unlockedAchievementsDescriptions addObject:[description title]];
+        
+        if (description)
+            [unlockedAchievementsDescriptions addObject:[description title]];
     }
         
     return achievement;
